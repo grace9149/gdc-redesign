@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grace Dougan Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/version-a.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo">
+        Grace Dougan <em>Consulting</em>
+      </a>
+      <button class="nav__toggle" id="navToggle" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#team">Team</a></li>
+        <li><a href="#contact" class="nav__cta">Get in Touch</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__content fade-in">
+      <p class="hero__eyebrow">Bay Area · Remote · Dedicated</p>
+      <h1 class="hero__headline">Run your business.<br /><em>We'll handle<br />the rest.</em></h1>
+      <p class="hero__sub">Back-office support, bookkeeping, and strategic guidance — so you can focus on what you do best.</p>
+      <div class="hero__actions">
+        <a href="#contact" class="btn btn--dark">Let's Talk</a>
+        <a href="#services" class="hero__scroll-link">See Our Services ↓</a>
+      </div>
+    </div>
+    <div class="hero__image-col">
+      <img
+        src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/1534972905710-JPC2RZ8WZRIPJHQOBB6W/iStock-157373207.jpg"
+        alt="Professional consulting"
+        class="hero__photo"
+      />
+      <div class="hero__image-overlay"></div>
+    </div>
+  </section>
+
+  <!-- TAGLINE STRIP -->
+  <div class="tagline-strip">
+    <div class="tagline-strip__inner">
+      <span>Business Strategy</span>
+      <span class="dot">·</span>
+      <span>Remote Bookkeeping</span>
+      <span class="dot">·</span>
+      <span>Office Management</span>
+      <span class="dot">·</span>
+      <span>QuickBooks Migrations</span>
+      <span class="dot">·</span>
+      <span>Fractional CFO</span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-header fade-in">
+        <p class="section-eyebrow">What We Offer</p>
+        <h2 class="section-title">A complete back office,<br /><em>built around you.</em></h2>
+        <p class="section-intro">We handle the recurring operational work so you can focus on your strengths and what you're passionate about.</p>
+      </div>
+      <div class="services__grid">
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="22" cy="22" r="21" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M15 22h14M22 15v14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Business Strategy</h3>
+          <p class="service-card__desc">Consulting sessions to build, review, and strengthen your business plan — including budgeting, cash flow analysis, and growth planning.</p>
+          <span class="service-card__line"></span>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="22" cy="22" r="21" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M14 28l4.5-9 4.5 6 3-5 4 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Remote Bookkeeping</h3>
+          <p class="service-card__desc">Current financials, timely reports, invoicing, and collections support — keeping your cash flow healthy and your records spotless.</p>
+          <span class="service-card__line"></span>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="22" cy="22" r="21" stroke="currentColor" stroke-width="1.2"/>
+              <rect x="14" y="17" width="16" height="11" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M18 17v-2.5a4 4 0 0 1 8 0V17" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Remote Office Management</h3>
+          <p class="service-card__desc">Phone answering, scheduling, supply ordering, and travel arrangements — your entire office, managed seamlessly from anywhere.</p>
+          <span class="service-card__line"></span>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="22" cy="22" r="21" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M16 22a6 6 0 0 1 12 0" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              <circle cx="22" cy="25" r="2.5" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M22 27.5V30" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">QuickBooks Migrations</h3>
+          <p class="service-card__desc">End-to-end Desktop to Online migrations: data transfer, balance verification, report validation, and hands-on post-migration training.</p>
+          <span class="service-card__line"></span>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="22" cy="22" r="21" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M14 28l3-12 4 9 3-6 4 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Fractional CFO</h3>
+          <p class="service-card__desc">Strategic financial leadership — forecasting, board reporting, internal controls, and long-term planning without the cost of a full-time hire.</p>
+          <span class="service-card__line"></span>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="22" cy="22" r="21" stroke="currentColor" stroke-width="1.2"/>
+              <rect x="15" y="14" width="11" height="14" rx="1" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M18 18h5M18 21h5M18 24h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              <circle cx="26.5" cy="26.5" r="3" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M28.8 28.8l2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Systems Review</h3>
+          <p class="service-card__desc">A deep audit of your tools, processes, and workflows — with recommendations to streamline operations and eliminate bottlenecks as you scale.</p>
+          <span class="service-card__line"></span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="container about__inner">
+      <div class="about__photo fade-in">
+        <div class="about__photo-frame">
+          <img
+            src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/1536167412555-TM2XCZHB9CWAIOBD0GZG/GDC_Headshot_Grace_3a.jpg"
+            alt="Grace Dougan"
+            class="about__photo-img"
+          />
+        </div>
+        <div class="about__photo-caption">
+          <span>Grace Dougan</span>
+          <span>Founder &amp; Principal</span>
+        </div>
+      </div>
+      <div class="about__text fade-in">
+        <p class="section-eyebrow">About Grace</p>
+        <h2 class="section-title">I've been where<br /><em>you are.</em></h2>
+        <p>Having owned a successful small business, I know how hectic the pace of running one can be. That's why I started Grace Dougan Consulting — to give entrepreneurs the back-office support they need, without the overhead of a full-time hire.</p>
+        <p>We are your <strong>business in a box</strong> — a dedicated in-house team that handles the recurring operational work so you can focus on what you're passionate about and what you do best.</p>
+        <p>Since 2010, we've been helping California small businesses run more efficiently. Our team brings deep experience across bookkeeping, financial strategy, HR, and operations — all available to you on a flexible basis.</p>
+        <a href="#contact" class="btn btn--outline">Work With Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY GDC -->
+  <section class="why">
+    <div class="container">
+      <div class="why__grid">
+        <div class="why-item fade-in">
+          <div class="why-item__number">01</div>
+          <h3>Bay Area Based</h3>
+          <p>Rooted in the Bay Area since 2010, we understand the California small business landscape from the inside out.</p>
+        </div>
+        <div class="why-item fade-in">
+          <div class="why-item__number">02</div>
+          <h3>Fully Remote-Ready</h3>
+          <p>Our entire operation is built to support your business from anywhere — no commutes, no overhead, just results.</p>
+        </div>
+        <div class="why-item fade-in">
+          <div class="why-item__number">03</div>
+          <h3>Dedicated In-House Team</h3>
+          <p>You get a consistent, experienced team that learns your business — not a rotating cast of contractors.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="team" id="team">
+    <div class="container">
+      <div class="section-header fade-in">
+        <p class="section-eyebrow">The Team</p>
+        <h2 class="section-title">The people behind<br /><em>your back office.</em></h2>
+        <p class="section-intro">A diverse, experienced team across bookkeeping, financial strategy, HR, and operations.</p>
+      </div>
+      <div class="team__grid">
+
+        <div class="team-card fade-in">
+          <div class="team-card__photo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/1536167412555-TM2XCZHB9CWAIOBD0GZG/GDC_Headshot_Grace_3a.jpg" alt="Grace Dougan" />
+          </div>
+          <div class="team-card__info">
+            <span class="team-card__name">Grace Dougan</span>
+            <span class="team-card__role">Founder &amp; Principal</span>
+          </div>
+        </div>
+
+        <div class="team-card fade-in">
+          <div class="team-card__photo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/1534182583445-HRW0A3CG7PLJ5GHHN8TD/Blink-Corte-Madera-color-2016-11-28-23-14-45-240-1194833-full.jpg" alt="Zina" />
+          </div>
+          <div class="team-card__info">
+            <span class="team-card__name">Zina</span>
+          </div>
+        </div>
+
+        <div class="team-card fade-in">
+          <div class="team-card__photo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/1536164577022-XLESVN7YE6YMK8ATJODD/GDC_Headshot_Tim_Groppe3_crop.jpg" alt="Tim" />
+          </div>
+          <div class="team-card__info">
+            <span class="team-card__name">Tim</span>
+          </div>
+        </div>
+
+        <div class="team-card fade-in">
+          <div class="team-card__photo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/1583868362978-UN2NPTJDOJXUM4YLYMKT/GDC_Headshot_VerneePittman_986x649.jpg" alt="Vernee" />
+          </div>
+          <div class="team-card__info">
+            <span class="team-card__name">Vernee</span>
+          </div>
+        </div>
+
+        <div class="team-card fade-in">
+          <div class="team-card__photo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/1633122014385-WJSF9BJCA53ZH399FW0G/Amanda_Esquivel_web.jpg" alt="Amanda" />
+          </div>
+          <div class="team-card__info">
+            <span class="team-card__name">Amanda</span>
+          </div>
+        </div>
+
+        <div class="team-card fade-in">
+          <div class="team-card__photo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/1633119474609-DJ70OYY4NRQT474SRAZP/StephanieStallo_web.jpg" alt="Stephanie" />
+          </div>
+          <div class="team-card__info">
+            <span class="team-card__name">Stephanie</span>
+          </div>
+        </div>
+
+        <div class="team-card fade-in">
+          <div class="team-card__photo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/2dfe8969-843c-42a6-8249-770d9d92f813/andrew_web.jpg" alt="Andrew" />
+          </div>
+          <div class="team-card__info">
+            <span class="team-card__name">Andrew</span>
+          </div>
+        </div>
+
+        <div class="team-card fade-in">
+          <div class="team-card__photo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/35fa0b30-98d0-41d5-9e18-e756a73533a9/dami_web.jpg" alt="Dami" />
+          </div>
+          <div class="team-card__info">
+            <span class="team-card__name">Dami</span>
+          </div>
+        </div>
+
+        <div class="team-card fade-in">
+          <div class="team-card__photo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/5fc684ec-6bc4-4736-a9ba-ddf966728954/hakop_web.jpg" alt="Hakop" />
+          </div>
+          <div class="team-card__info">
+            <span class="team-card__name">Hakop</span>
+          </div>
+        </div>
+
+        <div class="team-card fade-in">
+          <div class="team-card__photo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/3fba565b-a6a1-4a86-a240-27c8629e15fb/maribelle_web.jpg" alt="Maribelle" />
+          </div>
+          <div class="team-card__info">
+            <span class="team-card__name">Maribelle</span>
+          </div>
+        </div>
+
+        <div class="team-card fade-in">
+          <div class="team-card__photo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/af36b494-a004-41fa-8b24-71eb46cee1ca/nadia_web.jpg" alt="Nadia" />
+          </div>
+          <div class="team-card__info">
+            <span class="team-card__name">Nadia</span>
+          </div>
+        </div>
+
+        <div class="team-card fade-in">
+          <div class="team-card__photo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/76527475-cbdb-478a-a888-81ad29219d95/candace_web3.jpg" alt="Candace" />
+          </div>
+          <div class="team-card__info">
+            <span class="team-card__name">Candace</span>
+          </div>
+        </div>
+
+        <div class="team-card fade-in">
+          <div class="team-card__photo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/83100831-5a38-453d-996e-5fb3ef780c38/jenny_web.jpg" alt="Jenny" />
+          </div>
+          <div class="team-card__info">
+            <span class="team-card__name">Jenny</span>
+          </div>
+        </div>
+
+        <div class="team-card fade-in">
+          <div class="team-card__photo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/2afd191a-b20b-400e-a526-9ca35d8a096f/Jeremy_Parker_web.jpg" alt="Jeremy" />
+          </div>
+          <div class="team-card__info">
+            <span class="team-card__name">Jeremy</span>
+          </div>
+        </div>
+
+        <div class="team-card fade-in">
+          <div class="team-card__photo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/5de26969-4d2c-4f8c-8581-a6dc44c978f5/Grant_McElhinnie_web.jpg" alt="Grant" />
+          </div>
+          <div class="team-card__info">
+            <span class="team-card__name">Grant</span>
+          </div>
+        </div>
+
+        <div class="team-card fade-in">
+          <div class="team-card__photo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/a5c4f3f8-6c35-4f62-b3a9-9a8d553c68e3/Steven_Kuzmenko_2.jpg" alt="Steven" />
+          </div>
+          <div class="team-card__info">
+            <span class="team-card__name">Steven</span>
+          </div>
+        </div>
+
+        <div class="team-card fade-in">
+          <div class="team-card__photo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/016e98c3-1abc-428a-9e63-bc78f658d3e3/Raquel_Warner_2024_web2.jpg" alt="Raquel" />
+          </div>
+          <div class="team-card__info">
+            <span class="team-card__name">Raquel</span>
+          </div>
+        </div>
+
+        <div class="team-card fade-in">
+          <div class="team-card__photo">
+            <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/12c34bb7-2ffe-4c15-9971-db4fff47653d/Lacey+Bartholomew_web.jpg" alt="Lacey Bartholomew" />
+          </div>
+          <div class="team-card__info">
+            <span class="team-card__name">Lacey Bartholomew</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="section-header fade-in">
+        <p class="section-eyebrow">Client Stories</p>
+        <h2 class="section-title"><em>"Finally, I can focus on<br />what I love."</em></h2>
+      </div>
+      <div class="testimonials__grid">
+        <div class="testimonial-card fade-in">
+          <div class="testimonial-card__mark">&ldquo;</div>
+          <p class="testimonial-card__quote">Grace and her team took over our bookkeeping and office management completely. It felt like gaining a co-founder I never had — someone who actually handles the chaos.</p>
+          <div class="testimonial-card__author">
+            <span class="author-name">Small Business Owner</span>
+            <span class="author-location">San Francisco, CA</span>
+          </div>
+        </div>
+        <div class="testimonial-card fade-in">
+          <div class="testimonial-card__mark">&ldquo;</div>
+          <p class="testimonial-card__quote">The QuickBooks migration was seamless. Zero disruption, everything transferred correctly, and the training made sure we were confident from day one.</p>
+          <div class="testimonial-card__author">
+            <span class="author-name">Founder &amp; CEO</span>
+            <span class="author-location">Marin County, CA</span>
+          </div>
+        </div>
+        <div class="testimonial-card fade-in">
+          <div class="testimonial-card__mark">&ldquo;</div>
+          <p class="testimonial-card__quote">Having fractional CFO services without the full-time cost has been a game changer. Our forecasting and board reporting are now something I'm proud of.</p>
+          <div class="testimonial-card__author">
+            <span class="author-name">Business Owner</span>
+            <span class="author-location">East Bay, CA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="cta-banner">
+    <div class="cta-banner__bg">
+      <img
+        src="img/golden-gate.jpg"
+        alt=""
+        aria-hidden="true"
+        class="cta-banner__bg-img"
+      />
+    </div>
+    <div class="container cta-banner__inner fade-in">
+      <h2 class="cta-banner__headline">Ready to simplify<br /><em>your operations?</em></h2>
+      <p class="cta-banner__sub">Let's find the right level of support for your business.</p>
+      <a href="#contact" class="btn btn--white">Schedule a Call</a>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="container contact__inner">
+      <div class="contact__text fade-in">
+        <p class="section-eyebrow">Get in Touch</p>
+        <h2 class="section-title">Let's talk about<br /><em>your business.</em></h2>
+        <p class="contact__subtext">Call us, email us, or fill out the form — we'll get back to you within one business day.</p>
+        <ul class="contact__details">
+          <li>
+            <span class="contact__label">Phone</span>
+            <a href="tel:4158279648">415-827-9648</a>
+          </li>
+          <li>
+            <span class="contact__label">Email</span>
+            <a href="mailto:contact@gracedouganconsulting.com">contact@gracedouganconsulting.com</a>
+          </li>
+          <li>
+            <span class="contact__label">Location</span>
+            <span>Bay Area, California</span>
+          </li>
+        </ul>
+        <div class="contact__wavy">
+          <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/1534962104072-Y45RFHP37FY9YR2KBMPZ/GDC_WavyLines_Light.png" alt="" aria-hidden="true" />
+        </div>
+      </div>
+      <form class="contact__form fade-in" onsubmit="return false;">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" placeholder="Jane Smith" />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="jane@yourbusiness.com" />
+        </div>
+        <div class="form-group">
+          <label for="service">Service Interest</label>
+          <select id="service">
+            <option value="">Select a service…</option>
+            <option>Business Strategy</option>
+            <option>Remote Bookkeeping</option>
+            <option>Remote Office Management</option>
+            <option>QuickBooks Migration</option>
+            <option>Fractional CFO</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" rows="4" placeholder="Tell us a bit about your business and what you need…"></textarea>
+        </div>
+        <button type="submit" class="btn btn--dark btn--full">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- LOCATIONS -->
+  <section class="locations" id="locations">
+    <div class="container">
+      <div class="section-header fade-in">
+        <p class="section-eyebrow">Locations</p>
+        <h2 class="section-title">Serving businesses<br /><em>across the country.</em></h2>
+        <p class="section-intro">From the Bay Area to the East Coast, our remote team supports clients in every time zone — no commute required.</p>
+      </div>
+      <div class="locations__map fade-in">
+        <div id="map"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span class="footer__logo">Grace Dougan <em>Consulting</em></span>
+        <p>Your business in a box.</p>
+      </div>
+      <nav class="footer__nav">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#team">Team</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="footer__contact">
+        <a href="tel:4158279648">415-827-9648</a>
+        <a href="mailto:contact@gracedouganconsulting.com">contact@gracedouganconsulting.com</a>
+      </div>
+      <p class="footer__copy">© 2026 Grace Dougan Consulting · Bay Area, CA</p>
+    </div>
+  </footer>
+
+  <script defer src="js/main.js"></script>
+</body>
+</html>
