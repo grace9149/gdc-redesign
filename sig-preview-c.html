@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signature Preview — Design C Mark</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    body { background: #f0ede8; font-family: Arial, sans-serif; padding: 60px 40px; margin: 0; }
+    .page { max-width: 680px; margin: 0 auto; }
+    .label { font-family: 'Montserrat', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #B8975A; margin-bottom: 12px; }
+    .note { font-family: 'Montserrat', sans-serif; font-size: 10px; color: #aaa; margin-top: 12px; }
+
+    /* ── Design C mark: double frame + corner dots ── */
+    .mark-c {
+      display: inline-block;
+      width: 52px;
+      height: 52px;
+      position: relative;
+      flex-shrink: 0;
+    }
+    /* Outer border */
+    .mark-c__outer {
+      position: absolute;
+      inset: 0;
+      border: 1.5px solid #B8975A;
+    }
+    /* Inner border */
+    .mark-c__inner {
+      position: absolute;
+      inset: 6px;
+      border: 0.7px solid rgba(184,151,90,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Corner dots */
+    .mark-c__dot {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #B8975A;
+      border-radius: 50%;
+    }
+    .mark-c__dot--tl { top:  -2px; left:  -2px; }
+    .mark-c__dot--tr { top:  -2px; right: -2px; }
+    .mark-c__dot--bl { bottom: -2px; left:  -2px; }
+    .mark-c__dot--br { bottom: -2px; right: -2px; }
+    /* GDC text */
+    .mark-c__text {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: #B8975A;
+      letter-spacing: 2.5px;
+      padding-left: 2.5px;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <p class="label">Grace Dougan — Signature with Design C Mark</p>
+
+  <!-- THE SIGNATURE (table-based, Gmail-safe) -->
+  <table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#444444;max-width:520px;width:100%;">
+
+    <!-- Gold top rule -->
+    <tr><td style="padding:0 0 16px 0;">
+      <table cellpadding="0" cellspacing="0" border="0" style="width:100%;"><tr><td style="height:2px;background-color:#B8975A;padding:0;"></td></tr></table>
+    </td></tr>
+
+    <!-- Mark + details row -->
+    <tr><td>
+      <table cellpadding="0" cellspacing="0" border="0"><tr>
+
+        <!-- Design C Mark -->
+        <td style="vertical-align:top;padding-right:18px;">
+          <table cellpadding="0" cellspacing="0" border="0" style="width:52px;height:52px;position:relative;">
+            <tr>
+              <td style="width:52px;height:52px;border:1.5px solid #B8975A;padding:0;position:relative;">
+                <!-- Corner dots via tiny absolutely-placed tables aren't possible in Gmail,
+                     so we use a 2×2 inner table trick -->
+                <table cellpadding="0" cellspacing="0" border="0" style="width:100%;height:100%;">
+                  <tr>
+                    <td style="width:4px;height:4px;background:#B8975A;font-size:0;line-height:0;"></td>
+                    <td style="background:transparent;font-size:0;"></td>
+                    <td style="width:4px;height:4px;background:#B8975A;font-size:0;line-height:0;"></td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:0;"></td>
+                    <td style="border:0.7px solid rgba(184,151,90,0.5);text-align:center;vertical-align:middle;padding:0;">
+                      <span style="font-family:Georgia,'Times New Roman',serif;font-size:11px;font-weight:400;color:#B8975A;letter-spacing:2.5px;padding-left:2.5px;">GDC</span>
+                    </td>
+                    <td style="font-size:0;"></td>
+                  </tr>
+                  <tr>
+                    <td style="width:4px;height:4px;background:#B8975A;font-size:0;line-height:0;"></td>
+                    <td style="font-size:0;"></td>
+                    <td style="width:4px;height:4px;background:#B8975A;font-size:0;line-height:0;"></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+
+        <!-- Name + details -->
+        <td style="vertical-align:top;">
+          <div style="font-family:Georgia,'Times New Roman',serif;font-size:20px;font-weight:normal;color:#111111;line-height:1.1;margin-bottom:2px;">Grace Dougan</div>
+          <div style="font-family:Georgia,'Times New Roman',serif;font-size:13px;font-style:italic;color:#111111;margin-bottom:10px;">Founder &amp; Principal</div>
+          <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;"><tr><td style="width:28px;height:1px;background-color:#B8975A;font-size:0;line-height:0;">&nbsp;</td></tr></table>
+          <div style="font-family:Georgia,'Times New Roman',serif;font-size:12px;letter-spacing:0.04em;color:#B8975A;margin-bottom:8px;">GRACE DOUGAN <span style="font-style:italic;">Consulting</span></div>
+          <table cellpadding="0" cellspacing="0" border="0">
+            <tr><td style="padding-bottom:3px;"><span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#666666;">P:&nbsp;<a href="tel:4158279648" style="color:#666666;text-decoration:none;">415.827.9648</a></span></td></tr>
+            <tr><td style="padding-bottom:3px;"><span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#666666;">E:&nbsp;<a href="mailto:grace@gracedouganconsulting.com" style="color:#B8975A;text-decoration:none;">grace@gracedouganconsulting.com</a></span></td></tr>
+            <tr><td><span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#666666;">W:&nbsp;<a href="https://www.gracedouganconsulting.com" style="color:#B8975A;text-decoration:none;">gracedouganconsulting.com</a></span></td></tr>
+          </table>
+        </td>
+
+      </tr></table>
+    </td></tr>
+
+    <!-- Tagline -->
+    <tr><td style="padding-top:14px;">
+      <div style="font-family:Georgia,'Times New Roman',serif;font-size:11px;font-style:italic;color:#999999;letter-spacing:0.02em;">Your business in a box. &mdash; Bay Area Back-Office Consulting since 2010.</div>
+    </td></tr>
+
+    <!-- Bottom rule -->
+    <tr><td style="padding-top:14px;">
+      <table cellpadding="0" cellspacing="0" border="0" style="width:100%;"><tr><td style="height:1px;background-color:#E8E4DE;padding:0;"></td></tr></table>
+    </td></tr>
+
+  </table>
+
+  <p class="note">Select the block above → ⌘C → paste into <strong>Gmail Settings → Signature</strong></p>
+</div>
+</body>
+</html>
