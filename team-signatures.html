@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team Email Signatures — Grace Dougan Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    body { background:#f0ede8; font-family:Arial,sans-serif; padding:40px 20px; margin:0; }
+    .page-header { max-width:600px; margin:0 auto 48px; text-align:center; }
+    .page-header h1 { font-family:'Cormorant Garamond',Georgia,serif; font-size:32px; font-weight:400; color:#111; margin-bottom:8px; }
+    .page-header p { font-family:'Montserrat',sans-serif; font-size:11px; color:#888; line-height:1.7; }
+    .sig-wrapper { max-width:580px; margin:0 auto 56px; }
+    .sig-label { font-family:'Montserrat',sans-serif; font-size:9px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:#B8975A; margin-bottom:12px; }
+    .sig-copy-note { font-family:'Montserrat',sans-serif; font-size:10px; color:#aaa; margin-top:10px; }
+  </style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Team Email Signatures</h1>
+  <p>To use: select the signature block, copy (⌘C), then paste into<br /><strong>Gmail → Settings → Signature</strong> or <strong>Apple Mail → Preferences → Signatures</strong>.</p>
+</div>
+
+<script>
+// Gmail-safe mark: outer solid border, inner dashed border, centered GDC text
+const MARK = `<table cellpadding="0" cellspacing="0" border="0" style="border:2px solid #B8975A;background:#ffffff;width:52px;height:52px;"><tr><td style="padding:4px;"><table cellpadding="0" cellspacing="0" border="0" style="border:1px dashed #B8975A;width:100%;height:40px;"><tr><td style="text-align:center;vertical-align:middle;font-family:Georgia,'Times New Roman',serif;font-size:10px;letter-spacing:3px;color:#B8975A;padding-left:3px;">GDC</td></tr></table></td></tr></table>`;
+
+const TAGLINE = `Your business in a box. &mdash; Bay Area Back-Office Consulting since 2010.`;
+
+const team = [
+  // Sorted alphabetically by last name
+  { name:"Lacey Bartholomew",                                  phone:"916.837.4556", tel:"9168374556", email:"laceyb@gracedouganconsulting.com" },
+  { name:"Dami Bello",                                         phone:"415.302.3686", tel:"4153023686", email:"damib@gracedouganconsulting.com" },
+  { name:"Carol Bettis",                                       phone:"707.815.5128", tel:"7078155128", email:"carol@gracedouganconsulting.com" },
+  { name:"Hakop Chalikyan",                                    phone:"818.808.6446", tel:"8188086446", email:"hakop@gracedouganconsulting.com" },
+  { name:"Grace Dougan",     title:"Founder &amp; Principal", phone:"415.827.9648", tel:"4158279648", email:"grace@gracedouganconsulting.com" },
+  { name:"Amanda Esquivel",                                    phone:"408.607.5644", tel:"4086075644", email:"aesquivel@gracedouganconsulting.com" },
+  { name:"Ryun Girmindl",                                      phone:"518.894.9827", tel:"5188949827", email:"ryun@gracedouganconsulting.com" },
+  { name:"Melissa Green",                                      phone:"505.507.5475", tel:"5055075475", email:"melissag@gracedouganconsulting.com" },
+  { name:"Timothy Groppe",                                     phone:"916.396.4158", tel:"9163964158", email:"tim@gracedouganconsulting.com" },
+  { name:"Charity King",                                       phone:"404.426.1816", tel:"4044261816", email:"charityk@gracedouganconsulting.com" },
+  { name:"Zina Kumar",                                         phone:"336.804.2412", tel:"3368042412", email:"zina@gracedouganconsulting.com" },
+  { name:"Steven Kuzmenko",                                    phone:"208.420.3236", tel:"2084203236", email:"stevenk@gracedouganconsulting.com" },
+  { name:"William Larson",                                     phone:"262.215.8733", tel:"2622158733", email:"williaml@gracedouganconsulting.com" },
+  { name:"Holly Mader",                                        phone:"815.861.4352", tel:"8158614352", email:"holly@gracedouganconsulting.com" },
+  { name:"Jenny Mann",                                         phone:"513.549.3766", tel:"5135493766", email:"jenniferm@gracedouganconsulting.com" },
+  { name:"Grant McElhinnie",                                   phone:"209.817.5287", tel:"2098175287", email:"grantm@gracedouganconsulting.com" },
+  { name:"Andrew B. Miller",                                   phone:"209.616.9895", tel:"2096169895", email:"andrewm@gracedouganconsulting.com" },
+  { name:"Nadia Munoz",                                        phone:"256.458.2689", tel:"2564582689", email:"nadiam@gracedouganconsulting.com" },
+  { name:"Erika Munson",                                       phone:"909.754.0478", tel:"9097540478", email:"erikam@gracedouganconsulting.com" },
+  { name:"Samia Oros",                                         phone:"707.758.3513", tel:"7077583513", email:"samiao@gracedouganconsulting.com" },
+  { name:"Jeremy Parker",                                      phone:"520.473.6092", tel:"5204736092", email:"jeremyp@gracedouganconsulting.com" },
+  { name:"Verne\u00e9 Pittman",                               phone:"415.827.9648", tel:"4158279648", email:"vernee@gracedouganconsulting.com" },
+  { name:"Erica Raymond",                                      phone:"517.256.5544", tel:"5172565544", email:"erica@gracedouganconsulting.com" },
+  { name:"Stefanie Rohr",                                      phone:"740.497.3636", tel:"7404973636", email:"stefanier@gracedouganconsulting.com" },
+  { name:"Maribelle Sanchez",                                  phone:"",             tel:"",           email:"maribelles@gracedouganconsulting.com" },
+  { name:"Heather Spriggs",                                    phone:"302.233.8379", tel:"3022338379", email:"heathers@gracedouganconsulting.com" },
+  { name:"Stephanie Stallo",                                   phone:"415.827.9648", tel:"4158279648", email:"sstallo@gracedouganconsulting.com" },
+  { name:"Katy Tant",                                          phone:"706.436.8790", tel:"7064368790", email:"katyt@gracedouganconsulting.com" },
+  { name:"Levi Tapia",                                         phone:"520.473.6092", tel:"5204736092", email:"levit@gracedouganconsulting.com" },
+  { name:"Candace Trammell",                                   phone:"203.558.9417", tel:"2035589417", email:"candacet@gracedouganconsulting.com" },
+  { name:"Raquel Warner",                                      phone:"608.618.5949", tel:"6086185949", email:"raquelw@gracedouganconsulting.com" },
+];
+
+team.forEach((p, i) => {
+  const phoneRow = p.phone
+    ? `<tr><td style="padding-bottom:3px;"><span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#666666;">P:&nbsp;<a href="tel:${p.tel}" style="color:#666666;text-decoration:none;">${p.phone}</a></span></td></tr>`
+    : '';
+  const titleRow = p.title
+    ? `<div style="font-family:Georgia,'Times New Roman',serif;font-size:13px;font-style:italic;color:#111111;margin-bottom:10px;">${p.title}</div>`
+    : '';
+  const nameMb = p.title ? '2px' : '12px';
+
+  document.write(`
+  <div class="sig-wrapper">
+    <p class="sig-label">${i+1} &mdash; ${p.name}</p>
+    <table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#444444;max-width:520px;width:100%;">
+      <tr><td style="padding:0 0 16px 0;">
+        <table cellpadding="0" cellspacing="0" border="0" style="width:100%;"><tr><td style="height:2px;background-color:#B8975A;padding:0;"></td></tr></table>
+      </td></tr>
+      <tr><td>
+        <table cellpadding="0" cellspacing="0" border="0"><tr>
+          <td style="vertical-align:top;padding-right:16px;">${MARK}</td>
+          <td style="vertical-align:top;">
+            <div style="font-family:Georgia,'Times New Roman',serif;font-size:20px;font-weight:normal;color:#111111;line-height:1.1;margin-bottom:${nameMb};">${p.name}</div>
+            ${titleRow}
+            <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;"><tr><td style="width:28px;height:1px;background-color:#B8975A;font-size:0;line-height:0;">&nbsp;</td></tr></table>
+            <div style="font-family:Georgia,'Times New Roman',serif;font-size:12px;letter-spacing:0.04em;color:#B8975A;margin-bottom:8px;">GRACE DOUGAN <span style="font-style:italic;">Consulting</span></div>
+            <table cellpadding="0" cellspacing="0" border="0">
+              ${phoneRow}
+              <tr><td style="padding-bottom:3px;"><span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#666666;">E:&nbsp;<a href="mailto:${p.email}" style="color:#B8975A;text-decoration:none;">${p.email}</a></span></td></tr>
+              <tr><td><span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#666666;">W:&nbsp;<a href="https://www.gracedouganconsulting.com" style="color:#B8975A;text-decoration:none;">gracedouganconsulting.com</a></span></td></tr>
+            </table>
+          </td>
+        </tr></table>
+      </td></tr>
+      <tr><td style="padding-top:14px;">
+        <div style="font-family:Georgia,'Times New Roman',serif;font-size:11px;font-style:italic;color:#999999;letter-spacing:0.02em;">${TAGLINE}</div>
+      </td></tr>
+      <tr><td style="padding-top:14px;">
+        <table cellpadding="0" cellspacing="0" border="0" style="width:100%;"><tr><td style="height:1px;background-color:#E8E4DE;padding:0;"></td></tr></table>
+      </td></tr>
+    </table>
+    <p class="sig-copy-note">Select the block above &rarr; &#8984;C &rarr; paste into email client</p>
+  </div>`);
+});
+</script>
+
+</body>
+</html>
