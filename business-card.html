@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Business Card — Grace Dougan Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #B8975A;
+      --gold-light: #D4AF72;
+      --gold-pale: #E8D5A8;
+      --dark: #111111;
+      --dark2: #1a1a1a;
+      --cream: #FAF8F4;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Montserrat', Arial, sans-serif;
+
+      /* Square card: 2.5" × 2.5" at 96dpi = 240px, scaled 3× for screen */
+      --card-size: 720px;
+    }
+
+    body {
+      background: #2a2a2a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+      padding: 60px 40px;
+      font-family: var(--font-sans);
+    }
+
+    .label {
+      color: #888;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .card-wrap { display: flex; flex-direction: column; align-items: center; }
+
+    /* ── Card base ── */
+    .card {
+      width: var(--card-size);
+      height: var(--card-size);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ══════════════════════════════════
+       FRONT — Dark side
+    ══════════════════════════════════ */
+    .card--front {
+      background: var(--dark);
+    }
+
+    /* Subtle corner grain texture via radial gradient */
+    .card--front::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(184,151,90,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(184,151,90,0.04) 0%, transparent 50%);
+    }
+
+    /* Outer gold border inset */
+    .card--front::after {
+      content: '';
+      position: absolute;
+      inset: 22px;
+      border: 1px solid rgba(184,151,90,0.25);
+      pointer-events: none;
+    }
+
+    .front__inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+    }
+
+    /* Large GDC mark */
+    .front__mark {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin-bottom: 36px;
+    }
+
+    /* Outer solid rect */
+    .front__mark-outer {
+      position: absolute;
+      inset: 0;
+      border: 2.5px solid var(--gold);
+    }
+
+    /* Inner dashed rect */
+    .front__mark-inner {
+      position: absolute;
+      inset: 14px;
+      border: 1px dashed rgba(184,151,90,0.7);
+    }
+
+    /* Corner accents */
+    .front__mark-corner {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-color: var(--gold-light);
+      border-style: solid;
+    }
+    .front__mark-corner--tl { top: -1px;  left: -1px;  border-width: 2px 0 0 2px; }
+    .front__mark-corner--tr { top: -1px;  right: -1px; border-width: 2px 2px 0 0; }
+    .front__mark-corner--bl { bottom: -1px; left: -1px;  border-width: 0 0 2px 2px; }
+    .front__mark-corner--br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+    .front__monogram {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .front__letters {
+      font-family: var(--font-serif);
+      font-size: 88px;
+      font-weight: 300;
+      color: var(--gold);
+      letter-spacing: 18px;
+      line-height: 1;
+      padding-left: 18px; /* offset for letter-spacing */
+    }
+
+    .front__divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      margin: 8px 0;
+    }
+
+    .front__sub {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      color: rgba(184,151,90,0.65);
+      text-transform: uppercase;
+    }
+
+    /* Name block below mark */
+    .front__name {
+      text-align: center;
+    }
+
+    .front__name-text {
+      font-family: var(--font-serif);
+      font-size: 32px;
+      font-weight: 300;
+      color: #fff;
+      letter-spacing: 0.08em;
+      line-height: 1;
+    }
+
+    .front__title {
+      font-family: var(--font-serif);
+      font-size: 14px;
+      font-style: italic;
+      font-weight: 300;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.06em;
+      margin-top: 6px;
+    }
+
+    /* Bottom wordmark */
+    .front__wordmark {
+      position: absolute;
+      bottom: 38px;
+      left: 0; right: 0;
+      text-align: center;
+      font-family: var(--font-sans);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(184,151,90,0.4);
+    }
+
+    /* ══════════════════════════════════
+       BACK — Light side
+    ══════════════════════════════════ */
+    .card--back {
+      background: var(--cream);
+    }
+
+    .card--back::after {
+      content: '';
+      position: absolute;
+      inset: 22px;
+      border: 1px solid rgba(184,151,90,0.2);
+      pointer-events: none;
+    }
+
+    .back__inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 56px;
+    }
+
+    /* Small mark top */
+    .back__mark {
+      width: 64px;
+      height: 64px;
+      position: relative;
+      margin-bottom: 28px;
+      flex-shrink: 0;
+    }
+    .back__mark-outer { position:absolute; inset:0; border:1.5px solid var(--gold); }
+    .back__mark-inner { position:absolute; inset:6px; border:0.8px dashed rgba(184,151,90,0.6); display:flex; align-items:center; justify-content:center; }
+    .back__mark-letters {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--gold);
+      letter-spacing: 3px;
+      padding-left: 3px;
+    }
+
+    /* Gold rule */
+    .back__rule {
+      width: 40px;
+      height: 1.5px;
+      background: var(--gold);
+      margin-bottom: 24px;
+      flex-shrink: 0;
+    }
+
+    /* Name */
+    .back__name {
+      font-family: var(--font-serif);
+      font-size: 36px;
+      font-weight: 400;
+      color: var(--dark);
+      letter-spacing: 0.02em;
+      text-align: center;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .back__title {
+      font-family: var(--font-serif);
+      font-size: 14px;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    /* Thin divider */
+    .back__divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(184,151,90,0.2);
+      margin-bottom: 24px;
+      flex-shrink: 0;
+    }
+
+    /* Contact */
+    .back__contact {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+      width: 100%;
+    }
+
+    .back__contact-line {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 400;
+      color: #666;
+      letter-spacing: 0.06em;
+      text-align: center;
+    }
+
+    .back__contact-line span {
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    /* Print button */
+    .print-btn {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: var(--gold);
+      color: #fff;
+      border: none;
+      padding: 12px 28px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .print-btn:hover { background: #fff; color: var(--dark); }
+
+    .print-note {
+      color: #666;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    @media print {
+      body { background: white; padding: 0; gap: 0; }
+      .label, .print-btn, .print-note { display: none; }
+      .card { box-shadow: none; }
+      .card--front { page-break-after: always; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FRONT -->
+  <div class="card-wrap">
+    <p class="label">Front — Dark</p>
+    <div class="card card--front">
+
+      <div class="front__inner">
+
+        <!-- Large GDC monogram mark -->
+        <div class="front__mark">
+          <div class="front__mark-outer"></div>
+          <div class="front__mark-inner"></div>
+          <div class="front__mark-corner front__mark-corner--tl"></div>
+          <div class="front__mark-corner front__mark-corner--tr"></div>
+          <div class="front__mark-corner front__mark-corner--bl"></div>
+          <div class="front__mark-corner front__mark-corner--br"></div>
+          <div class="front__monogram">
+            <div class="front__letters">GDC</div>
+            <div class="front__divider"></div>
+            <div class="front__sub">Est. 2010</div>
+          </div>
+        </div>
+
+        <!-- Name -->
+        <div class="front__name">
+          <div class="front__name-text">Grace Dougan</div>
+          <div class="front__title">Founder &amp; Principal</div>
+        </div>
+
+      </div>
+
+      <!-- Bottom wordmark -->
+      <div class="front__wordmark">Grace Dougan Consulting</div>
+
+    </div>
+  </div>
+
+  <!-- BACK -->
+  <div class="card-wrap">
+    <p class="label">Back — Light</p>
+    <div class="card card--back">
+      <div class="back__inner">
+
+        <!-- Small mark -->
+        <div class="back__mark">
+          <div class="back__mark-outer"></div>
+          <div class="back__mark-inner">
+            <span class="back__mark-letters">GDC</span>
+          </div>
+        </div>
+
+        <div class="back__rule"></div>
+
+        <div class="back__name">Grace Dougan</div>
+        <div class="back__title">Founder &amp; Principal</div>
+
+        <div class="back__divider"></div>
+
+        <div class="back__contact">
+          <div class="back__contact-line"><span>P</span>&nbsp;&nbsp;415.827.9648</div>
+          <div class="back__contact-line"><span>E</span>&nbsp;&nbsp;grace@gracedouganconsulting.com</div>
+          <div class="back__contact-line"><span>W</span>&nbsp;&nbsp;gracedouganconsulting.com</div>
+          <div class="back__contact-line" style="margin-top:4px; color:#aaa; font-size:10px; letter-spacing:0.12em;">Bay Area, California</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;">
+    <button class="print-btn" onclick="window.print()">Save as PDF / Print</button>
+    <p class="print-note">Square 2.5″ × 2.5″ · Print at 100% scale · No scaling</p>
+  </div>
+
+</body>
+</html>
