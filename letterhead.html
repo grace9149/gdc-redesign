@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Letterhead — Grace Dougan Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #B8975A;
+      --gold-light: #D4AF72;
+      --dark: #111111;
+      --mid: #444444;
+      --light: #888888;
+      --border: #E8E4DE;
+      --cream: #FAF8F4;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Montserrat', Arial, sans-serif;
+    }
+
+    body {
+      background: #e8e4de;
+      padding: 40px 20px 60px;
+      font-family: var(--font-sans);
+    }
+
+    /* ── Toolbar ── */
+    .toolbar {
+      max-width: 816px;
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .toolbar__title {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #999;
+    }
+    .toolbar__actions { display: flex; gap: 10px; }
+    .toolbar__btn {
+      font-family: var(--font-sans);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: var(--gold);
+      color: #fff;
+      border: none;
+      padding: 9px 20px;
+      cursor: pointer;
+    }
+    .toolbar__btn:hover { background: var(--dark); }
+    .toolbar__btn--outline {
+      background: transparent;
+      border: 1px solid #aaa;
+      color: #aaa;
+    }
+    .toolbar__btn--outline:hover { border-color: var(--gold); color: var(--gold); background: transparent; }
+
+    /* ── Page ── */
+    .page {
+      width: 816px; /* 8.5in at 96dpi */
+      min-height: 1056px; /* 11in */
+      margin: 0 auto;
+      background: #ffffff;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* ════════════════════════════════
+       HEADER
+    ════════════════════════════════ */
+    .lh-header {
+      padding: 40px 64px 0;
+    }
+
+    .lh-header__top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding-bottom: 24px;
+    }
+
+    /* Brand side */
+    .lh-brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* GDC mark */
+    .lh-mark {
+      width: 56px;
+      height: 56px;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .lh-mark__outer {
+      position: absolute;
+      inset: 0;
+      border: 1.5px solid var(--gold);
+    }
+    .lh-mark__inner {
+      position: absolute;
+      inset: 7px;
+      border: 0.7px solid rgba(184,151,90,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .lh-mark__dot {
+      position: absolute;
+      width: 4px; height: 4px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+    .lh-mark__dot--tl { top: -2px; left: -2px; }
+    .lh-mark__dot--tr { top: -2px; right: -2px; }
+    .lh-mark__dot--bl { bottom: -2px; left: -2px; }
+    .lh-mark__dot--br { bottom: -2px; right: -2px; }
+    .lh-mark__text {
+      font-family: var(--font-serif);
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--gold);
+      letter-spacing: 3px;
+      padding-left: 3px;
+    }
+
+    .lh-brand__name {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .lh-brand__name-text {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 400;
+      color: var(--dark);
+      letter-spacing: 0.02em;
+      line-height: 1;
+    }
+    .lh-brand__name-text em {
+      font-style: italic;
+      font-weight: 300;
+    }
+    .lh-brand__tagline {
+      font-size: 7.5px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* Contact side */
+    .lh-contact {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding-top: 4px;
+    }
+    .lh-contact__line {
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--light);
+      line-height: 1.6;
+    }
+    .lh-contact__line a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    /* Gold rule */
+    .lh-rule {
+      height: 1.5px;
+      background: linear-gradient(to right, var(--gold) 60%, transparent);
+      margin: 0 64px;
+    }
+
+    /* Gold accent bar at very top */
+    .lh-topbar {
+      height: 4px;
+      background: var(--gold);
+      width: 100%;
+    }
+
+    /* ════════════════════════════════
+       BODY AREA
+    ════════════════════════════════ */
+    .lh-body {
+      flex: 1;
+      padding: 44px 64px 40px;
+    }
+
+    /* Date + recipient block */
+    .lh-meta {
+      margin-bottom: 36px;
+    }
+    .lh-meta__date {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--light);
+      margin-bottom: 20px;
+    }
+    .lh-meta__to {
+      font-family: var(--font-serif);
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--dark);
+      line-height: 1.7;
+    }
+
+    /* Salutation */
+    .lh-salutation {
+      font-family: var(--font-serif);
+      font-size: 15px;
+      color: var(--dark);
+      margin-bottom: 20px;
+    }
+
+    /* Body copy */
+    .lh-copy {
+      font-family: var(--font-serif);
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--mid);
+      line-height: 1.85;
+    }
+    .lh-copy p { margin-bottom: 18px; }
+    .lh-copy p:last-child { margin-bottom: 0; }
+
+    /* Closing */
+    .lh-closing {
+      margin-top: 40px;
+    }
+    .lh-closing__line {
+      font-family: var(--font-serif);
+      font-size: 15px;
+      color: var(--dark);
+      margin-bottom: 52px;
+    }
+    .lh-closing__name {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--dark);
+      margin-bottom: 3px;
+    }
+    .lh-closing__title {
+      font-family: var(--font-serif);
+      font-size: 12px;
+      font-style: italic;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+    }
+
+    /* ════════════════════════════════
+       FOOTER
+    ════════════════════════════════ */
+    .lh-footer {
+      margin-top: auto;
+      padding: 0 64px 0;
+    }
+
+    .lh-footer__rule {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 16px;
+    }
+
+    .lh-footer__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 28px;
+    }
+
+    .lh-footer__brand {
+      font-family: var(--font-serif);
+      font-size: 12px;
+      color: var(--light);
+    }
+    .lh-footer__brand em { font-style: italic; }
+
+    .lh-footer__info {
+      font-size: 8px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: #bbb;
+      text-align: right;
+      line-height: 1.8;
+    }
+
+    /* Bottom gold bar */
+    .lh-bottombar {
+      height: 3px;
+      background: linear-gradient(to right, transparent, var(--gold) 40%, var(--gold) 60%, transparent);
+    }
+
+    /* ════════════════════════════════
+       BLANK VERSION (no sample text)
+    ════════════════════════════════ */
+    .page--blank .lh-meta,
+    .page--blank .lh-salutation,
+    .page--blank .lh-copy,
+    .page--blank .lh-closing { display: none; }
+
+    .page--blank .lh-body {
+      min-height: 600px;
+    }
+
+    /* ════════════════════════════════
+       PRINT
+    ════════════════════════════════ */
+    @media print {
+      body { background: none; padding: 0; }
+      .toolbar { display: none; }
+      .page { box-shadow: none; min-height: 0; }
+      .page + .page { page-break-before: always; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="toolbar no-print">
+    <span class="toolbar__title">Grace Dougan Consulting — Letterhead</span>
+    <div class="toolbar__actions">
+      <button class="toolbar__btn toolbar__btn--outline" onclick="toggleBlank()">Toggle Blank / Sample</button>
+      <button class="toolbar__btn" onclick="window.print()">Save as PDF</button>
+    </div>
+  </div>
+
+  <!-- ════ PAGE 1: SAMPLE LETTER ════ -->
+  <div class="page" id="letterPage">
+
+    <div class="lh-topbar"></div>
+
+    <div class="lh-header">
+      <div class="lh-header__top">
+
+        <!-- Brand -->
+        <div class="lh-brand">
+          <div class="lh-mark">
+            <div class="lh-mark__outer"></div>
+            <div class="lh-mark__dot lh-mark__dot--tl"></div>
+            <div class="lh-mark__dot lh-mark__dot--tr"></div>
+            <div class="lh-mark__dot lh-mark__dot--bl"></div>
+            <div class="lh-mark__dot lh-mark__dot--br"></div>
+            <div class="lh-mark__inner">
+              <span class="lh-mark__text">GDC</span>
+            </div>
+          </div>
+          <div class="lh-brand__name">
+            <div class="lh-brand__name-text">Grace Dougan<em> Consulting</em></div>
+            <div class="lh-brand__tagline">Bay Area · Back-Office Consulting Since 2010</div>
+          </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="lh-contact">
+          <div class="lh-contact__line">P: 415.827.9648</div>
+          <div class="lh-contact__line"><a href="mailto:grace@gracedouganconsulting.com">grace@gracedouganconsulting.com</a></div>
+          <div class="lh-contact__line"><a href="https://www.gracedouganconsulting.com">gracedouganconsulting.com</a></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="lh-rule"></div>
+
+    <!-- Body -->
+    <div class="lh-body">
+
+      <!-- Date + recipient -->
+      <div class="lh-meta">
+        <div class="lh-meta__date">April 11, 2026</div>
+        <div class="lh-meta__to">
+          Client Name<br />
+          Company Name<br />
+          City, State ZIP
+        </div>
+      </div>
+
+      <!-- Salutation -->
+      <div class="lh-salutation">Dear Client Name,</div>
+
+      <!-- Sample body -->
+      <div class="lh-copy">
+        <p>Thank you for taking the time to connect with us. At Grace Dougan Consulting, we specialize in providing comprehensive back-office support — including bookkeeping, payroll, HR administration, and operations management — so that you can focus on growing your business with confidence.</p>
+        <p>We understand that every business has unique needs. Our team works closely with each client to provide tailored solutions that are reliable, efficient, and built to scale alongside your organization. Whether you need part-time support or a fully managed back office, we are here to help.</p>
+        <p>Please do not hesitate to reach out if you have any questions or would like to schedule a call to discuss how we can support your business. We look forward to the opportunity to work together.</p>
+      </div>
+
+      <!-- Closing -->
+      <div class="lh-closing">
+        <div class="lh-closing__line">Warm regards,</div>
+        <div class="lh-closing__name">Grace Dougan</div>
+        <div class="lh-closing__title">Founder &amp; Principal, Grace Dougan Consulting</div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="lh-footer">
+      <div class="lh-footer__rule"></div>
+      <div class="lh-footer__inner">
+        <div class="lh-footer__brand">Grace Dougan<em> Consulting</em></div>
+        <div class="lh-footer__info">
+          415.827.9648 &nbsp;·&nbsp; grace@gracedouganconsulting.com &nbsp;·&nbsp; gracedouganconsulting.com<br />
+          Bay Area, California &nbsp;·&nbsp; Remote &amp; On-Site
+        </div>
+      </div>
+    </div>
+
+    <div class="lh-bottombar"></div>
+
+  </div><!-- /page -->
+
+  <script>
+    function toggleBlank() {
+      const page = document.getElementById('letterPage');
+      page.classList.toggle('page--blank');
+      const btn = document.querySelector('.toolbar__btn--outline');
+      btn.textContent = page.classList.contains('page--blank')
+        ? 'Show Sample Text'
+        : 'Toggle Blank / Sample';
+    }
+  </script>
+
+</body>
+</html>
