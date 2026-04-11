@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Business Card B — Grace Dougan Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #B8975A;
+      --gold-light: #D4AF72;
+      --dark: #111111;
+      --cream: #FAF8F4;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Montserrat', Arial, sans-serif;
+      --card-size: 720px;
+    }
+    body {
+      background: #2a2a2a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+      padding: 60px 40px;
+      font-family: var(--font-sans);
+    }
+    .label { color: #888; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; text-align: center; margin-bottom: 16px; }
+    .card-wrap { display: flex; flex-direction: column; align-items: center; }
+    .card { width: var(--card-size); height: var(--card-size); position: relative; overflow: hidden; }
+
+    /* ══ DESIGN B FRONT — Gold diagonal split ══ */
+    .card--front {
+      background: var(--dark);
+    }
+
+    /* Gold diagonal strip across corner */
+    .card--front::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 340px;
+      height: 340px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      opacity: 0.07;
+    }
+
+    /* Fine grid texture */
+    .card--front::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(184,151,90,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(184,151,90,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .front__border {
+      position: absolute;
+      inset: 28px;
+      border: 1px solid rgba(184,151,90,0.18);
+      z-index: 1;
+    }
+
+    .front__corner {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-color: var(--gold);
+      border-style: solid;
+      z-index: 2;
+    }
+    .front__corner--tl { top: 28px;  left: 28px;  border-width: 1.5px 0 0 1.5px; }
+    .front__corner--tr { top: 28px;  right: 28px; border-width: 1.5px 1.5px 0 0; }
+    .front__corner--bl { bottom: 28px; left: 28px;  border-width: 0 0 1.5px 1.5px; }
+    .front__corner--br { bottom: 28px; right: 28px; border-width: 0 1.5px 1.5px 0; }
+
+    .front__inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+      gap: 24px;
+    }
+
+    /* Split-letter monogram */
+    .front__mono {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .front__initials {
+      font-family: var(--font-serif);
+      font-size: 140px;
+      font-weight: 300;
+      line-height: 0.85;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--gold);
+      letter-spacing: 8px;
+      padding-left: 8px;
+    }
+
+    .front__initial-fill {
+      font-family: var(--font-serif);
+      font-size: 140px;
+      font-weight: 300;
+      line-height: 0.85;
+      color: var(--gold);
+      letter-spacing: 8px;
+      opacity: 0.18;
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      text-align: center;
+      padding-left: 8px;
+    }
+
+    .front__mono-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .front__line {
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      margin: 12px 0;
+    }
+
+    .front__company {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.35em;
+      color: rgba(184,151,90,0.55);
+      text-transform: uppercase;
+    }
+
+    /* ══ DESIGN B BACK ══ */
+    .card--back {
+      background: var(--dark);
+    }
+
+    .back__gold-top {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+    }
+
+    .back__gold-bottom {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(to right, transparent, rgba(184,151,90,0.4), transparent);
+    }
+
+    .back__inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 64px 56px;
+      gap: 0;
+    }
+
+    .back__mark {
+      width: 52px; height: 52px;
+      border: 1.5px solid var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .back__mark::after {
+      content: '';
+      position: absolute;
+      inset: 5px;
+      border: 0.8px dashed rgba(184,151,90,0.5);
+    }
+    .back__mark-text {
+      font-family: var(--font-serif);
+      font-size: 16px;
+      color: var(--gold);
+      letter-spacing: 3px;
+      padding-left: 3px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .back__name {
+      font-family: var(--font-serif);
+      font-size: 34px;
+      font-weight: 300;
+      color: #fff;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+      text-align: center;
+    }
+    .back__title {
+      font-family: var(--font-serif);
+      font-size: 13px;
+      font-style: italic;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+    .back__rule {
+      width: 100%; height: 1px;
+      background: rgba(184,151,90,0.2);
+      margin-bottom: 24px;
+    }
+    .back__contact { display:flex; flex-direction:column; gap:8px; align-items:center; }
+    .back__contact-line {
+      font-family: var(--font-sans);
+      font-size: 10.5px;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.08em;
+      text-align: center;
+    }
+    .back__contact-line b { color: var(--gold); font-weight: 500; margin-right: 6px; }
+
+    .print-btn { font-family:var(--font-sans); font-size:10px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; background:var(--gold); color:#fff; border:none; padding:12px 28px; cursor:pointer; margin-top:20px; }
+    .print-btn:hover { background:#fff; color:var(--dark); }
+    .print-note { color:#666; font-size:10px; letter-spacing:0.08em; text-align:center; margin-top:12px; }
+
+    @media print {
+      body { background:white; padding:0; gap:0; }
+      .label,.print-btn,.print-note { display:none; }
+      .card--front { page-break-after:always; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FRONT -->
+  <div class="card-wrap">
+    <p class="label">Design B — Front · Outline Monogram</p>
+    <div class="card card--front">
+      <div class="front__border"></div>
+      <div class="front__corner front__corner--tl"></div>
+      <div class="front__corner front__corner--tr"></div>
+      <div class="front__corner front__corner--bl"></div>
+      <div class="front__corner front__corner--br"></div>
+
+      <div class="front__inner">
+        <div class="front__mono">
+          <div class="front__mono-wrap">
+            <div class="front__initial-fill">GD</div>
+            <div class="front__initials">GD</div>
+          </div>
+          <div class="front__line"></div>
+          <div class="front__company">Consulting</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BACK -->
+  <div class="card-wrap">
+    <p class="label">Design B — Back</p>
+    <div class="card card--back">
+      <div class="back__gold-top"></div>
+      <div class="back__gold-bottom"></div>
+      <div class="back__inner">
+        <div class="back__mark">
+          <span class="back__mark-text">GDC</span>
+        </div>
+        <div class="back__name">Grace Dougan</div>
+        <div class="back__title">Founder &amp; Principal</div>
+        <div class="back__rule"></div>
+        <div class="back__contact">
+          <div class="back__contact-line"><b>P</b>415.827.9648</div>
+          <div class="back__contact-line"><b>E</b>grace@gracedouganconsulting.com</div>
+          <div class="back__contact-line"><b>W</b>gracedouganconsulting.com</div>
+          <div class="back__contact-line" style="margin-top:4px;font-size:9.5px;color:rgba(255,255,255,0.25);letter-spacing:0.18em;">BAY AREA, CALIFORNIA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;">
+    <button class="print-btn" onclick="window.print()">Save as PDF / Print</button>
+    <p class="print-note">Square 2.5″ × 2.5″ · Print at 100% scale</p>
+  </div>
+
+</body>
+</html>
