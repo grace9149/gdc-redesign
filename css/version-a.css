@@ -143,7 +143,7 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   justify-content: space-between;
   height: 72px;
-  width: 90%;
+  width: 94%;
   max-width: var(--max-w);
   margin: 0 auto;
 }
@@ -152,7 +152,15 @@ a { color: inherit; text-decoration: none; }
   font-size: 22px;
   font-weight: 400;
   letter-spacing: 0.01em;
+  line-height: 1;
   color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.nav__logo svg {
+  flex-shrink: 0;
+  display: block;
 }
 .nav__logo em {
   font-style: italic;
