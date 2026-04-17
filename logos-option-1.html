@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logo Option 1 — Scrolling Ticker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #B8975A; --gold-light: #D4AF72;
+      --cream: #FAF8F4; --cream-mid: #F0EDE8;
+      --text-dark: #111111; --text-mid: #444444;
+      --border: #E2DDD6;
+    }
+    body { font-family: 'Montserrat', sans-serif; background: var(--cream); color: var(--text-dark); }
+
+    /* ── NAV ── */
+    .nav {
+      background: var(--cream); border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+    }
+    .nav__inner {
+      max-width: 1200px; margin: 0 auto;
+      height: 64px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav__logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px; font-weight: 500; letter-spacing: 0.04em; color: var(--text-dark);
+      text-decoration: none; display: flex; align-items: center; gap: 12px;
+    }
+    .nav__logo em { font-style: italic; font-weight: 400; }
+    .nav__links { display: flex; gap: 32px; align-items: center; }
+    .nav__links a {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-mid); text-decoration: none;
+    }
+    .nav__cta {
+      background: var(--text-dark); color: var(--cream) !important;
+      padding: 10px 22px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 100px 5% 80px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .hero__eyebrow {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 20px;
+    }
+    .hero__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(44px, 6vw, 80px); font-weight: 500; line-height: 1.05;
+      margin-bottom: 28px;
+    }
+    .hero__title em { font-style: italic; font-weight: 400; }
+    .hero__sub {
+      font-size: 14px; color: var(--text-mid); max-width: 480px; line-height: 1.75;
+      margin-bottom: 40px;
+    }
+    .hero__cta {
+      display: inline-block; background: var(--text-dark); color: var(--cream);
+      font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 16px 36px; text-decoration: none;
+    }
+
+    /* ── TICKER STRIP ── */
+    .ticker-section {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 22px 0;
+      background: #ffffff;
+      overflow: hidden;
+    }
+    .ticker-label {
+      text-align: center;
+      font-size: 9px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 18px;
+    }
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      animation: ticker 28s linear infinite;
+    }
+    .ticker-track:hover { animation-play-state: paused; }
+    @keyframes ticker {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .ticker-item {
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 40px; height: 44px; flex-shrink: 0;
+      border-right: 1px solid var(--border);
+    }
+    .ticker-item img {
+      height: 26px; width: auto;
+      filter: grayscale(100%) opacity(0.55);
+      transition: filter 0.3s;
+      object-fit: contain;
+    }
+    .ticker-item:hover img { filter: grayscale(0%) opacity(1); }
+
+    /* ── CONTEXT NOTE ── */
+    .note {
+      background: #fff8ed; border: 1px solid #e8d9b5; padding: 16px 24px;
+      margin: 40px auto; max-width: 700px; border-radius: 2px;
+      font-size: 12px; color: #8a6d3b; line-height: 1.6; text-align: center;
+    }
+    .note strong { font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo">
+        <svg width="32" height="32" viewBox="0 0 44 44" fill="none">
+          <rect x="2" y="2" width="40" height="40" stroke="#B8975A" stroke-width="1.5"/>
+          <rect x="7" y="7" width="30" height="30" stroke="#B8975A" stroke-width="0.8" stroke-dasharray="3 2"/>
+          <text x="22" y="26" text-anchor="middle" font-family="Georgia,serif" font-size="9" letter-spacing="3" fill="#B8975A">GDC</text>
+        </svg>
+        Grace Dougan <em>&nbsp;Consulting</em>
+      </a>
+      <nav class="nav__links">
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Team</a>
+        <a href="#" class="nav__cta">Get in Touch</a>
+      </nav>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero__eyebrow">Bay Area · Est. 2010</p>
+    <h1 class="hero__title">Your business,<br /><em>fully supported.</em></h1>
+    <p class="hero__sub">Back-office support, bookkeeping, and strategic guidance — so you can focus on what you do best.</p>
+    <a href="#" class="hero__cta">Let's Talk</a>
+  </section>
+
+  <!-- ★ OPTION 1: TICKER STRIP -->
+  <div class="ticker-section">
+    <p class="ticker-label">Tools we work in every day</p>
+    <div class="ticker-track">
+      <!-- First set -->
+      <div class="ticker-item"><img src="https://logo.clearbit.com/ramp.com" alt="Ramp" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/intuit.com" alt="QuickBooks" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/blackbaud.com" alt="Blackbaud" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/xero.com" alt="Xero" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/getharvest.com" alt="Harvest" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/netsuite.com" alt="NetSuite" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/waveapps.com" alt="Wave" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/adp.com" alt="ADP" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/justworks.com" alt="Justworks" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/google.com" alt="Google" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/gusto.com" alt="Gusto" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/clickup.com" alt="ClickUp" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/avalara.com" alt="Avalara" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/paychex.com" alt="Paychex" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/microsoft.com" alt="Microsoft" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/slack.com" alt="Slack" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/bill.com" alt="Bill.com" /></div>
+      <!-- Duplicate for seamless loop -->
+      <div class="ticker-item"><img src="https://logo.clearbit.com/ramp.com" alt="Ramp" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/intuit.com" alt="QuickBooks" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/blackbaud.com" alt="Blackbaud" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/xero.com" alt="Xero" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/getharvest.com" alt="Harvest" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/netsuite.com" alt="NetSuite" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/waveapps.com" alt="Wave" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/adp.com" alt="ADP" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/justworks.com" alt="Justworks" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/google.com" alt="Google" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/gusto.com" alt="Gusto" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/clickup.com" alt="ClickUp" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/avalara.com" alt="Avalara" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/paychex.com" alt="Paychex" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/microsoft.com" alt="Microsoft" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/slack.com" alt="Slack" /></div>
+      <div class="ticker-item"><img src="https://logo.clearbit.com/bill.com" alt="Bill.com" /></div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>Option 1 Preview</strong> — Logos scroll continuously just below the hero. Hover to pause. Grayscale at rest, full color on hover. This strip would sit between the hero and the About section on the live site.
+  </div>
+
+</body>
+</html>

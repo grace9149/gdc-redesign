@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logo Option 3 — Dedicated Section</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #B8975A; --gold-light: #D4AF72;
+      --cream: #FAF8F4; --cream-mid: #F0EDE8;
+      --text-dark: #111111; --text-mid: #444444;
+      --border: #E2DDD6;
+    }
+    body { font-family: 'Montserrat', sans-serif; background: var(--cream); color: var(--text-dark); }
+
+    /* ── SPACER (simulates content above) ── */
+    .above {
+      padding: 60px 5% 60px;
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 40px;
+    }
+    .above__text { max-width: 520px; }
+    .above__eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+    .above__title { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 500; line-height: 1.1; margin-bottom: 16px; }
+    .above__title em { font-style: italic; }
+    .above__body { font-size: 13px; color: var(--text-mid); line-height: 1.75; }
+    .above__rule { width: 1px; background: var(--border); height: 120px; flex-shrink: 0; }
+    .above__stat { text-align: center; }
+    .above__stat strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 52px; font-weight: 400; color: var(--gold); line-height: 1; }
+    .above__stat span { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-mid); margin-top: 6px; display: block; }
+
+    /* ── OPTION 3: DEDICATED SECTION ── */
+    .logos-section {
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 72px 5%;
+    }
+    .logos-section__inner { max-width: 1100px; margin: 0 auto; }
+    .logos-section__header {
+      text-align: center; margin-bottom: 56px;
+    }
+    .logos-section__eyebrow {
+      font-size: 9px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 14px;
+    }
+    .logos-section__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 38px; font-weight: 500; line-height: 1.15;
+    }
+    .logos-section__title em { font-style: italic; font-weight: 400; }
+    .logos-section__sub {
+      font-size: 13px; color: var(--text-mid); margin-top: 12px;
+      max-width: 440px; margin-left: auto; margin-right: auto; line-height: 1.7;
+    }
+    .logos-section__rule {
+      width: 32px; height: 1.5px; background: var(--gold);
+      margin: 20px auto 0;
+    }
+
+    /* Grid */
+    .logos-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+    }
+    .logo-cell {
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 32px 24px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.25s;
+      cursor: default;
+    }
+    .logo-cell:hover { background: var(--cream-mid); }
+    .logo-cell img {
+      height: 28px; width: auto; max-width: 110px;
+      object-fit: contain;
+      filter: grayscale(100%) opacity(0.5);
+      transition: filter 0.3s;
+    }
+    .logo-cell:hover img { filter: grayscale(0%) opacity(1); }
+
+    /* ── BELOW SECTION (simulates contact above) ── */
+    .below {
+      padding: 72px 5%;
+      text-align: center;
+    }
+    .below__eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+    .below__title { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 500; line-height: 1.1; margin-bottom: 24px; }
+    .below__title em { font-style: italic; }
+    .below__btn {
+      display: inline-block; background: var(--text-dark); color: var(--cream);
+      font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 16px 36px; text-decoration: none;
+    }
+
+    /* ── NOTE ── */
+    .note {
+      background: #fff8ed; border: 1px solid #e8d9b5; padding: 16px 24px;
+      margin: 40px auto; max-width: 700px;
+      font-size: 12px; color: #8a6d3b; line-height: 1.6; text-align: center;
+    }
+    .note strong { font-weight: 600; }
+
+    @media (max-width: 768px) {
+      .logos-grid { grid-template-columns: repeat(3, 1fr); }
+      .above { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Simulated content above -->
+  <div style="background:var(--cream);border-bottom:1px solid var(--border);padding:16px 5%;text-align:center;font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#bbb;">
+    ↑ Services / Team sections would appear above this
+  </div>
+
+  <div class="above">
+    <div class="above__text">
+      <p class="above__eyebrow">Since 2010</p>
+      <h2 class="above__title">California's back-office<br /><em>experts.</em></h2>
+      <p class="above__body">We've helped hundreds of small businesses run more efficiently — from day-to-day bookkeeping to full financial strategy.</p>
+    </div>
+    <div class="above__rule"></div>
+    <div class="above__stat"><strong>15+</strong><span>Years in practice</span></div>
+    <div class="above__rule"></div>
+    <div class="above__stat"><strong>200+</strong><span>Clients served</span></div>
+    <div class="above__rule"></div>
+    <div class="above__stat"><strong>33</strong><span>Team members</span></div>
+  </div>
+
+  <!-- ★ OPTION 3: DEDICATED SECTION -->
+  <section class="logos-section">
+    <div class="logos-section__inner">
+      <div class="logos-section__header">
+        <p class="logos-section__eyebrow">Platforms &amp; Tools</p>
+        <h2 class="logos-section__title">Fluent in the tools<br /><em>you already use.</em></h2>
+        <p class="logos-section__sub">We work across all major accounting, payroll, and operations platforms — no onboarding required.</p>
+        <div class="logos-section__rule"></div>
+      </div>
+
+      <div class="logos-grid">
+        <div class="logo-cell"><img src="https://logo.clearbit.com/ramp.com" alt="Ramp" /></div>
+        <div class="logo-cell"><img src="https://logo.clearbit.com/intuit.com" alt="QuickBooks" /></div>
+        <div class="logo-cell"><img src="https://logo.clearbit.com/blackbaud.com" alt="Blackbaud" /></div>
+        <div class="logo-cell"><img src="https://logo.clearbit.com/xero.com" alt="Xero" /></div>
+        <div class="logo-cell"><img src="https://logo.clearbit.com/getharvest.com" alt="Harvest" /></div>
+        <div class="logo-cell"><img src="https://logo.clearbit.com/netsuite.com" alt="NetSuite" /></div>
+        <div class="logo-cell"><img src="https://logo.clearbit.com/waveapps.com" alt="Wave" /></div>
+        <div class="logo-cell"><img src="https://logo.clearbit.com/adp.com" alt="ADP" /></div>
+        <div class="logo-cell"><img src="https://logo.clearbit.com/justworks.com" alt="Justworks" /></div>
+        <div class="logo-cell"><img src="https://logo.clearbit.com/google.com" alt="Google" /></div>
+        <div class="logo-cell"><img src="https://logo.clearbit.com/gusto.com" alt="Gusto" /></div>
+        <div class="logo-cell"><img src="https://logo.clearbit.com/clickup.com" alt="ClickUp" /></div>
+        <div class="logo-cell"><img src="https://logo.clearbit.com/avalara.com" alt="Avalara" /></div>
+        <div class="logo-cell"><img src="https://logo.clearbit.com/paychex.com" alt="Paychex" /></div>
+        <div class="logo-cell"><img src="https://logo.clearbit.com/microsoft.com" alt="Microsoft" /></div>
+        <div class="logo-cell"><img src="https://logo.clearbit.com/slack.com" alt="Slack" /></div>
+        <div class="logo-cell"><img src="https://logo.clearbit.com/bill.com" alt="Bill.com" /></div>
+        <!-- Empty cell to complete the 5-col grid -->
+        <div class="logo-cell" style="background:var(--cream-mid);"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Simulated contact section below -->
+  <div class="below">
+    <p class="below__eyebrow">Get in Touch</p>
+    <h2 class="below__title">Let's talk about<br /><em>your business.</em></h2>
+    <a href="#" class="below__btn">Schedule a Call</a>
+  </div>
+
+  <div class="note">
+    <strong>Option 3 Preview</strong> — A full dedicated section between the Team and Contact areas. Logos are grayscale at rest, full color on hover. The grid layout keeps it structured and on-brand with the GDC grid style.
+  </div>
+
+</body>
+</html>
