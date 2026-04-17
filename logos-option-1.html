@@ -69,19 +69,21 @@
     .ticker-section {
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-      padding: 22px 0;
+      padding: 0;
       background: #ffffff;
       overflow: hidden;
     }
     .ticker-label {
       text-align: center;
       font-size: 9px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 18px;
+      color: var(--gold); padding: 18px 0 14px;
+      border-bottom: 1px solid var(--border);
     }
+    .ticker-wrap { overflow: hidden; padding: 0; }
     .ticker-track {
       display: flex;
       width: max-content;
-      animation: ticker 28s linear infinite;
+      animation: ticker 32s linear infinite;
     }
     .ticker-track:hover { animation-play-state: paused; }
     @keyframes ticker {
@@ -90,16 +92,18 @@
     }
     .ticker-item {
       display: flex; align-items: center; justify-content: center;
-      padding: 0 40px; height: 44px; flex-shrink: 0;
+      padding: 0 36px; height: 52px; flex-shrink: 0;
       border-right: 1px solid var(--border);
+      text-decoration: none;
+      transition: background 0.2s;
     }
-    .ticker-item img {
-      height: 26px; width: auto;
-      filter: grayscale(100%) opacity(0.55);
-      transition: filter 0.3s;
-      object-fit: contain;
+    .ticker-item:hover { background: var(--cream-mid); }
+    .ticker-item span {
+      font-size: 12px; font-weight: 500; letter-spacing: 0.06em;
+      color: #aaa; white-space: nowrap;
+      transition: color 0.2s;
     }
-    .ticker-item:hover img { filter: grayscale(0%) opacity(1); }
+    .ticker-item:hover span { color: var(--text-dark); }
 
     /* ── CONTEXT NOTE ── */
     .note {
@@ -143,43 +147,45 @@
   <!-- ★ OPTION 1: TICKER STRIP -->
   <div class="ticker-section">
     <p class="ticker-label">Tools we work in every day</p>
-    <div class="ticker-track">
-      <!-- First set -->
-      <div class="ticker-item"><img src="https://logo.clearbit.com/ramp.com" alt="Ramp" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/intuit.com" alt="QuickBooks" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/blackbaud.com" alt="Blackbaud" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/xero.com" alt="Xero" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/getharvest.com" alt="Harvest" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/netsuite.com" alt="NetSuite" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/waveapps.com" alt="Wave" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/adp.com" alt="ADP" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/justworks.com" alt="Justworks" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/google.com" alt="Google" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/gusto.com" alt="Gusto" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/clickup.com" alt="ClickUp" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/avalara.com" alt="Avalara" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/paychex.com" alt="Paychex" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/microsoft.com" alt="Microsoft" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/slack.com" alt="Slack" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/bill.com" alt="Bill.com" /></div>
-      <!-- Duplicate for seamless loop -->
-      <div class="ticker-item"><img src="https://logo.clearbit.com/ramp.com" alt="Ramp" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/intuit.com" alt="QuickBooks" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/blackbaud.com" alt="Blackbaud" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/xero.com" alt="Xero" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/getharvest.com" alt="Harvest" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/netsuite.com" alt="NetSuite" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/waveapps.com" alt="Wave" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/adp.com" alt="ADP" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/justworks.com" alt="Justworks" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/google.com" alt="Google" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/gusto.com" alt="Gusto" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/clickup.com" alt="ClickUp" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/avalara.com" alt="Avalara" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/paychex.com" alt="Paychex" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/microsoft.com" alt="Microsoft" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/slack.com" alt="Slack" /></div>
-      <div class="ticker-item"><img src="https://logo.clearbit.com/bill.com" alt="Bill.com" /></div>
+    <div class="ticker-wrap">
+      <div class="ticker-track">
+        <!-- First set -->
+        <a class="ticker-item" href="https://ramp.com" target="_blank" rel="noopener"><span>Ramp</span></a>
+        <a class="ticker-item" href="https://quickbooks.intuit.com" target="_blank" rel="noopener"><span>QuickBooks</span></a>
+        <a class="ticker-item" href="https://www.blackbaud.com" target="_blank" rel="noopener"><span>Blackbaud</span></a>
+        <a class="ticker-item" href="https://www.xero.com" target="_blank" rel="noopener"><span>Xero</span></a>
+        <a class="ticker-item" href="https://www.getharvest.com" target="_blank" rel="noopener"><span>Harvest</span></a>
+        <a class="ticker-item" href="https://www.netsuite.com" target="_blank" rel="noopener"><span>NetSuite</span></a>
+        <a class="ticker-item" href="https://www.waveapps.com" target="_blank" rel="noopener"><span>Wave</span></a>
+        <a class="ticker-item" href="https://www.adp.com" target="_blank" rel="noopener"><span>ADP</span></a>
+        <a class="ticker-item" href="https://justworks.com" target="_blank" rel="noopener"><span>Justworks</span></a>
+        <a class="ticker-item" href="https://workspace.google.com" target="_blank" rel="noopener"><span>Google Workspace</span></a>
+        <a class="ticker-item" href="https://gusto.com" target="_blank" rel="noopener"><span>Gusto</span></a>
+        <a class="ticker-item" href="https://clickup.com" target="_blank" rel="noopener"><span>ClickUp</span></a>
+        <a class="ticker-item" href="https://www.avalara.com" target="_blank" rel="noopener"><span>Avalara</span></a>
+        <a class="ticker-item" href="https://www.paychex.com" target="_blank" rel="noopener"><span>Paychex</span></a>
+        <a class="ticker-item" href="https://www.microsoft.com" target="_blank" rel="noopener"><span>Microsoft</span></a>
+        <a class="ticker-item" href="https://slack.com" target="_blank" rel="noopener"><span>Slack</span></a>
+        <a class="ticker-item" href="https://www.bill.com" target="_blank" rel="noopener"><span>Bill.com</span></a>
+        <!-- Duplicate for seamless loop -->
+        <a class="ticker-item" href="https://ramp.com" target="_blank" rel="noopener"><span>Ramp</span></a>
+        <a class="ticker-item" href="https://quickbooks.intuit.com" target="_blank" rel="noopener"><span>QuickBooks</span></a>
+        <a class="ticker-item" href="https://www.blackbaud.com" target="_blank" rel="noopener"><span>Blackbaud</span></a>
+        <a class="ticker-item" href="https://www.xero.com" target="_blank" rel="noopener"><span>Xero</span></a>
+        <a class="ticker-item" href="https://www.getharvest.com" target="_blank" rel="noopener"><span>Harvest</span></a>
+        <a class="ticker-item" href="https://www.netsuite.com" target="_blank" rel="noopener"><span>NetSuite</span></a>
+        <a class="ticker-item" href="https://www.waveapps.com" target="_blank" rel="noopener"><span>Wave</span></a>
+        <a class="ticker-item" href="https://www.adp.com" target="_blank" rel="noopener"><span>ADP</span></a>
+        <a class="ticker-item" href="https://justworks.com" target="_blank" rel="noopener"><span>Justworks</span></a>
+        <a class="ticker-item" href="https://workspace.google.com" target="_blank" rel="noopener"><span>Google Workspace</span></a>
+        <a class="ticker-item" href="https://gusto.com" target="_blank" rel="noopener"><span>Gusto</span></a>
+        <a class="ticker-item" href="https://clickup.com" target="_blank" rel="noopener"><span>ClickUp</span></a>
+        <a class="ticker-item" href="https://www.avalara.com" target="_blank" rel="noopener"><span>Avalara</span></a>
+        <a class="ticker-item" href="https://www.paychex.com" target="_blank" rel="noopener"><span>Paychex</span></a>
+        <a class="ticker-item" href="https://www.microsoft.com" target="_blank" rel="noopener"><span>Microsoft</span></a>
+        <a class="ticker-item" href="https://slack.com" target="_blank" rel="noopener"><span>Slack</span></a>
+        <a class="ticker-item" href="https://www.bill.com" target="_blank" rel="noopener"><span>Bill.com</span></a>
+      </div>
     </div>
   </div>
 
