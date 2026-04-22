@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand Mark Options — Grace Dougan Consulting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #B8975A; --gold-light: #D4AF72;
+      --cream: #FAF8F4; --cream-dark: #F0ECE4;
+      --text-dark: #111111; --text-mid: #555555;
+      --border: #E8E4DE; --white: #FFFFFF;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Montserrat', Arial, sans-serif;
+    }
+    body { background: var(--cream); font-family: var(--font-sans); color: var(--text-dark); padding: 60px 40px; }
+    .page-title { text-align: center; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 60px; }
+    .section-title { text-align: center; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 28px; }
+
+    /* grid */
+    .options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; max-width: 1100px; margin: 0 auto 80px; }
+    .option { background: var(--white); border: 1px solid var(--border); padding: 48px 32px 40px; display: flex; flex-direction: column; align-items: center; }
+    .option-label { font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 36px; }
+
+    /* size row */
+    .size-row { display: flex; align-items: flex-end; gap: 32px; margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--border); width: 100%; justify-content: center; }
+    .size-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .size-label { font-size: 9px; letter-spacing: 0.12em; color: #aaa; text-transform: uppercase; }
+
+    /* dark demo */
+    .dark-demo { background: var(--text-dark); padding: 16px 24px; margin-top: 20px; display: flex; align-items: center; justify-content: center; width: 100%; }
+    .dark-label { font-size: 9px; color: #999; letter-spacing: 0.12em; text-transform: uppercase; text-align: center; margin-top: 6px; width: 100%; }
+
+    /* sig mocks */
+    .sig-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1100px; margin: 0 auto 80px; }
+    .sig-mock { background: var(--white); border: 1px solid var(--border); padding: 24px; }
+    .sig-top-rule { height: 2px; background: var(--gold); margin-bottom: 16px; }
+    .sig-inner { display: flex; align-items: flex-start; gap: 14px; }
+    .sig-name { font-family: var(--font-serif); font-size: 17px; font-weight: 500; color: var(--text-dark); line-height: 1.1; margin-bottom: 2px; }
+    .sig-title { font-family: var(--font-serif); font-size: 11px; font-style: italic; color: var(--text-dark); margin-bottom: 8px; }
+    .sig-rule { width: 20px; height: 1px; background: var(--gold); margin-bottom: 8px; }
+    .sig-co { font-size: 8px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; font-family: var(--font-sans); }
+    .sig-details { font-size: 9px; color: #666; line-height: 2; }
+    .sig-details a { color: var(--gold); text-decoration: none; }
+    .sig-tagline { font-family: var(--font-serif); font-size: 9px; font-style: italic; color: #aaa; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+    .sig-mock-label { font-size: 9px; color: #aaa; letter-spacing: 0.12em; text-transform: uppercase; text-align: center; margin-top: 10px; }
+
+    /* nav mocks */
+    .nav-section { max-width: 1100px; margin: 0 auto 60px; display: flex; flex-direction: column; gap: 16px; }
+    .nav-mock { background: var(--white); border: 1px solid var(--border); padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { display: flex; align-items: center; gap: 12px; }
+    .nav-divider { width: 1px; height: 28px; background: var(--border); }
+    .nav-wordmark { font-family: var(--font-serif); font-size: 18px; color: var(--text-dark); }
+    .nav-wordmark em { font-style: italic; }
+    .nav-links { display: flex; gap: 28px; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-mid); align-items: center; }
+    .nav-cta { color: var(--gold); border: 1px solid var(--gold); padding: 6px 14px; }
+    .nav-mock-label { font-size: 9px; color: #aaa; letter-spacing: 0.12em; text-transform: uppercase; text-align: center; margin-top: 6px; }
+  </style>
+</head>
+<body>
+
+<p class="page-title">Brand Mark Options — GDC</p>
+
+<!-- ══════════════════════════
+     MARK SHOWCASE
+══════════════════════════ -->
+<div class="options">
+
+  <!-- 1: CIRCLE -->
+  <div class="option">
+    <p class="option-label">Option 1 — Circle</p>
+    <!-- Large -->
+    <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="60" r="57" stroke="#B8975A" stroke-width="1.2"/>
+      <circle cx="60" cy="60" r="50" stroke="#B8975A" stroke-width="0.5" stroke-dasharray="2 3"/>
+      <text x="60" y="70" text-anchor="middle"
+        font-family="Cormorant Garamond, Georgia, serif"
+        font-size="38" font-weight="400" fill="#B8975A" letter-spacing="6">GDC</text>
+    </svg>
+    <!-- Sizes -->
+    <div class="size-row">
+      <div class="size-item">
+        <svg width="48" height="48" viewBox="0 0 120 120" fill="none"><circle cx="60" cy="60" r="57" stroke="#B8975A" stroke-width="1.5"/><circle cx="60" cy="60" r="50" stroke="#B8975A" stroke-width="0.5" stroke-dasharray="2 3"/><text x="60" y="70" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="38" font-weight="400" fill="#B8975A" letter-spacing="6">GDC</text></svg>
+        <span class="size-label">Nav</span>
+      </div>
+      <div class="size-item">
+        <svg width="32" height="32" viewBox="0 0 120 120" fill="none"><circle cx="60" cy="60" r="57" stroke="#B8975A" stroke-width="2"/><circle cx="60" cy="60" r="50" stroke="#B8975A" stroke-width="0.8" stroke-dasharray="2 3"/><text x="60" y="70" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="38" font-weight="400" fill="#B8975A" letter-spacing="6">GDC</text></svg>
+        <span class="size-label">Sig</span>
+      </div>
+      <div class="size-item">
+        <svg width="18" height="18" viewBox="0 0 120 120" fill="none"><circle cx="60" cy="60" r="57" stroke="#B8975A" stroke-width="3"/><text x="60" y="70" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="38" font-weight="400" fill="#B8975A" letter-spacing="4">GDC</text></svg>
+        <span class="size-label">Favicon</span>
+      </div>
+    </div>
+    <!-- Dark -->
+    <div class="dark-demo">
+      <svg width="40" height="40" viewBox="0 0 120 120" fill="none"><circle cx="60" cy="60" r="57" stroke="#D4AF72" stroke-width="1.5"/><circle cx="60" cy="60" r="50" stroke="#D4AF72" stroke-width="0.5" stroke-dasharray="2 3"/><text x="60" y="70" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="38" font-weight="400" fill="#D4AF72" letter-spacing="6">GDC</text></svg>
+    </div>
+    <p class="dark-label">On dark</p>
+  </div>
+
+  <!-- 2: SQUARE -->
+  <div class="option">
+    <p class="option-label">Option 2 — Square</p>
+    <!-- Large -->
+    <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="6" y="6" width="108" height="108" stroke="#B8975A" stroke-width="1.2"/>
+      <rect x="14" y="14" width="92" height="92" stroke="#B8975A" stroke-width="0.5" stroke-dasharray="3 3"/>
+      <text x="60" y="70" text-anchor="middle"
+        font-family="Cormorant Garamond, Georgia, serif"
+        font-size="32" font-weight="400" fill="#B8975A" letter-spacing="5">GDC</text>
+    </svg>
+    <!-- Sizes -->
+    <div class="size-row">
+      <div class="size-item">
+        <svg width="48" height="48" viewBox="0 0 120 120" fill="none"><rect x="6" y="6" width="108" height="108" stroke="#B8975A" stroke-width="1.5"/><rect x="14" y="14" width="92" height="92" stroke="#B8975A" stroke-width="0.6" stroke-dasharray="3 3"/><text x="60" y="70" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="32" font-weight="400" fill="#B8975A" letter-spacing="5">GDC</text></svg>
+        <span class="size-label">Nav</span>
+      </div>
+      <div class="size-item">
+        <svg width="32" height="32" viewBox="0 0 120 120" fill="none"><rect x="6" y="6" width="108" height="108" stroke="#B8975A" stroke-width="2"/><rect x="14" y="14" width="92" height="92" stroke="#B8975A" stroke-width="0.8" stroke-dasharray="3 3"/><text x="60" y="70" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="32" font-weight="400" fill="#B8975A" letter-spacing="5">GDC</text></svg>
+        <span class="size-label">Sig</span>
+      </div>
+      <div class="size-item">
+        <svg width="18" height="18" viewBox="0 0 120 120" fill="none"><rect x="6" y="6" width="108" height="108" stroke="#B8975A" stroke-width="3"/><text x="60" y="70" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="32" font-weight="400" fill="#B8975A" letter-spacing="3">GDC</text></svg>
+        <span class="size-label">Favicon</span>
+      </div>
+    </div>
+    <!-- Dark -->
+    <div class="dark-demo">
+      <svg width="40" height="40" viewBox="0 0 120 120" fill="none"><rect x="6" y="6" width="108" height="108" stroke="#D4AF72" stroke-width="1.5"/><rect x="14" y="14" width="92" height="92" stroke="#D4AF72" stroke-width="0.6" stroke-dasharray="3 3"/><text x="60" y="70" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="32" font-weight="400" fill="#D4AF72" letter-spacing="5">GDC</text></svg>
+    </div>
+    <p class="dark-label">On dark</p>
+  </div>
+
+  <!-- 4: BADGE -->
+  <div class="option">
+    <p class="option-label">Option 4 — Badge</p>
+    <!-- Large -->
+    <svg width="140" height="90" viewBox="0 0 140 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="1" width="138" height="88" stroke="#B8975A" stroke-width="1.2"/>
+      <rect x="6" y="6" width="128" height="78" stroke="#B8975A" stroke-width="0.4"/>
+      <text x="70" y="57" text-anchor="middle"
+        font-family="Cormorant Garamond, Georgia, serif"
+        font-size="46" font-weight="400" fill="#B8975A" letter-spacing="10">GDC</text>
+    </svg>
+    <!-- Sizes -->
+    <div class="size-row">
+      <div class="size-item">
+        <svg width="70" height="45" viewBox="0 0 140 90" fill="none"><rect x="1" y="1" width="138" height="88" stroke="#B8975A" stroke-width="1.5"/><rect x="6" y="6" width="128" height="78" stroke="#B8975A" stroke-width="0.5"/><text x="70" y="57" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="46" font-weight="400" fill="#B8975A" letter-spacing="10">GDC</text></svg>
+        <span class="size-label">Nav</span>
+      </div>
+      <div class="size-item">
+        <svg width="46" height="30" viewBox="0 0 140 90" fill="none"><rect x="1" y="1" width="138" height="88" stroke="#B8975A" stroke-width="2"/><rect x="6" y="6" width="128" height="78" stroke="#B8975A" stroke-width="0.8"/><text x="70" y="57" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="46" font-weight="400" fill="#B8975A" letter-spacing="10">GDC</text></svg>
+        <span class="size-label">Sig</span>
+      </div>
+      <div class="size-item">
+        <svg width="22" height="16" viewBox="0 0 140 90" fill="none"><rect x="1" y="1" width="138" height="88" stroke="#B8975A" stroke-width="3"/><text x="70" y="57" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="46" font-weight="400" fill="#B8975A" letter-spacing="6">GDC</text></svg>
+        <span class="size-label">Favicon</span>
+      </div>
+    </div>
+    <!-- Dark -->
+    <div class="dark-demo">
+      <svg width="70" height="45" viewBox="0 0 140 90" fill="none"><rect x="1" y="1" width="138" height="88" stroke="#D4AF72" stroke-width="1.5"/><rect x="6" y="6" width="128" height="78" stroke="#D4AF72" stroke-width="0.5"/><text x="70" y="57" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="46" font-weight="400" fill="#D4AF72" letter-spacing="10">GDC</text></svg>
+    </div>
+    <p class="dark-label">On dark</p>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════
+     SIGNATURE MOCKS
+══════════════════════════ -->
+<p class="section-title">Applied to Email Signature</p>
+<div class="sig-row">
+
+  <!-- Sig 1 -->
+  <div>
+    <div class="sig-mock">
+      <div class="sig-top-rule"></div>
+      <div class="sig-inner">
+        <svg width="36" height="36" viewBox="0 0 120 120" fill="none" style="flex-shrink:0;margin-top:2px"><circle cx="60" cy="60" r="57" stroke="#B8975A" stroke-width="1.8"/><circle cx="60" cy="60" r="50" stroke="#B8975A" stroke-width="0.6" stroke-dasharray="2 3"/><text x="60" y="70" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="38" font-weight="400" fill="#B8975A" letter-spacing="6">GDC</text></svg>
+        <div>
+          <div class="sig-name">Grace Dougan</div>
+          <div class="sig-title">Founder &amp; Principal</div>
+          <div class="sig-rule"></div>
+          <div class="sig-co">Grace Dougan Consulting</div>
+          <div class="sig-details">P: 415.827.9648<br>E: <a href="mailto:grace@gracedouganconsulting.com">grace@gracedouganconsulting.com</a><br>W: <a href="#">gracedouganconsulting.com</a></div>
+        </div>
+      </div>
+      <div class="sig-tagline">Your business in a box. — Bay Area Back-Office Consulting since 2010.</div>
+    </div>
+    <p class="sig-mock-label">Option 1 — Circle</p>
+  </div>
+
+  <!-- Sig 2 -->
+  <div>
+    <div class="sig-mock">
+      <div class="sig-top-rule"></div>
+      <div class="sig-inner">
+        <svg width="36" height="36" viewBox="0 0 120 120" fill="none" style="flex-shrink:0;margin-top:2px"><rect x="6" y="6" width="108" height="108" stroke="#B8975A" stroke-width="2"/><rect x="14" y="14" width="92" height="92" stroke="#B8975A" stroke-width="0.8" stroke-dasharray="3 3"/><text x="60" y="70" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="32" font-weight="400" fill="#B8975A" letter-spacing="5">GDC</text></svg>
+        <div>
+          <div class="sig-name">Grace Dougan</div>
+          <div class="sig-title">Founder &amp; Principal</div>
+          <div class="sig-rule"></div>
+          <div class="sig-co">Grace Dougan Consulting</div>
+          <div class="sig-details">P: 415.827.9648<br>E: <a href="mailto:grace@gracedouganconsulting.com">grace@gracedouganconsulting.com</a><br>W: <a href="#">gracedouganconsulting.com</a></div>
+        </div>
+      </div>
+      <div class="sig-tagline">Your business in a box. — Bay Area Back-Office Consulting since 2010.</div>
+    </div>
+    <p class="sig-mock-label">Option 2 — Square</p>
+  </div>
+
+  <!-- Sig 4 -->
+  <div>
+    <div class="sig-mock">
+      <div class="sig-top-rule"></div>
+      <div class="sig-inner">
+        <svg width="46" height="30" viewBox="0 0 140 90" fill="none" style="flex-shrink:0;margin-top:4px"><rect x="1" y="1" width="138" height="88" stroke="#B8975A" stroke-width="2.5"/><rect x="6" y="6" width="128" height="78" stroke="#B8975A" stroke-width="0.8"/><text x="70" y="57" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="46" font-weight="400" fill="#B8975A" letter-spacing="10">GDC</text></svg>
+        <div>
+          <div class="sig-name">Grace Dougan</div>
+          <div class="sig-title">Founder &amp; Principal</div>
+          <div class="sig-rule"></div>
+          <div class="sig-co">Grace Dougan Consulting</div>
+          <div class="sig-details">P: 415.827.9648<br>E: <a href="mailto:grace@gracedouganconsulting.com">grace@gracedouganconsulting.com</a><br>W: <a href="#">gracedouganconsulting.com</a></div>
+        </div>
+      </div>
+      <div class="sig-tagline">Your business in a box. — Bay Area Back-Office Consulting since 2010.</div>
+    </div>
+    <p class="sig-mock-label">Option 4 — Badge</p>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════
+     NAV MOCKS
+══════════════════════════ -->
+<p class="section-title">Applied to Nav</p>
+<div class="nav-section">
+
+  <div>
+    <div class="nav-mock">
+      <div class="nav-logo">
+        <svg width="36" height="36" viewBox="0 0 120 120" fill="none"><circle cx="60" cy="60" r="57" stroke="#B8975A" stroke-width="1.5"/><circle cx="60" cy="60" r="50" stroke="#B8975A" stroke-width="0.5" stroke-dasharray="2 3"/><text x="60" y="70" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="38" font-weight="400" fill="#B8975A" letter-spacing="6">GDC</text></svg>
+        <div class="nav-divider"></div>
+        <div class="nav-wordmark">Grace Dougan <em>Consulting</em></div>
+      </div>
+      <div class="nav-links"><span>About</span><span>Services</span><span>Team</span><span class="nav-cta">Get in Touch</span></div>
+    </div>
+    <p class="nav-mock-label">Option 1 — Circle</p>
+  </div>
+
+  <div>
+    <div class="nav-mock">
+      <div class="nav-logo">
+        <svg width="36" height="36" viewBox="0 0 120 120" fill="none"><rect x="6" y="6" width="108" height="108" stroke="#B8975A" stroke-width="1.5"/><rect x="14" y="14" width="92" height="92" stroke="#B8975A" stroke-width="0.6" stroke-dasharray="3 3"/><text x="60" y="70" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="32" font-weight="400" fill="#B8975A" letter-spacing="5">GDC</text></svg>
+        <div class="nav-divider"></div>
+        <div class="nav-wordmark">Grace Dougan <em>Consulting</em></div>
+      </div>
+      <div class="nav-links"><span>About</span><span>Services</span><span>Team</span><span class="nav-cta">Get in Touch</span></div>
+    </div>
+    <p class="nav-mock-label">Option 2 — Square</p>
+  </div>
+
+  <div>
+    <div class="nav-mock">
+      <div class="nav-logo">
+        <svg width="60" height="38" viewBox="0 0 140 90" fill="none"><rect x="1" y="1" width="138" height="88" stroke="#B8975A" stroke-width="1.5"/><rect x="6" y="6" width="128" height="78" stroke="#B8975A" stroke-width="0.5"/><text x="70" y="57" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="46" font-weight="400" fill="#B8975A" letter-spacing="10">GDC</text></svg>
+        <div class="nav-divider"></div>
+        <div class="nav-wordmark">Grace Dougan <em>Consulting</em></div>
+      </div>
+      <div class="nav-links"><span>About</span><span>Services</span><span>Team</span><span class="nav-cta">Get in Touch</span></div>
+    </div>
+    <p class="nav-mock-label">Option 4 — Badge</p>
+  </div>
+
+</div>
+
+</body>
+</html>
