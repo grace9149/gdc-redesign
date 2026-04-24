@@ -17,6 +17,8 @@
       --font-serif: 'Cormorant Garamond', Georgia, serif;
       --font-sans: 'Montserrat', Arial, sans-serif;
       --card-size: 720px;
+      /* 0.25" margin: card = 2.5", so 0.25/2.5 × 720 = 72px */
+      --margin: 72px;
     }
     body {
       background: #2a2a2a;
@@ -33,44 +35,31 @@
     .card-wrap { display: flex; flex-direction: column; align-items: center; }
     .card { width: var(--card-size); height: var(--card-size); position: relative; overflow: hidden; }
 
-    /* ══ DESIGN C FRONT — Full gold border frame, centered stacked type ══ */
+    /* ══ FRONT — Solid gold, square monogram, white type ══ */
     .card--front {
-      background: #0d0d0d;
+      background: var(--gold);
     }
 
-    /* Radiating glow from center */
-    .card--front::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 50% 50%, rgba(184,151,90,0.10) 0%, transparent 70%);
-    }
-
-    /* Outer thin gold frame */
-    .front__frame-outer {
-      position: absolute;
-      inset: 18px;
-      border: 1.5px solid rgba(184,151,90,0.35);
-    }
-
-    /* Inner thick gold frame */
-    .front__frame-inner {
-      position: absolute;
-      inset: 30px;
-      border: 0.5px solid rgba(184,151,90,0.15);
-    }
-
-    /* Tiny gold dots at each corner of outer frame */
+    /* Corner frame dots — white */
     .front__dot {
       position: absolute;
       width: 5px; height: 5px;
-      background: var(--gold);
+      background: rgba(255,255,255,0.7);
       border-radius: 50%;
+      z-index: 3;
     }
     .front__dot--tl { top: 16px;  left: 16px; }
     .front__dot--tr { top: 16px;  right: 16px; }
     .front__dot--bl { bottom: 16px; left: 16px; }
     .front__dot--br { bottom: 16px; right: 16px; }
+
+    /* Thin white border frame */
+    .front__frame {
+      position: absolute;
+      inset: 22px;
+      border: 1px solid rgba(255,255,255,0.35);
+      z-index: 2;
+    }
 
     .front__inner {
       position: absolute;
@@ -79,153 +68,126 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      z-index: 2;
+      z-index: 4;
       gap: 0;
     }
 
-    /* Large "G" initial only — single letter statement */
-    .front__eyebrow {
-      font-family: var(--font-sans);
-      font-size: 8px;
-      font-weight: 500;
-      letter-spacing: 0.42em;
-      color: rgba(184,151,90,0.5);
-      text-transform: uppercase;
-      margin-bottom: 16px;
+    /* Square SVG monogram rendered via inline SVG */
+    .front__mark {
+      margin-bottom: 22px;
     }
 
-    .front__initial {
-      font-family: var(--font-serif);
-      font-size: 260px;
-      font-weight: 300;
-      line-height: 0.82;
-      color: var(--gold);
-      opacity: 0.18;
-      position: absolute;
-      user-select: none;
-      pointer-events: none;
-    }
-
-    .front__monogram-block {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-    }
-
-    .front__gdc {
-      font-family: var(--font-serif);
-      font-size: 78px;
-      font-weight: 300;
-      color: var(--gold);
-      letter-spacing: 22px;
-      padding-left: 22px;
-      line-height: 1;
-    }
-
-    .front__rule-full {
-      width: 320px;
+    .front__rule {
+      width: 260px;
       height: 1px;
-      background: linear-gradient(to right, transparent, rgba(184,151,90,0.4) 30%, rgba(184,151,90,0.4) 70%, transparent);
-      margin: 14px 0;
+      background: rgba(255,255,255,0.35);
+      margin: 0 0 20px;
     }
 
-    .front__fullname {
+    .front__name {
       font-family: var(--font-serif);
-      font-size: 22px;
+      font-size: 36px;
       font-weight: 300;
-      color: rgba(255,255,255,0.7);
-      letter-spacing: 0.18em;
+      color: #fff;
+      letter-spacing: 0.12em;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .front__company {
+      font-family: var(--font-sans);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.36em;
+      color: rgba(255,255,255,0.65);
       text-transform: uppercase;
     }
 
     .front__bottom {
       position: absolute;
-      bottom: 44px;
+      bottom: 36px;
       left: 0; right: 0;
       text-align: center;
       font-family: var(--font-sans);
-      font-size: 8px;
+      font-size: 7.5px;
       font-weight: 400;
-      letter-spacing: 0.38em;
-      color: rgba(184,151,90,0.3);
+      letter-spacing: 0.32em;
+      color: rgba(255,255,255,0.35);
       text-transform: uppercase;
     }
 
-    /* ══ DESIGN C BACK — Cream, very minimal ══ */
+    /* ══ BACK — White, 0.25" margins, content fills the space ══ */
     .card--back {
       background: #fff;
     }
 
-    /* Single thick gold left bar */
-    .back__bar {
-      position: absolute;
-      top: 0; left: 0; bottom: 0;
-      width: 6px;
-      background: var(--gold);
-    }
-
     .back__inner {
       position: absolute;
-      top: 0; left: 6px; right: 0; bottom: 0;
+      inset: var(--margin);
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      padding: 60px 52px 60px 56px;
+      justify-content: flex-start;
     }
 
-    .back__mark {
-      width: 44px; height: 44px;
-      border: 1.5px solid var(--gold);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 20px;
-      position: relative;
-      flex-shrink: 0;
-    }
-    .back__mark::after {
-      content: '';
-      position: absolute;
-      inset: 5px;
-      border: 0.7px dashed rgba(184,151,90,0.5);
-    }
-    .back__mark-text {
-      font-family: var(--font-serif);
-      font-size: 13px;
-      color: var(--gold);
-      letter-spacing: 2.5px;
-      padding-left: 2.5px;
-      position: relative;
-    }
+    .back__mark { margin-bottom: 14px; }
 
     .back__name {
       font-family: var(--font-serif);
-      font-size: 34px;
+      font-size: 36px;
       font-weight: 400;
       color: var(--dark);
       line-height: 1;
-      margin-bottom: 3px;
+      margin-bottom: 5px;
     }
     .back__title {
       font-family: var(--font-serif);
       font-size: 13px;
       font-style: italic;
       color: var(--gold);
-      margin-bottom: 24px;
+      letter-spacing: 0.02em;
+      margin-bottom: 28px;
     }
 
-    .back__divider { width: 32px; height: 1.5px; background: var(--gold); margin-bottom: 20px; }
+    .back__divider {
+      width: 36px;
+      height: 2px;
+      background: var(--gold);
+      margin-bottom: 28px;
+    }
 
-    .back__contact { display: flex; flex-direction: column; gap: 7px; }
+    .back__contact {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
     .back__contact-line {
       font-family: var(--font-sans);
-      font-size: 10.5px;
-      color: #666;
-      letter-spacing: 0.04em;
+      font-size: 11.5px;
+      color: #555;
+      letter-spacing: 0.03em;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      line-height: 1;
     }
-    .back__contact-line b { color: var(--gold); font-weight: 500; font-size: 9px; letter-spacing: 0.12em; width: 10px; }
+    .back__contact-label {
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: var(--gold);
+      text-transform: uppercase;
+      width: 12px;
+      flex-shrink: 0;
+    }
+    .back__location {
+      font-family: var(--font-sans);
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      color: #bbb;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
 
     .print-btn { font-family:var(--font-sans); font-size:10px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; background:var(--gold); color:#fff; border:none; padding:12px 28px; cursor:pointer; margin-top:20px; }
     .print-btn:hover { background:#fff; color:var(--dark); }
@@ -242,22 +204,29 @@
 
   <!-- FRONT -->
   <div class="card-wrap">
-    <p class="label">Design C — Front · Full-Name Stacked Type</p>
+    <p class="label">Design C — Front · Gold</p>
     <div class="card card--front">
-      <div class="front__frame-outer"></div>
-      <div class="front__frame-inner"></div>
+      <div class="front__frame"></div>
       <div class="front__dot front__dot--tl"></div>
       <div class="front__dot front__dot--tr"></div>
       <div class="front__dot front__dot--bl"></div>
       <div class="front__dot front__dot--br"></div>
 
       <div class="front__inner">
-        <div class="front__monogram-block">
-          <div class="front__eyebrow">Grace Dougan</div>
-          <div class="front__gdc">GDC</div>
-          <div class="front__rule-full"></div>
-          <div class="front__fullname">Consulting</div>
+        <div class="front__mark">
+          <svg width="140" height="140" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="6" width="108" height="108" stroke="rgba(255,255,255,0.75)" stroke-width="1.5"/>
+            <rect x="14" y="14" width="92" height="92" stroke="rgba(255,255,255,0.35)" stroke-width="0.7" stroke-dasharray="3 3"/>
+            <text x="60" y="70" text-anchor="middle"
+              font-family="Cormorant Garamond, Georgia, serif"
+              font-size="32" font-weight="400" fill="white" letter-spacing="5">GDC</text>
+          </svg>
         </div>
+
+        <div class="front__rule"></div>
+
+        <div class="front__name">Grace Dougan</div>
+        <div class="front__company">Consulting</div>
       </div>
 
       <div class="front__bottom">Bay Area · Est. 2010</div>
@@ -266,22 +235,37 @@
 
   <!-- BACK -->
   <div class="card-wrap">
-    <p class="label">Design C — Back · Left Gold Bar</p>
+    <p class="label">Design C — Back · 0.25″ Margin</p>
     <div class="card card--back">
-      <div class="back__bar"></div>
       <div class="back__inner">
+
         <div class="back__mark">
-          <span class="back__mark-text">GDC</span>
+          <svg width="52" height="52" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="6" width="108" height="108" stroke="#B8975A" stroke-width="1.5"/>
+            <rect x="14" y="14" width="92" height="92" stroke="#B8975A" stroke-width="0.6" stroke-dasharray="3 3"/>
+            <text x="60" y="70" text-anchor="middle"
+              font-family="Cormorant Garamond, Georgia, serif"
+              font-size="32" font-weight="400" fill="#B8975A" letter-spacing="5">GDC</text>
+          </svg>
         </div>
         <div class="back__name">Grace Dougan</div>
         <div class="back__title">Founder &amp; Principal</div>
+
         <div class="back__divider"></div>
+
         <div class="back__contact">
-          <div class="back__contact-line"><b>P</b>415.827.9648</div>
-          <div class="back__contact-line"><b>E</b>grace@gracedouganconsulting.com</div>
-          <div class="back__contact-line"><b>W</b>gracedouganconsulting.com</div>
-          <div class="back__contact-line" style="margin-top:4px; font-size:9px; letter-spacing:0.16em; color:#bbb; text-transform:uppercase;">Bay Area, California</div>
+          <div class="back__contact-line">
+            <span class="back__contact-label">P</span>415.827.9648
+          </div>
+          <div class="back__contact-line">
+            <span class="back__contact-label">E</span>grace@gracedouganconsulting.com
+          </div>
+          <div class="back__contact-line">
+            <span class="back__contact-label">W</span>gracedouganconsulting.com
+          </div>
+          <div class="back__location">Bay Area, California</div>
         </div>
+
       </div>
     </div>
   </div>
