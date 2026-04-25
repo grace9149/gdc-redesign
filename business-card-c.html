@@ -126,7 +126,7 @@
       inset: var(--margin);
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: space-between;
     }
 
     .back__mark { margin-bottom: 14px; }
@@ -145,14 +145,13 @@
       font-style: italic;
       color: var(--gold);
       letter-spacing: 0.02em;
-      margin-bottom: 28px;
     }
 
     .back__divider {
       width: 36px;
       height: 2px;
       background: var(--gold);
-      margin-bottom: 28px;
+      margin-bottom: 20px;
     }
 
     .back__contact {
@@ -239,31 +238,36 @@
     <div class="card card--back">
       <div class="back__inner">
 
-        <div class="back__mark">
-          <svg width="52" height="52" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="6" y="6" width="108" height="108" stroke="#B8975A" stroke-width="1.5"/>
-            <rect x="14" y="14" width="92" height="92" stroke="#B8975A" stroke-width="0.6" stroke-dasharray="3 3"/>
-            <text x="60" y="70" text-anchor="middle"
-              font-family="Cormorant Garamond, Georgia, serif"
-              font-size="32" font-weight="400" fill="#B8975A" letter-spacing="5">GDC</text>
-          </svg>
+        <!-- Top group -->
+        <div>
+          <div class="back__mark">
+            <svg width="52" height="52" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="6" y="6" width="108" height="108" stroke="#B8975A" stroke-width="1.5"/>
+              <rect x="14" y="14" width="92" height="92" stroke="#B8975A" stroke-width="0.6" stroke-dasharray="3 3"/>
+              <text x="60" y="70" text-anchor="middle"
+                font-family="Cormorant Garamond, Georgia, serif"
+                font-size="32" font-weight="400" fill="#B8975A" letter-spacing="5">GDC</text>
+            </svg>
+          </div>
+          <div class="back__name">Grace Dougan</div>
+          <div class="back__title">Founder &amp; Principal</div>
         </div>
-        <div class="back__name">Grace Dougan</div>
-        <div class="back__title">Founder &amp; Principal</div>
 
-        <div class="back__divider"></div>
-
-        <div class="back__contact">
-          <div class="back__contact-line">
-            <span class="back__contact-label">P</span>415.827.9648
+        <!-- Bottom group -->
+        <div>
+          <div class="back__divider"></div>
+          <div class="back__contact">
+            <div class="back__contact-line">
+              <span class="back__contact-label">P</span>415.827.9648
+            </div>
+            <div class="back__contact-line">
+              <span class="back__contact-label">E</span>grace@gracedouganconsulting.com
+            </div>
+            <div class="back__contact-line">
+              <span class="back__contact-label">W</span>gracedouganconsulting.com
+            </div>
+            <div class="back__location">Bay Area, California</div>
           </div>
-          <div class="back__contact-line">
-            <span class="back__contact-label">E</span>grace@gracedouganconsulting.com
-          </div>
-          <div class="back__contact-line">
-            <span class="back__contact-label">W</span>gracedouganconsulting.com
-          </div>
-          <div class="back__location">Bay Area, California</div>
         </div>
 
       </div>
