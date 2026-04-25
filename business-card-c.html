@@ -16,9 +16,11 @@
       --cream: #FAF8F4;
       --font-serif: 'Cormorant Garamond', Georgia, serif;
       --font-sans: 'Montserrat', Arial, sans-serif;
-      --card-size: 720px;
-      /* 0.25" margin: card = 2.5", so 0.25/2.5 × 720 = 72px */
-      --margin: 72px;
+      /* Front square: 2.5" × 2.5" @ 288px/in */
+      --front-size: 720px;
+      /* Back landscape: 3.5" × 2" @ 240px/in */
+      --back-w: 840px;
+      --back-h: 480px;
     }
     body {
       background: #2a2a2a;
@@ -33,14 +35,18 @@
     }
     .label { color: #888; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; text-align: center; margin-bottom: 16px; }
     .card-wrap { display: flex; flex-direction: column; align-items: center; }
-    .card { width: var(--card-size); height: var(--card-size); position: relative; overflow: hidden; }
+    .card { position: relative; overflow: hidden; }
 
-    /* ══ FRONT — Solid gold, square monogram, white type ══ */
+    /* ══════════════════════════════════════════
+       DESIGN C — FRONT · Square gold card
+    ══════════════════════════════════════════ */
     .card--front {
+      width: var(--front-size);
+      height: var(--front-size);
       background: var(--gold);
     }
 
-    /* Corner frame dots — white */
+    /* Corner dots */
     .front__dot {
       position: absolute;
       width: 5px; height: 5px;
@@ -53,7 +59,6 @@
     .front__dot--bl { bottom: 16px; left: 16px; }
     .front__dot--br { bottom: 16px; right: 16px; }
 
-    /* Thin white border frame */
     .front__frame {
       position: absolute;
       inset: 22px;
@@ -69,13 +74,9 @@
       align-items: center;
       justify-content: center;
       z-index: 4;
-      gap: 0;
     }
 
-    /* Square SVG monogram rendered via inline SVG */
-    .front__mark {
-      margin-bottom: 22px;
-    }
+    .front__mark { margin-bottom: 22px; }
 
     .front__rule {
       width: 260px;
@@ -116,57 +117,73 @@
       text-transform: uppercase;
     }
 
-    /* ══ BACK — White, 0.25" margins, content fills the space ══ */
+    /* ══════════════════════════════════════════
+       DESIGN C — BACK · Landscape with gold stripe
+    ══════════════════════════════════════════ */
     .card--back {
+      width: var(--back-w);
+      height: var(--back-h);
       background: #fff;
+    }
+
+    /* Gold left accent stripe */
+    .back__stripe {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 5px;
+      background: var(--gold);
+      z-index: 2;
     }
 
     .back__inner {
       position: absolute;
-      inset: var(--margin);
+      top: 36px; bottom: 32px;
+      left: 48px; right: 36px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
 
-    .back__mark { margin-bottom: 14px; }
+    /* Top group */
+    .back__top { display: flex; flex-direction: column; }
+    .back__mark { margin-bottom: 12px; }
 
     .back__name {
       font-family: var(--font-serif);
-      font-size: 36px;
+      font-size: 50px;
       font-weight: 400;
       color: var(--dark);
       line-height: 1;
       margin-bottom: 5px;
+      letter-spacing: -0.01em;
     }
     .back__title {
       font-family: var(--font-serif);
-      font-size: 13px;
+      font-size: 14px;
       font-style: italic;
       color: var(--gold);
       letter-spacing: 0.02em;
+      margin-bottom: 18px;
     }
-
     .back__divider {
       width: 36px;
       height: 2px;
       background: var(--gold);
       margin-bottom: 20px;
     }
-
     .back__contact {
       display: flex;
       flex-direction: column;
-      gap: 13px;
+      gap: 12px;
     }
     .back__contact-line {
       font-family: var(--font-sans);
-      font-size: 11.5px;
+      font-size: 12px;
       color: #555;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.02em;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       line-height: 1;
     }
     .back__contact-label {
@@ -178,32 +195,96 @@
       width: 12px;
       flex-shrink: 0;
     }
+
+    /* Bottom: location */
     .back__location {
       font-family: var(--font-sans);
       font-size: 9px;
       font-weight: 400;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.22em;
       color: #bbb;
       text-transform: uppercase;
-      margin-top: 6px;
     }
 
-    .print-btn { font-family:var(--font-sans); font-size:10px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; background:var(--gold); color:#fff; border:none; padding:12px 28px; cursor:pointer; margin-top:20px; }
-    .print-btn:hover { background:#fff; color:var(--dark); }
-    .print-note { color:#666; font-size:10px; letter-spacing:0.08em; text-align:center; margin-top:12px; }
+    /* ══════════════════════════════════════════
+       DESIGN D — FRONT · Gold + monogram box
+    ══════════════════════════════════════════ */
+    .card--front-d {
+      width: var(--front-size);
+      height: var(--front-size);
+      background: var(--gold);
+    }
+
+    /* Card-edge thin frame */
+    .d__frame {
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(255,255,255,0.4);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Center monogram box */
+    .d__center {
+      position: absolute;
+      width: 310px; height: 310px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -55%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+    }
+
+    /* Company name at bottom */
+    .d__company {
+      position: absolute;
+      bottom: 38px;
+      left: 0; right: 0;
+      text-align: center;
+      font-family: var(--font-sans);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.38em;
+      color: rgba(255,255,255,0.65);
+      text-transform: uppercase;
+      z-index: 4;
+    }
+
+    /* ══════════════════════════════════════════
+       PRINT / CONTROLS
+    ══════════════════════════════════════════ */
+    .print-btn {
+      font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      background: var(--gold); color: #fff; border: none;
+      padding: 12px 28px; cursor: pointer; margin-top: 20px;
+    }
+    .print-btn:hover { background: #fff; color: var(--dark); }
+    .print-note { color: #666; font-size: 10px; letter-spacing: 0.08em; text-align: center; margin-top: 12px; }
+
+    .divider-label {
+      color: #555; font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      text-align: center; width: 100%;
+      border-top: 1px solid #444;
+      padding-top: 40px;
+      margin-top: 20px;
+    }
 
     @media print {
-      body { background:white; padding:0; gap:0; }
-      .label,.print-btn,.print-note { display:none; }
-      .card--front { page-break-after:always; }
+      body { background: white; padding: 0; gap: 0; }
+      .label, .print-btn, .print-note, .divider-label { display: none; }
+      .card--front, .card--front-d { page-break-after: always; }
     }
   </style>
 </head>
 <body>
 
-  <!-- FRONT -->
+  <!-- ═══ DESIGN C — FRONT ═══ -->
   <div class="card-wrap">
-    <p class="label">Design C — Front · Gold</p>
+    <p class="label">Design C — Front · Square Gold</p>
     <div class="card card--front">
       <div class="front__frame"></div>
       <div class="front__dot front__dot--tl"></div>
@@ -221,9 +302,7 @@
               font-size="32" font-weight="400" fill="white" letter-spacing="5">GDC</text>
           </svg>
         </div>
-
         <div class="front__rule"></div>
-
         <div class="front__name">Grace Dougan</div>
         <div class="front__company">Consulting</div>
       </div>
@@ -232,16 +311,17 @@
     </div>
   </div>
 
-  <!-- BACK -->
+  <!-- ═══ DESIGN C — BACK ═══ -->
   <div class="card-wrap">
-    <p class="label">Design C — Back · 0.25″ Margin</p>
+    <p class="label">Design C — Back · Landscape 3.5″ × 2″</p>
     <div class="card card--back">
+      <div class="back__stripe"></div>
       <div class="back__inner">
 
-        <!-- Top group -->
-        <div>
+        <!-- Top group: mark + name + title + divider + contact -->
+        <div class="back__top">
           <div class="back__mark">
-            <svg width="52" height="52" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="44" height="44" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="6" y="6" width="108" height="108" stroke="#B8975A" stroke-width="1.5"/>
               <rect x="14" y="14" width="92" height="92" stroke="#B8975A" stroke-width="0.6" stroke-dasharray="3 3"/>
               <text x="60" y="70" text-anchor="middle"
@@ -251,10 +331,6 @@
           </div>
           <div class="back__name">Grace Dougan</div>
           <div class="back__title">Founder &amp; Principal</div>
-        </div>
-
-        <!-- Bottom group -->
-        <div>
           <div class="back__divider"></div>
           <div class="back__contact">
             <div class="back__contact-line">
@@ -266,17 +342,55 @@
             <div class="back__contact-line">
               <span class="back__contact-label">W</span>gracedouganconsulting.com
             </div>
-            <div class="back__location">Bay Area, California</div>
           </div>
         </div>
+
+        <!-- Bottom: location -->
+        <div class="back__location">Bay Area, California</div>
 
       </div>
     </div>
   </div>
 
+  <p class="divider-label">— Alternative Front Design —</p>
+
+  <!-- ═══ DESIGN D — FRONT ═══ -->
+  <div class="card-wrap">
+    <p class="label">Design D — Front · Gold · Monogram Box</p>
+    <div class="card card--front-d">
+      <div class="d__frame"></div>
+
+      <div class="d__center">
+        <svg width="310" height="310" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Corner bracket marks -->
+          <polyline points="4,16 4,4 16,4" stroke="rgba(255,255,255,0.7)" stroke-width="0.9" fill="none" stroke-linecap="square"/>
+          <polyline points="84,4 96,4 96,16" stroke="rgba(255,255,255,0.7)" stroke-width="0.9" fill="none" stroke-linecap="square"/>
+          <polyline points="4,84 4,96 16,96" stroke="rgba(255,255,255,0.7)" stroke-width="0.9" fill="none" stroke-linecap="square"/>
+          <polyline points="84,96 96,96 96,84" stroke="rgba(255,255,255,0.7)" stroke-width="0.9" fill="none" stroke-linecap="square"/>
+          <!-- Outer solid frame -->
+          <rect x="4" y="4" width="92" height="92" stroke="rgba(255,255,255,0.7)" stroke-width="0.7"/>
+          <!-- Inner dashed frame -->
+          <rect x="11" y="11" width="78" height="78" stroke="rgba(255,255,255,0.32)" stroke-width="0.5" stroke-dasharray="3 2"/>
+          <!-- GDC text -->
+          <text x="50" y="55" text-anchor="middle"
+            font-family="Cormorant Garamond, Georgia, serif"
+            font-size="30" font-weight="300" fill="white" letter-spacing="10">GDC</text>
+          <!-- Rule -->
+          <line x1="34" y1="64" x2="66" y2="64" stroke="rgba(255,255,255,0.45)" stroke-width="0.6"/>
+          <!-- EST. 2010 -->
+          <text x="50" y="75" text-anchor="middle"
+            font-family="Montserrat, Arial, sans-serif"
+            font-size="5.5" font-weight="500" fill="rgba(255,255,255,0.65)" letter-spacing="3">EST. 2010</text>
+        </svg>
+      </div>
+
+      <div class="d__company">Grace Dougan Consulting</div>
+    </div>
+  </div>
+
   <div style="text-align:center;">
     <button class="print-btn" onclick="window.print()">Save as PDF / Print</button>
-    <p class="print-note">Square 2.5″ × 2.5″ · Print at 100% scale</p>
+    <p class="print-note">Front square 2.5″ × 2.5″ · Back landscape 3.5″ × 2″ · Print at 100% scale</p>
   </div>
 
 </body>
