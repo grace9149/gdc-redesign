@@ -18,9 +18,9 @@
       --font-sans: 'Montserrat', Arial, sans-serif;
       /* Front square: 2.5" × 2.5" @ 288px/in */
       --front-size: 720px;
-      /* Back landscape: 3.5" × 2" @ 240px/in */
-      --back-w: 840px;
-      --back-h: 480px;
+      /* Back: same square as front */
+      --back-w: 720px;
+      --back-h: 720px;
     }
     body {
       background: #2a2a2a;
@@ -137,8 +137,8 @@
 
     .back__inner {
       position: absolute;
-      top: 36px; bottom: 32px;
-      left: 48px; right: 36px;
+      top: 56px; bottom: 56px;
+      left: 60px; right: 56px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -253,6 +253,46 @@
     }
 
     /* ══════════════════════════════════════════
+       DESIGN E — FRONT · White + Gold (reverse of D)
+    ══════════════════════════════════════════ */
+    .card--front-e {
+      width: var(--front-size);
+      height: var(--front-size);
+      background: #fff;
+    }
+    .e__frame {
+      position: absolute;
+      inset: 14px;
+      border: 1px solid rgba(184,151,90,0.4);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .e__center {
+      position: absolute;
+      width: 310px; height: 310px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -55%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+    }
+    .e__company {
+      position: absolute;
+      bottom: 38px;
+      left: 0; right: 0;
+      text-align: center;
+      font-family: var(--font-sans);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.38em;
+      color: rgba(184,151,90,0.7);
+      text-transform: uppercase;
+      z-index: 4;
+    }
+
+    /* ══════════════════════════════════════════
        PRINT / CONTROLS
     ══════════════════════════════════════════ */
     .print-btn {
@@ -276,7 +316,7 @@
     @media print {
       body { background: white; padding: 0; gap: 0; }
       .label, .print-btn, .print-note, .divider-label { display: none; }
-      .card--front, .card--front-d { page-break-after: always; }
+      .card--front, .card--front-d, .card--front-e { page-break-after: always; }
     }
   </style>
 </head>
@@ -313,7 +353,7 @@
 
   <!-- ═══ DESIGN C — BACK ═══ -->
   <div class="card-wrap">
-    <p class="label">Design C — Back · Landscape 3.5″ × 2″</p>
+    <p class="label">Design C — Back · Square 2.5″ × 2.5″</p>
     <div class="card card--back">
       <div class="back__stripe"></div>
       <div class="back__inner">
@@ -362,25 +402,29 @@
 
       <div class="d__center">
         <svg width="310" height="310" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Corner bracket marks -->
-          <polyline points="4,16 4,4 16,4" stroke="rgba(255,255,255,0.7)" stroke-width="0.9" fill="none" stroke-linecap="square"/>
-          <polyline points="84,4 96,4 96,16" stroke="rgba(255,255,255,0.7)" stroke-width="0.9" fill="none" stroke-linecap="square"/>
-          <polyline points="4,84 4,96 16,96" stroke="rgba(255,255,255,0.7)" stroke-width="0.9" fill="none" stroke-linecap="square"/>
-          <polyline points="84,96 96,96 96,84" stroke="rgba(255,255,255,0.7)" stroke-width="0.9" fill="none" stroke-linecap="square"/>
           <!-- Outer solid frame -->
-          <rect x="4" y="4" width="92" height="92" stroke="rgba(255,255,255,0.7)" stroke-width="0.7"/>
+          <rect x="4" y="4" width="92" height="92" stroke="rgba(255,255,255,0.75)" stroke-width="0.8"/>
+          <!-- Corner tick extensions -->
+          <line x1="0" y1="4" x2="8" y2="4" stroke="rgba(255,255,255,0.75)" stroke-width="0.8"/>
+          <line x1="4" y1="0" x2="4" y2="8" stroke="rgba(255,255,255,0.75)" stroke-width="0.8"/>
+          <line x1="92" y1="4" x2="100" y2="4" stroke="rgba(255,255,255,0.75)" stroke-width="0.8"/>
+          <line x1="96" y1="0" x2="96" y2="8" stroke="rgba(255,255,255,0.75)" stroke-width="0.8"/>
+          <line x1="0" y1="96" x2="8" y2="96" stroke="rgba(255,255,255,0.75)" stroke-width="0.8"/>
+          <line x1="4" y1="92" x2="4" y2="100" stroke="rgba(255,255,255,0.75)" stroke-width="0.8"/>
+          <line x1="92" y1="96" x2="100" y2="96" stroke="rgba(255,255,255,0.75)" stroke-width="0.8"/>
+          <line x1="96" y1="92" x2="96" y2="100" stroke="rgba(255,255,255,0.75)" stroke-width="0.8"/>
           <!-- Inner dashed frame -->
-          <rect x="11" y="11" width="78" height="78" stroke="rgba(255,255,255,0.32)" stroke-width="0.5" stroke-dasharray="3 2"/>
-          <!-- GDC text -->
-          <text x="50" y="55" text-anchor="middle"
+          <rect x="11" y="11" width="78" height="78" stroke="rgba(255,255,255,0.3)" stroke-width="0.5" stroke-dasharray="3 2"/>
+          <!-- GDC text — sized to sit comfortably inside the frame -->
+          <text x="50" y="52" text-anchor="middle"
             font-family="Cormorant Garamond, Georgia, serif"
-            font-size="30" font-weight="300" fill="white" letter-spacing="10">GDC</text>
+            font-size="22" font-weight="300" fill="white" letter-spacing="7">GDC</text>
           <!-- Rule -->
-          <line x1="34" y1="64" x2="66" y2="64" stroke="rgba(255,255,255,0.45)" stroke-width="0.6"/>
+          <line x1="33" y1="62" x2="67" y2="62" stroke="rgba(255,255,255,0.45)" stroke-width="0.6"/>
           <!-- EST. 2010 -->
-          <text x="50" y="75" text-anchor="middle"
+          <text x="50" y="73" text-anchor="middle"
             font-family="Montserrat, Arial, sans-serif"
-            font-size="5.5" font-weight="500" fill="rgba(255,255,255,0.65)" letter-spacing="3">EST. 2010</text>
+            font-size="5" font-weight="500" fill="rgba(255,255,255,0.65)" letter-spacing="3">EST. 2010</text>
         </svg>
       </div>
 
@@ -388,9 +432,47 @@
     </div>
   </div>
 
+  <!-- ═══ DESIGN E — FRONT (white / gold reverse) ═══ -->
+  <div class="card-wrap">
+    <p class="label">Design E — Front · White · Gold</p>
+    <div class="card card--front-e">
+      <div class="e__frame"></div>
+
+      <div class="e__center">
+        <svg width="310" height="310" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer solid frame -->
+          <rect x="4" y="4" width="92" height="92" stroke="rgba(184,151,90,0.8)" stroke-width="0.8"/>
+          <!-- Corner tick extensions -->
+          <line x1="0" y1="4" x2="8" y2="4" stroke="rgba(184,151,90,0.8)" stroke-width="0.8"/>
+          <line x1="4" y1="0" x2="4" y2="8" stroke="rgba(184,151,90,0.8)" stroke-width="0.8"/>
+          <line x1="92" y1="4" x2="100" y2="4" stroke="rgba(184,151,90,0.8)" stroke-width="0.8"/>
+          <line x1="96" y1="0" x2="96" y2="8" stroke="rgba(184,151,90,0.8)" stroke-width="0.8"/>
+          <line x1="0" y1="96" x2="8" y2="96" stroke="rgba(184,151,90,0.8)" stroke-width="0.8"/>
+          <line x1="4" y1="92" x2="4" y2="100" stroke="rgba(184,151,90,0.8)" stroke-width="0.8"/>
+          <line x1="92" y1="96" x2="100" y2="96" stroke="rgba(184,151,90,0.8)" stroke-width="0.8"/>
+          <line x1="96" y1="92" x2="96" y2="100" stroke="rgba(184,151,90,0.8)" stroke-width="0.8"/>
+          <!-- Inner dashed frame -->
+          <rect x="11" y="11" width="78" height="78" stroke="rgba(184,151,90,0.3)" stroke-width="0.5" stroke-dasharray="3 2"/>
+          <!-- GDC text -->
+          <text x="50" y="52" text-anchor="middle"
+            font-family="Cormorant Garamond, Georgia, serif"
+            font-size="22" font-weight="300" fill="#B8975A" letter-spacing="7">GDC</text>
+          <!-- Rule -->
+          <line x1="33" y1="62" x2="67" y2="62" stroke="rgba(184,151,90,0.45)" stroke-width="0.6"/>
+          <!-- EST. 2010 -->
+          <text x="50" y="73" text-anchor="middle"
+            font-family="Montserrat, Arial, sans-serif"
+            font-size="5" font-weight="500" fill="rgba(184,151,90,0.7)" letter-spacing="3">EST. 2010</text>
+        </svg>
+      </div>
+
+      <div class="e__company">Grace Dougan Consulting</div>
+    </div>
+  </div>
+
   <div style="text-align:center;">
     <button class="print-btn" onclick="window.print()">Save as PDF / Print</button>
-    <p class="print-note">Front square 2.5″ × 2.5″ · Back landscape 3.5″ × 2″ · Print at 100% scale</p>
+    <p class="print-note">All fronts square 2.5″ × 2.5″ · Print at 100% scale</p>
   </div>
 
 </body>
