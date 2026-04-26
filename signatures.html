@@ -298,12 +298,11 @@
       showContent();
     }
 
-    // ── Signature data ──
-    // Gmail-safe mark: outer solid border, inner dashed border, centered GDC text
-    const MARK = `<table cellpadding="0" cellspacing="0" border="0" style="border:2px solid #B8975A;background:#ffffff;width:52px;height:52px;">
-      <tr><td style="padding:4px;">
-        <table cellpadding="0" cellspacing="0" border="0" style="border:1px dashed #B8975A;width:100%;height:40px;">
-          <tr><td style="text-align:center;vertical-align:middle;font-family:Georgia,'Times New Roman',serif;font-size:10px;letter-spacing:3px;color:#B8975A;padding-left:3px;">GDC</td></tr>
+    // ── Signature data — Option 4 style: dashed box mark ──
+    const MARK = `<table cellpadding="0" cellspacing="0" border="0" style="border:2px solid #B8975A;background:#ffffff;width:56px;height:56px;">
+      <tr><td style="padding:5px;">
+        <table cellpadding="0" cellspacing="0" border="0" style="border:1px dashed #B8975A;width:100%;height:100%;">
+          <tr><td style="text-align:center;vertical-align:middle;font-family:Georgia,'Times New Roman',serif;font-size:12px;font-weight:400;letter-spacing:3px;color:#B8975A;padding-left:3px;">GDC</td></tr>
         </table>
       </td></tr>
     </table>`;
@@ -348,34 +347,36 @@
       const container = document.getElementById('sigs-container');
       team.forEach((p, i) => {
         const phoneRow = p.phone
-          ? `<tr><td style="padding-bottom:3px;"><span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#666666;">P:&nbsp;<a href="tel:${p.tel}" style="color:#666666;text-decoration:none;">${p.phone}</a></span></td></tr>`
+          ? `<tr><td style="padding-bottom:4px;"><span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#666666;">P:&nbsp;<a href="tel:${p.tel}" style="color:#666666;text-decoration:none;">${p.phone}</a></span></td></tr>`
           : '';
         const titleRow = p.title
-          ? `<div style="font-family:Georgia,'Times New Roman',serif;font-size:13px;font-style:italic;color:#111111;margin-bottom:10px;">${p.title}</div>`
+          ? `<div style="font-family:Georgia,'Times New Roman',serif;font-size:13px;font-style:italic;color:#444444;margin-bottom:12px;">${p.title}</div>`
           : '';
         const nameMb = p.title ? '2px' : '12px';
 
         container.innerHTML += `
         <div class="sig-wrapper">
           <p class="sig-label">${i+1} &mdash; ${p.name}</p>
-          <table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#444444;max-width:520px;width:100%;">
-            <tr><td style="padding:0 0 16px 0;"><table cellpadding="0" cellspacing="0" border="0" style="width:100%;"><tr><td style="height:2px;background-color:#B8975A;padding:0;"></td></tr></table></td></tr>
-            <tr><td><table cellpadding="0" cellspacing="0" border="0"><tr>
-              <td style="vertical-align:top;padding-right:16px;">${MARK}</td>
-              <td style="vertical-align:top;">
-                <div style="font-family:Georgia,'Times New Roman',serif;font-size:20px;font-weight:normal;color:#111111;line-height:1.1;margin-bottom:${nameMb};">${p.name}</div>
-                ${titleRow}
-                <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;"><tr><td style="width:28px;height:1px;background-color:#B8975A;font-size:0;line-height:0;">&nbsp;</td></tr></table>
-                <div style="font-family:Georgia,'Times New Roman',serif;font-size:12px;letter-spacing:0.04em;color:#B8975A;margin-bottom:8px;">GRACE DOUGAN <span style="font-style:italic;">Consulting</span></div>
-                <table cellpadding="0" cellspacing="0" border="0">
-                  ${phoneRow}
-                  <tr><td style="padding-bottom:3px;"><span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#666666;">E:&nbsp;<a href="mailto:${p.email}" style="color:#B8975A;text-decoration:none;">${p.email}</a></span></td></tr>
-                  <tr><td><span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#666666;">W:&nbsp;<a href="https://www.gracedouganconsulting.com" style="color:#B8975A;text-decoration:none;">gracedouganconsulting.com</a></span></td></tr>
-                </table>
-              </td>
-            </tr></table></td></tr>
-            <tr><td style="padding-top:14px;"><div style="font-family:Georgia,'Times New Roman',serif;font-size:11px;font-style:italic;color:#999999;letter-spacing:0.02em;">${TAGLINE}</div></td></tr>
-            <tr><td style="padding-top:14px;"><table cellpadding="0" cellspacing="0" border="0" style="width:100%;"><tr><td style="height:1px;background-color:#E8E4DE;padding:0;"></td></tr></table></td></tr>
+          <table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;max-width:520px;width:100%;background:#ffffff;">
+            <tr><td style="padding:0 0 20px 0;"><table cellpadding="0" cellspacing="0" border="0" style="width:100%;"><tr><td style="height:2px;background-color:#B8975A;padding:0;font-size:0;"></td></tr></table></td></tr>
+            <tr><td style="padding:0 0 20px 0;">
+              <table cellpadding="0" cellspacing="0" border="0"><tr>
+                <td style="vertical-align:top;padding-right:20px;">${MARK}</td>
+                <td style="vertical-align:top;">
+                  <div style="font-family:Georgia,'Times New Roman',serif;font-size:21px;font-weight:normal;color:#111111;line-height:1.1;margin-bottom:${nameMb};">${p.name}</div>
+                  ${titleRow}
+                  <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:10px;"><tr><td style="width:28px;height:1.5px;background-color:#B8975A;font-size:0;line-height:0;">&nbsp;</td></tr></table>
+                  <div style="font-family:Georgia,'Times New Roman',serif;font-size:12px;letter-spacing:0.05em;color:#B8975A;margin-bottom:10px;">GRACE DOUGAN <span style="font-style:italic;">Consulting</span></div>
+                  <table cellpadding="0" cellspacing="0" border="0">
+                    ${phoneRow}
+                    <tr><td style="padding-bottom:4px;"><span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#666666;">E:&nbsp;<a href="mailto:${p.email}" style="color:#B8975A;text-decoration:none;">${p.email}</a></span></td></tr>
+                    <tr><td><span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#666666;">W:&nbsp;<a href="https://www.gracedouganconsulting.com" style="color:#B8975A;text-decoration:none;">gracedouganconsulting.com</a></span></td></tr>
+                  </table>
+                </td>
+              </tr></table>
+            </td></tr>
+            <tr><td style="padding-bottom:16px;"><div style="font-family:Georgia,'Times New Roman',serif;font-size:11px;font-style:italic;color:#aaaaaa;letter-spacing:0.02em;">${TAGLINE}</div></td></tr>
+            <tr><td><table cellpadding="0" cellspacing="0" border="0" style="width:100%;"><tr><td style="height:1px;background-color:#E8E4DE;padding:0;font-size:0;"></td></tr></table></td></tr>
           </table>
           <p class="sig-copy-note">Select the block above &rarr; &#8984;C &rarr; paste into <strong>Gmail Settings → Signature</strong> (not a compose window)</p>
         </div>`;
