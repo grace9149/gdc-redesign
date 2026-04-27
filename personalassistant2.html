@@ -550,13 +550,20 @@
       display: flex; align-items: center; justify-content: center;
       text-align: center;
     }
-    .cta-banner__bg {
+    /* Slideshow: stack all slides, crossfade via opacity */
+    .cta-banner__slide {
       position: absolute; inset: 0;
+      opacity: 0;
+      transition: opacity 1.8s ease;
     }
-    .cta-banner__bg img { width: 100%; height: 100%; object-fit: cover; }
-    .cta-banner__bg::after {
-      content: ''; position: absolute; inset: 0;
-      background: rgba(17,17,17,0.72);
+    .cta-banner__slide.active { opacity: 1; }
+    .cta-banner__slide img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    /* Dark overlay sits above all slides */
+    .cta-banner__overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background: rgba(17,17,17,0.68);
     }
     .cta-banner__content {
       position: relative; z-index: 2;
@@ -956,22 +963,31 @@
 
   <!-- CTA BANNER -->
   <section class="cta-banner" id="cta-banner">
-    <div class="cta-banner__bg" id="cta-bg">
-      <!-- Photo Option A: Marin Headlands at golden hour -->
-      <img id="cta-img"
-        src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1600&q=80&fit=crop"
-        alt="" aria-hidden="true" />
+    <!-- Slide 1: Beach -->
+    <div class="cta-banner__slide active">
+      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80&fit=crop" alt="" aria-hidden="true" />
     </div>
+    <!-- Slide 2: Spa -->
+    <div class="cta-banner__slide">
+      <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=1600&q=80&fit=crop" alt="" aria-hidden="true" />
+    </div>
+    <!-- Slide 3: Mountains -->
+    <div class="cta-banner__slide">
+      <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600&q=80&fit=crop" alt="" aria-hidden="true" />
+    </div>
+    <!-- Slide 4: Rain -->
+    <div class="cta-banner__slide">
+      <img src="https://images.unsplash.com/photo-1501999635878-71cb5379c2d8?w=1600&q=80&fit=crop" alt="" aria-hidden="true" />
+    </div>
+    <!-- Slide 5: Cloud forest -->
+    <div class="cta-banner__slide">
+      <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=1600&q=80&fit=crop" alt="" aria-hidden="true" />
+    </div>
+    <div class="cta-banner__overlay"></div>
     <div class="cta-banner__content fi">
       <h2 class="cta-banner__title">Ready to get your<br /><em>time back?</em></h2>
       <p class="cta-banner__sub">One conversation is all it takes. No commitment, no pressure.</p>
       <a href="#contact" class="cta-banner__btn">Schedule a Free Call</a>
-    </div>
-    <!-- Photo toggle — for preview only -->
-    <div style="position:absolute;bottom:20px;right:24px;z-index:10;display:flex;gap:8px;align-items:center;">
-      <span style="font-size:9px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.45);">Photo</span>
-      <button onclick="ctaPhoto(1)" id="cta-btn-1" style="width:32px;height:32px;border:1.5px solid rgba(255,255,255,0.6);background:rgba(255,255,255,0.18);color:#fff;font-size:11px;font-weight:600;cursor:pointer;transition:.2s;backdrop-filter:blur(4px);">1</button>
-      <button onclick="ctaPhoto(2)" id="cta-btn-2" style="width:32px;height:32px;border:1.5px solid rgba(255,255,255,0.25);background:transparent;color:rgba(255,255,255,0.5);font-size:11px;font-weight:600;cursor:pointer;transition:.2s;backdrop-filter:blur(4px);">2</button>
     </div>
   </section>
 
@@ -1096,26 +1112,16 @@
       });
     });
 
-    // CTA banner photo toggle
-    const ctaPhotos = {
-      1: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1600&q=80&fit=crop',  // Marin Headlands golden hour
-      2: 'https://images.unsplash.com/photo-1499028344343-cd173ffc68a9?w=1600&q=80&fit=crop',  // Peaceful woman, free time
-    };
-    function ctaPhoto(n) {
-      document.getElementById('cta-img').src = ctaPhotos[n];
-      [1,2].forEach(i => {
-        const btn = document.getElementById('cta-btn-' + i);
-        if (i === n) {
-          btn.style.border = '1.5px solid rgba(255,255,255,0.6)';
-          btn.style.background = 'rgba(255,255,255,0.18)';
-          btn.style.color = '#fff';
-        } else {
-          btn.style.border = '1.5px solid rgba(255,255,255,0.25)';
-          btn.style.background = 'transparent';
-          btn.style.color = 'rgba(255,255,255,0.5)';
-        }
-      });
-    }
+    // CTA banner slideshow — crossfade every 4 seconds
+    (function() {
+      const slides = document.querySelectorAll('.cta-banner__slide');
+      let current = 0;
+      setInterval(() => {
+        slides[current].classList.remove('active');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('active');
+      }, 4000);
+    })();
   </script>
 </body>
 </html>
