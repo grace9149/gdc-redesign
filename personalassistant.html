@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal Assistant Services — Marin &amp; Sonoma County · Grace Dougan Consulting</title>
+  <meta name="description" content="Dedicated personal assistant services in Marin and Sonoma Counties. Calendar management, errands, travel, home coordination, and more — handled with care." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/version-a.css" />
+  <style>
+    /* Page-specific overrides */
+    .hero { min-height: 92vh; }
+    .service-card__icon svg { color: var(--gold); }
+
+    /* Local badge strip */
+    .local-strip {
+      background: var(--cream);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 0;
+    }
+    .local-strip__inner {
+      width: 90%;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .local-strip__item {
+      font-family: var(--font-sans);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .local-strip__item::before {
+      content: '';
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      background: var(--gold);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Packages section */
+    .packages {
+      padding: var(--section-pad) 0;
+      background: var(--cream);
+    }
+    .packages__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 56px;
+    }
+    .package-card {
+      background: var(--white);
+      padding: 44px 36px 40px;
+      position: relative;
+    }
+    .package-card--featured {
+      background: var(--text-dark);
+      color: var(--white);
+    }
+    .package-card--featured .package-card__price,
+    .package-card--featured .package-card__name {
+      color: var(--white);
+    }
+    .package-card--featured .package-card__desc {
+      color: rgba(255,255,255,0.65);
+    }
+    .package-card--featured .package-card__list li {
+      color: rgba(255,255,255,0.8);
+      border-bottom-color: rgba(255,255,255,0.1);
+    }
+    .package-card--featured .package-card__list li::before {
+      background: var(--gold);
+    }
+    .package-card__badge {
+      font-family: var(--font-sans);
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      display: block;
+    }
+    .package-card__name {
+      font-family: var(--font-serif);
+      font-size: 26px;
+      font-weight: 400;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+      line-height: 1.1;
+    }
+    .package-card__price {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .package-card__desc {
+      font-size: 12px;
+      color: var(--text-light);
+      line-height: 1.7;
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+    .package-card--featured .package-card__desc {
+      border-bottom-color: rgba(255,255,255,0.12);
+    }
+    .package-card__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .package-card__list li {
+      font-size: 12px;
+      color: var(--text-mid);
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.5;
+    }
+    .package-card__list li::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      background: var(--gold);
+      border-radius: 50%;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+    .package-card__list li:last-child { border-bottom: none; }
+
+    @media (max-width: 840px) {
+      .packages__grid { grid-template-columns: 1fr; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo">
+        Grace Dougan<em> Consulting</em>
+      </a>
+      <button class="nav__toggle" id="navToggle" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav__links" id="navLinks">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#packages">Packages</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact" class="nav__cta">Get Started</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__content fade-in">
+      <p class="hero__eyebrow">Marin County · Sonoma County · In-Person</p>
+      <h1 class="hero__headline">Your day,<br /><em>perfectly<br />handled.</em></h1>
+      <p class="hero__sub">Dedicated personal assistant services for busy professionals, families, and executives in Marin and Sonoma Counties — so you can focus on what matters most.</p>
+      <div class="hero__actions">
+        <a href="#contact" class="btn btn--dark">Let's Talk</a>
+        <a href="#services" class="hero__scroll-link">See What We Do ↓</a>
+      </div>
+    </div>
+    <div class="hero__image-col">
+      <img
+        src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80&fit=crop"
+        alt="Marin County hills"
+        class="hero__photo"
+      />
+      <div class="hero__image-overlay"></div>
+    </div>
+  </section>
+
+  <!-- LOCAL STRIP -->
+  <div class="local-strip">
+    <div class="local-strip__inner">
+      <span class="local-strip__item">Marin County</span>
+      <span class="local-strip__item">Sonoma County</span>
+      <span class="local-strip__item">In-Person &amp; Remote Support</span>
+      <span class="local-strip__item">Confidential &amp; Trusted</span>
+      <span class="local-strip__item">Flexible Hours</span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-header fade-in">
+        <p class="section-eyebrow">What We Handle</p>
+        <h2 class="section-title">Every detail,<br /><em>taken care of.</em></h2>
+        <p class="section-intro">From your calendar to your household — we manage the tasks that fill your to-do list so your time stays yours.</p>
+      </div>
+      <div class="services__grid">
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="22" cy="22" r="21" stroke="currentColor" stroke-width="1.2"/>
+              <rect x="14" y="15" width="16" height="14" rx="1" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M14 19h16M18 15v-2M26 15v-2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              <path d="M17 23h2M21 23h2M25 23h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Calendar &amp; Schedule Management</h3>
+          <p class="service-card__desc">Appointments, reminders, conflict resolution, and daily briefings — your schedule kept clear, organized, and stress-free.</p>
+          <span class="service-card__line"></span>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="22" cy="22" r="21" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M15 28l3.5-3.5M29 14l-10 10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              <path d="M22 14h7v7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M15 22v7h7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Travel Planning &amp; Booking</h3>
+          <p class="service-card__desc">Flights, hotels, rental cars, restaurant reservations, and detailed itineraries — every trip planned from start to finish.</p>
+          <span class="service-card__line"></span>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="22" cy="22" r="21" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M16 17h12M16 22h8M16 27h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              <circle cx="28" cy="27" r="3.5" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M30.5 29.5l2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Research &amp; Reservations</h3>
+          <p class="service-card__desc">Vendor research, price comparisons, dining reservations, waitlist management, and any fact-finding that takes hours off your plate.</p>
+          <span class="service-card__line"></span>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="22" cy="22" r="21" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M22 13v4M22 27v4M13 22h4M27 22h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              <circle cx="22" cy="22" r="5" stroke="currentColor" stroke-width="1.2"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Errand Running &amp; Shopping</h3>
+          <p class="service-card__desc">Groceries, dry cleaning, pharmacy pickups, returns, gift sourcing, and local errands — handled promptly across Marin and Sonoma.</p>
+          <span class="service-card__line"></span>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="22" cy="22" r="21" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M15 28V16l7-3 7 3v12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="19" y="22" width="6" height="6" rx="0.5" stroke="currentColor" stroke-width="1.2"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Vendor &amp; Contractor Coordination</h3>
+          <p class="service-card__desc">Scheduling tradespeople, getting quotes, managing service calls, and following up — your home runs smoothly without you managing it.</p>
+          <span class="service-card__line"></span>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="22" cy="22" r="21" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M14 28c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              <circle cx="22" cy="17" r="3" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M29 22c0-2.2 1.8-4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+              <circle cx="31" cy="16" r="2" stroke="currentColor" stroke-width="1.2"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Event &amp; Occasion Planning</h3>
+          <p class="service-card__desc">Dinner parties, family gatherings, milestone celebrations — venue sourcing, vendor coordination, invitations, and day-of logistics.</p>
+          <span class="service-card__line"></span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PACKAGES -->
+  <section class="packages" id="packages">
+    <div class="container">
+      <div class="section-header fade-in">
+        <p class="section-eyebrow">How It Works</p>
+        <h2 class="section-title">Support sized<br /><em>to your life.</em></h2>
+        <p class="section-intro">Choose a flexible engagement — no long-term contracts, no hidden fees. Start with what you need and scale as your life changes.</p>
+      </div>
+      <div class="packages__grid">
+
+        <div class="package-card fade-in">
+          <span class="package-card__badge">Essentials</span>
+          <div class="package-card__name">A La Carte</div>
+          <div class="package-card__price">By the hour</div>
+          <p class="package-card__desc">Occasional support when you need it most. No commitment, billed at an hourly rate.</p>
+          <ul class="package-card__list">
+            <li>On-demand availability</li>
+            <li>Single tasks or project-based work</li>
+            <li>Billed weekly, no retainer required</li>
+            <li>Ideal for seasonal needs or one-time projects</li>
+          </ul>
+        </div>
+
+        <div class="package-card package-card--featured fade-in">
+          <span class="package-card__badge">Most Popular</span>
+          <div class="package-card__name">Regular Retainer</div>
+          <div class="package-card__price">Monthly agreement</div>
+          <p class="package-card__desc">A dedicated block of hours each month — your personal assistant learns your preferences and becomes an extension of your household.</p>
+          <ul class="package-card__list">
+            <li>10–40 hours per month</li>
+            <li>Consistent point of contact</li>
+            <li>Priority scheduling &amp; faster response</li>
+            <li>Monthly review &amp; task planning call</li>
+            <li>Unused hours roll over one month</li>
+          </ul>
+        </div>
+
+        <div class="package-card fade-in">
+          <span class="package-card__badge">Full Support</span>
+          <div class="package-card__name">Executive &amp; Family</div>
+          <div class="package-card__price">Custom scope</div>
+          <p class="package-card__desc">Comprehensive, white-glove support for busy executives or households requiring daily coordination across multiple areas.</p>
+          <ul class="package-card__list">
+            <li>Full-time or near-full-time availability</li>
+            <li>Multiple household or office locations</li>
+            <li>Dedicated team member assigned to you</li>
+            <li>Weekly reporting &amp; planning sessions</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT / VALUE PROP -->
+  <section class="about" id="about">
+    <div class="container about__inner">
+      <div class="about__photo fade-in">
+        <div class="about__photo-frame">
+          <img
+            src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/1536167412555-TM2XCZHB9CWAIOBD0GZG/GDC_Headshot_Grace_3a.jpg"
+            alt="Grace Dougan"
+            class="about__photo-img"
+          />
+        </div>
+        <div class="about__photo-caption">
+          <span>Grace Dougan</span>
+          <span>Founder &amp; Principal</span>
+        </div>
+      </div>
+      <div class="about__text fade-in">
+        <p class="section-eyebrow">Local &amp; Trusted</p>
+        <h2 class="section-title">North Bay roots,<br /><em>personal service.</em></h2>
+        <p>We've been supporting Bay Area professionals since 2010. Our personal assistant services bring that same reliability and discretion to the residents of Marin and Sonoma Counties — people who deserve more hours in their day.</p>
+        <p>Our assistants know the North Bay: the best local vendors, the shortcuts, the seasonal rhythms of Marin and Sonoma. You're not working with a faceless app — you're working with people who live and work in the same community you do.</p>
+        <p>Whether you need someone to manage a single project or become a long-term extension of your household, we tailor the engagement to fit your life — not the other way around.</p>
+        <a href="#contact" class="btn btn--outline">Start the Conversation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="why">
+    <div class="container">
+      <div class="why__grid">
+        <div class="why-item fade-in">
+          <div class="why-item__number">01</div>
+          <h3>Locally Based</h3>
+          <p>Our assistants are based in Marin and Sonoma Counties — familiar with the roads, vendors, and rhythms of the North Bay.</p>
+        </div>
+        <div class="why-item fade-in">
+          <div class="why-item__number">02</div>
+          <h3>Discreet &amp; Professional</h3>
+          <p>We handle sensitive household and professional matters with complete confidentiality. Your privacy is always protected.</p>
+        </div>
+        <div class="why-item fade-in">
+          <div class="why-item__number">03</div>
+          <h3>Flexible &amp; Scalable</h3>
+          <p>From a few hours a week to full-time support — your engagement adjusts as your needs change, with no long-term lock-in.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="section-header fade-in">
+        <p class="section-eyebrow">Client Stories</p>
+        <h2 class="section-title"><em>"I don't know how<br />I managed before."</em></h2>
+      </div>
+      <div class="testimonials__grid">
+        <div class="testimonial-card fade-in">
+          <div class="testimonial-card__mark">&ldquo;</div>
+          <p class="testimonial-card__quote">Grace Dougan Consulting has been my rock for the past 10 years, seamlessly managing everything from scheduling to logistics with total reliability. They make the day-to-day feel effortless, so I never have to worry about it.</p>
+          <div class="testimonial-card__author">
+            <span class="author-name">Professional &amp; Homeowner</span>
+            <span class="author-location">Marin County, CA</span>
+          </div>
+        </div>
+        <div class="testimonial-card fade-in">
+          <div class="testimonial-card__mark">&ldquo;</div>
+          <p class="testimonial-card__quote">Having someone who actually knows Marin — the vendors, the neighborhoods, the quirks — makes all the difference. It doesn't feel like outsourcing. It feels like having a trusted colleague who just happens to handle everything I don't have time for.</p>
+          <div class="testimonial-card__author">
+            <span class="author-name">Small Business Owner</span>
+            <span class="author-location">Sonoma County, CA</span>
+          </div>
+        </div>
+        <div class="testimonial-card fade-in">
+          <div class="testimonial-card__mark">&ldquo;</div>
+          <p class="testimonial-card__quote">The retainer model is perfect — I know exactly what I'm getting each month, and the team is proactive enough that half the time things are handled before I even think to ask.</p>
+          <div class="testimonial-card__author">
+            <span class="author-name">Executive</span>
+            <span class="author-location">Mill Valley, CA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="cta-banner">
+    <div class="cta-banner__bg">
+      <img
+        src="img/golden-gate.jpg"
+        alt=""
+        aria-hidden="true"
+        class="cta-banner__bg-img"
+      />
+    </div>
+    <div class="container cta-banner__inner fade-in">
+      <h2 class="cta-banner__headline">Ready to reclaim<br /><em>your time?</em></h2>
+      <p class="cta-banner__sub">Let's talk about what a personal assistant could do for your day.</p>
+      <a href="#contact" class="btn btn--white">Schedule a Call</a>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="container contact__inner">
+      <div class="contact__text fade-in">
+        <p class="section-eyebrow">Get in Touch</p>
+        <h2 class="section-title">Let's talk about<br /><em>your life.</em></h2>
+        <p class="contact__subtext">Tell us what you need — we'll follow up within one business day to discuss how we can help.</p>
+        <ul class="contact__details">
+          <li>
+            <span class="contact__label">Phone</span>
+            <a href="tel:4158279648">415-827-9648</a>
+          </li>
+          <li>
+            <span class="contact__label">Email</span>
+            <a href="mailto:contact@gracedouganconsulting.com">contact@gracedouganconsulting.com</a>
+          </li>
+          <li>
+            <span class="contact__label">Service Area</span>
+            <span>Marin &amp; Sonoma Counties, CA</span>
+          </li>
+        </ul>
+        <div class="contact__wavy">
+          <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/1534962104072-Y45RFHP37FY9YR2KBMPZ/GDC_WavyLines_Light.png" alt="" aria-hidden="true" />
+        </div>
+      </div>
+      <form class="contact__form fade-in" onsubmit="return false;">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" placeholder="Jane Smith" />
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="jane@example.com" />
+        </div>
+        <div class="form-group">
+          <label for="county">County</label>
+          <select id="county">
+            <option value="">Select your county…</option>
+            <option>Marin County</option>
+            <option>Sonoma County</option>
+            <option>Other / Not sure</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="service">Service Interest</label>
+          <select id="service">
+            <option value="">What do you need help with?</option>
+            <option>Calendar &amp; Schedule Management</option>
+            <option>Travel Planning &amp; Booking</option>
+            <option>Errand Running &amp; Shopping</option>
+            <option>Vendor &amp; Contractor Coordination</option>
+            <option>Event &amp; Occasion Planning</option>
+            <option>Research &amp; Reservations</option>
+            <option>A little of everything</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="message">Tell us more</label>
+          <textarea id="message" rows="4" placeholder="What does your ideal support look like? Any context is helpful…"></textarea>
+        </div>
+        <button type="submit" class="btn btn--dark btn--full">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <svg width="76" height="76" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:block;margin:0 auto 20px;">
+          <rect x="6" y="6" width="108" height="108" stroke="#B8975A" stroke-width="1.5"/>
+          <rect x="14" y="14" width="92" height="92" stroke="#B8975A" stroke-width="0.6" stroke-dasharray="3 3"/>
+          <text x="60" y="70" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="32" font-weight="400" fill="#B8975A" letter-spacing="5">GDC</text>
+        </svg>
+        <span class="footer__logo">Grace Dougan<em> Consulting</em></span>
+        <p>Your business in a box.</p>
+      </div>
+      <nav class="footer__nav">
+        <a href="#services">Services</a>
+        <a href="#packages">Packages</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a href="/">Back to Main Site</a>
+      </nav>
+      <div class="footer__contact">
+        <a href="tel:4158279648">415-827-9648</a>
+        <a href="mailto:contact@gracedouganconsulting.com">contact@gracedouganconsulting.com</a>
+      </div>
+      <p class="footer__copy">© 2026 Grace Dougan Consulting · Marin &amp; Sonoma Counties, CA</p>
+    </div>
+  </footer>
+
+  <script defer src="js/main.js"></script>
+</body>
+</html>
