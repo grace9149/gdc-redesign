@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal Assistant — Marin &amp; Sonoma County · Grace Dougan Consulting</title>
+  <meta name="description" content="Book a dedicated personal assistant in Marin and Sonoma Counties. Errands, calendar, travel, home coordination — handled with care." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Tokens ──────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --gold:       #B8975A;
+      --gold-lt:    #D4B87A;
+      --gold-dim:   rgba(184,151,90,0.18);
+      --dark:       #111111;
+      --mid:        #444444;
+      --light:      #888888;
+      --border:     #E8E3D9;
+      --cream:      #FAF8F4;
+      --cream-dk:   #F2EDE5;
+      --white:      #FFFFFF;
+      --serif:      'Cormorant Garamond', Georgia, serif;
+      --sans:       'Montserrat', Arial, sans-serif;
+      --ease:       0.35s ease;
+      --max:        1180px;
+    }
+
+    body {
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--dark);
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    .wrap { width: 92%; max-width: var(--max); margin: 0 auto; }
+
+    /* fade-in */
+    .fi { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+    .fi.on { opacity: 1; transform: none; }
+
+    /* ── NAV ─────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 68px;
+      display: flex; align-items: center;
+      padding: 0 5%;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      justify-content: space-between;
+    }
+    .nav__brand {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .nav__brand-name {
+      font-family: var(--serif);
+      font-size: 17px;
+      color: var(--dark);
+      letter-spacing: 0.01em;
+    }
+    .nav__brand-name em { font-style: italic; font-weight: 300; }
+    .nav__links {
+      display: flex; gap: 36px; list-style: none;
+    }
+    .nav__links a {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--mid);
+      transition: color var(--ease);
+    }
+    .nav__links a:hover { color: var(--gold); }
+    .nav__cta {
+      background: var(--dark); color: var(--white) !important;
+      padding: 10px 22px;
+      font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: background var(--ease) !important;
+    }
+    .nav__cta:hover { background: var(--gold) !important; color: var(--white) !important; }
+
+    /* ── HERO ────────────────────────────────────────────── */
+    .hero {
+      margin-top: 68px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - 68px);
+    }
+    .hero__left {
+      background: var(--dark);
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 80px 7% 80px 7%;
+    }
+    .hero__eyebrow {
+      font-size: 9px; font-weight: 600; letter-spacing: 0.26em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 28px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .hero__eyebrow::before {
+      content: ''; display: inline-block;
+      width: 28px; height: 1px; background: var(--gold);
+    }
+    .hero__headline {
+      font-family: var(--serif);
+      font-size: clamp(52px, 5.5vw, 80px);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.05;
+      margin-bottom: 28px;
+      letter-spacing: -0.01em;
+    }
+    .hero__headline em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .hero__sub {
+      font-size: 13px; color: rgba(255,255,255,0.6);
+      line-height: 1.8; max-width: 400px;
+      margin-bottom: 44px;
+    }
+
+    /* Task chips */
+    .hero__chips {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin-bottom: 44px;
+    }
+    .hero__chip {
+      font-size: 10px; font-weight: 500; letter-spacing: 0.08em;
+      border: 1px solid rgba(255,255,255,0.22);
+      color: rgba(255,255,255,0.75);
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: all var(--ease);
+    }
+    .hero__chip:hover, .hero__chip.active {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: rgba(184,151,90,0.08);
+    }
+
+    .hero__btn {
+      display: inline-block;
+      background: var(--gold); color: var(--white);
+      font-family: var(--sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 16px 40px;
+      border: none; cursor: pointer;
+      transition: background var(--ease);
+    }
+    .hero__btn:hover { background: var(--gold-lt); }
+
+    .hero__right {
+      position: relative; overflow: hidden;
+    }
+    .hero__right img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .hero__right-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(17,17,17,0.4) 0%, transparent 60%);
+    }
+    .hero__stat-bar {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      display: flex;
+      background: rgba(17,17,17,0.75);
+      backdrop-filter: blur(6px);
+    }
+    .hero__stat {
+      flex: 1; padding: 20px 24px;
+      border-right: 1px solid rgba(255,255,255,0.12);
+      text-align: center;
+    }
+    .hero__stat:last-child { border-right: none; }
+    .hero__stat-n {
+      font-family: var(--serif); font-size: 28px; font-weight: 400;
+      color: var(--gold); line-height: 1; margin-bottom: 4px;
+    }
+    .hero__stat-l {
+      font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* ── TRUST STRIP ─────────────────────────────────────── */
+    .trust-strip {
+      background: var(--cream);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+    }
+    .trust-strip__inner {
+      width: 92%; max-width: var(--max); margin: 0 auto;
+      display: flex; align-items: center; justify-content: center;
+      gap: 0; flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 32px;
+      border-right: 1px solid var(--border);
+    }
+    .trust-item:last-child { border-right: none; }
+    .trust-item__icon {
+      width: 18px; height: 18px; color: var(--gold); flex-shrink: 0;
+    }
+    .trust-item__text {
+      font-size: 10px; font-weight: 500; letter-spacing: 0.08em;
+      color: var(--mid);
+    }
+
+    /* ── SECTION HEADERS ─────────────────────────────────── */
+    .sh { text-align: center; max-width: 600px; margin: 0 auto 64px; }
+    .sh__eye {
+      font-size: 9px; font-weight: 600; letter-spacing: 0.26em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 14px;
+    }
+    .sh__title {
+      font-family: var(--serif);
+      font-size: clamp(36px, 3.5vw, 52px);
+      font-weight: 400; line-height: 1.1;
+      color: var(--dark); margin-bottom: 16px;
+    }
+    .sh__title em { font-style: italic; color: var(--gold); }
+    .sh__sub {
+      font-size: 13px; color: var(--light); line-height: 1.8;
+    }
+
+    /* ── TASK GRID ───────────────────────────────────────── */
+    .tasks { padding: 96px 0; background: var(--white); }
+    .tasks__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 280px 280px;
+      gap: 12px;
+    }
+    /* Featured large cards */
+    .task-card:nth-child(1) { grid-column: span 2; }
+    .task-card:nth-child(5) { grid-column: span 2; }
+
+    .task-card {
+      position: relative; overflow: hidden; cursor: pointer;
+      background: var(--cream-dk);
+    }
+    .task-card__img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .task-card:hover .task-card__img { transform: scale(1.05); }
+    .task-card__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(17,17,17,0.75) 0%, transparent 55%);
+      transition: background var(--ease);
+    }
+    .task-card:hover .task-card__overlay {
+      background: linear-gradient(to top, rgba(17,17,17,0.88) 0%, rgba(17,17,17,0.1) 70%);
+    }
+    .task-card__body {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 28px 26px;
+    }
+    .task-card__label {
+      font-family: var(--serif); font-size: 22px; font-weight: 400;
+      color: var(--white); line-height: 1.15; margin-bottom: 6px;
+    }
+    .task-card:nth-child(1) .task-card__label,
+    .task-card:nth-child(5) .task-card__label { font-size: 30px; }
+    .task-card__sub {
+      font-size: 10px; letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.6); text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .task-card__arrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--gold);
+      opacity: 0; transform: translateY(8px);
+      transition: opacity var(--ease), transform var(--ease);
+    }
+    .task-card:hover .task-card__arrow { opacity: 1; transform: none; }
+    .task-card__arrow::after { content: '→'; }
+
+    /* ── HOW IT WORKS ────────────────────────────────────── */
+    .how { padding: 96px 0; background: var(--dark); }
+    .how .sh__title { color: var(--white); }
+    .how .sh__sub { color: rgba(255,255,255,0.45); }
+    .how__steps {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px; margin-top: 64px;
+    }
+    .how__step {
+      background: rgba(255,255,255,0.04);
+      padding: 52px 44px;
+      position: relative;
+    }
+    .how__step::after {
+      content: '';
+      position: absolute; top: 52px; right: -1px;
+      width: 2px; height: 40px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+    .how__step:last-child::after { display: none; }
+    .how__step-n {
+      font-family: var(--serif); font-size: 56px; font-weight: 300;
+      color: var(--gold); opacity: 0.35; line-height: 1;
+      margin-bottom: 20px;
+    }
+    .how__step-title {
+      font-family: var(--serif); font-size: 24px; font-weight: 400;
+      color: var(--white); margin-bottom: 14px;
+    }
+    .how__step-desc {
+      font-size: 12px; color: rgba(255,255,255,0.5);
+      line-height: 1.9;
+    }
+    .how__step-icon {
+      width: 40px; height: 40px; color: var(--gold);
+      margin-bottom: 28px;
+    }
+
+    /* ── FEATURED TASK ───────────────────────────────────── */
+    .feature { padding: 96px 0; background: var(--cream); }
+    .feature__inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+      align-items: center;
+    }
+    .feature__img-wrap { position: relative; }
+    .feature__img {
+      width: 100%; aspect-ratio: 4/5;
+      object-fit: cover;
+    }
+    .feature__img-badge {
+      position: absolute; bottom: -20px; right: -20px;
+      background: var(--gold); color: var(--white);
+      padding: 24px 28px; text-align: center;
+    }
+    .feature__img-badge-n {
+      font-family: var(--serif); font-size: 36px; font-weight: 400;
+      line-height: 1;
+    }
+    .feature__img-badge-l {
+      font-size: 8px; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; margin-top: 4px;
+      opacity: 0.85;
+    }
+    .feature__eye {
+      font-size: 9px; font-weight: 600; letter-spacing: 0.26em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .feature__title {
+      font-family: var(--serif);
+      font-size: clamp(36px, 3.2vw, 52px);
+      font-weight: 400; line-height: 1.1;
+      color: var(--dark); margin-bottom: 22px;
+    }
+    .feature__title em { font-style: italic; }
+    .feature__body {
+      font-size: 13px; color: var(--mid); line-height: 1.85;
+      margin-bottom: 36px;
+    }
+    .feature__list {
+      list-style: none; margin-bottom: 40px;
+    }
+    .feature__list li {
+      font-size: 12px; color: var(--mid);
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+    .feature__list li::before {
+      content: '';
+      display: inline-block; width: 6px; height: 6px;
+      background: var(--gold); border-radius: 50%;
+      margin-top: 5px; flex-shrink: 0;
+    }
+    .feature__btn {
+      display: inline-block;
+      border: 1.5px solid var(--dark); color: var(--dark);
+      font-family: var(--sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 14px 36px;
+      transition: background var(--ease), color var(--ease), border-color var(--ease);
+    }
+    .feature__btn:hover {
+      background: var(--dark); color: var(--white);
+    }
+
+    /* ── PRICING ─────────────────────────────────────────── */
+    .pricing { padding: 96px 0; background: var(--white); }
+    .pricing__grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: var(--border);
+      margin-top: 64px;
+    }
+    .pricing__card {
+      background: var(--white);
+      padding: 48px 36px;
+    }
+    .pricing__card--dark {
+      background: var(--dark);
+    }
+    .pricing__badge {
+      font-size: 8px; font-weight: 600; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 24px; display: block;
+    }
+    .pricing__name {
+      font-family: var(--serif); font-size: 28px; font-weight: 400;
+      color: var(--dark); margin-bottom: 8px; line-height: 1.1;
+    }
+    .pricing__card--dark .pricing__name { color: var(--white); }
+    .pricing__rate {
+      font-family: var(--serif); font-size: 18px;
+      color: var(--gold); margin-bottom: 20px;
+    }
+    .pricing__desc {
+      font-size: 12px; line-height: 1.8; color: var(--light);
+      padding-bottom: 24px; margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .pricing__card--dark .pricing__desc { color: rgba(255,255,255,0.4); border-bottom-color: rgba(255,255,255,0.1); }
+    .pricing__list { list-style: none; }
+    .pricing__list li {
+      font-size: 12px; color: var(--mid);
+      padding: 9px 0; border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; gap: 10px; line-height: 1.5;
+    }
+    .pricing__card--dark .pricing__list li { color: rgba(255,255,255,0.65); border-bottom-color: rgba(255,255,255,0.08); }
+    .pricing__list li::before {
+      content: ''; width: 4px; height: 4px; background: var(--gold);
+      border-radius: 50%; margin-top: 6px; flex-shrink: 0;
+    }
+    .pricing__list li:last-child { border-bottom: none; }
+
+    /* ── REVIEWS ─────────────────────────────────────────── */
+    .reviews { padding: 96px 0; background: var(--cream); }
+    .reviews__grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 24px; margin-top: 64px;
+    }
+    .review-card {
+      background: var(--white);
+      padding: 40px 36px;
+      border-bottom: 3px solid transparent;
+      transition: border-color var(--ease);
+    }
+    .review-card:hover { border-bottom-color: var(--gold); }
+    .review-card__mark {
+      font-family: var(--serif); font-size: 56px; font-weight: 300;
+      color: var(--gold); line-height: 0.8; margin-bottom: 20px;
+    }
+    .review-card__stars {
+      display: flex; gap: 3px; margin-bottom: 16px;
+    }
+    .review-card__star {
+      width: 12px; height: 12px; fill: var(--gold);
+    }
+    .review-card__quote {
+      font-family: var(--serif); font-size: 16px; font-style: italic;
+      font-weight: 300; color: var(--mid); line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .review-card__author { font-size: 11px; color: var(--light); }
+    .review-card__author strong { display: block; color: var(--dark); font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+    .review-card__author span { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    /* ── CONTACT ─────────────────────────────────────────── */
+    .contact { padding: 96px 0; background: var(--white); }
+    .contact__inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start;
+    }
+    .contact__eye {
+      font-size: 9px; font-weight: 600; letter-spacing: 0.26em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 16px;
+    }
+    .contact__title {
+      font-family: var(--serif);
+      font-size: clamp(36px, 3.2vw, 52px);
+      font-weight: 400; line-height: 1.1;
+      color: var(--dark); margin-bottom: 24px;
+    }
+    .contact__title em { font-style: italic; }
+    .contact__body { font-size: 13px; color: var(--mid); line-height: 1.85; margin-bottom: 40px; }
+    .contact__detail {
+      display: flex; flex-direction: column; gap: 16px; margin-bottom: 44px;
+    }
+    .contact__detail-item {
+      display: flex; gap: 16px; align-items: flex-start;
+    }
+    .contact__detail-label {
+      font-size: 9px; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--gold);
+      min-width: 72px; padding-top: 2px;
+    }
+    .contact__detail-val { font-size: 13px; color: var(--mid); }
+    .contact__detail-val a { color: var(--mid); transition: color var(--ease); }
+    .contact__detail-val a:hover { color: var(--gold); }
+    .contact__area-note {
+      font-size: 11px; color: var(--light);
+      padding: 16px 20px;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+    }
+
+    /* Form */
+    .form { display: flex; flex-direction: column; gap: 20px; }
+    .form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form__group { display: flex; flex-direction: column; gap: 7px; }
+    .form__group label {
+      font-size: 9px; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--light);
+    }
+    .form__group input,
+    .form__group select,
+    .form__group textarea {
+      border: 1px solid var(--border);
+      background: var(--cream);
+      padding: 13px 16px;
+      font-family: var(--sans); font-size: 13px; color: var(--dark);
+      outline: none; border-radius: 0;
+      transition: border-color var(--ease), background var(--ease);
+      -webkit-appearance: none;
+    }
+    .form__group input:focus,
+    .form__group select:focus,
+    .form__group textarea:focus {
+      border-color: var(--gold); background: var(--white);
+    }
+    .form__group textarea { resize: vertical; min-height: 120px; }
+    .form__btn {
+      background: var(--dark); color: var(--white);
+      border: none; cursor: pointer;
+      font-family: var(--sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 16px 36px; align-self: flex-start;
+      transition: background var(--ease);
+    }
+    .form__btn:hover { background: var(--gold); }
+
+    /* ── CTA BANNER ──────────────────────────────────────── */
+    .cta-banner {
+      position: relative; overflow: hidden;
+      min-height: 420px;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+    }
+    .cta-banner__bg {
+      position: absolute; inset: 0;
+    }
+    .cta-banner__bg img { width: 100%; height: 100%; object-fit: cover; }
+    .cta-banner__bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(17,17,17,0.72);
+    }
+    .cta-banner__content {
+      position: relative; z-index: 2;
+      padding: 80px 5%;
+    }
+    .cta-banner__title {
+      font-family: var(--serif);
+      font-size: clamp(40px, 4.5vw, 68px);
+      font-weight: 300; color: var(--white); line-height: 1.1;
+      margin-bottom: 18px;
+    }
+    .cta-banner__title em { font-style: italic; color: var(--gold); }
+    .cta-banner__sub {
+      font-size: 13px; color: rgba(255,255,255,0.6);
+      margin-bottom: 40px;
+    }
+    .cta-banner__btn {
+      display: inline-block;
+      border: 1.5px solid var(--white); color: var(--white);
+      font-family: var(--sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 15px 44px;
+      transition: background var(--ease), color var(--ease);
+    }
+    .cta-banner__btn:hover { background: var(--gold); border-color: var(--gold); }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    .footer {
+      background: var(--dark); padding: 56px 0 36px;
+    }
+    .footer__inner {
+      display: grid; grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 40px; margin-bottom: 48px;
+    }
+    .footer__brand-name {
+      font-family: var(--serif); font-size: 18px;
+      color: var(--white); margin-bottom: 10px;
+    }
+    .footer__brand-name em { font-style: italic; font-weight: 300; }
+    .footer__tagline {
+      font-size: 11px; color: rgba(255,255,255,0.35);
+      line-height: 1.7; max-width: 280px;
+    }
+    .footer__col-head {
+      font-size: 9px; font-weight: 600; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a { font-size: 12px; color: rgba(255,255,255,0.45); transition: color var(--ease); }
+    .footer__links a:hover { color: var(--gold); }
+    .footer__copy {
+      font-size: 10px; color: rgba(255,255,255,0.25);
+      letter-spacing: 0.04em; text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.08); padding-top: 28px;
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero__right { height: 50vw; }
+      .tasks__grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(3, 240px);
+      }
+      .task-card:nth-child(1),
+      .task-card:nth-child(5) { grid-column: span 1; }
+      .how__steps { grid-template-columns: 1fr; gap: 2px; }
+      .feature__inner { grid-template-columns: 1fr; gap: 48px; }
+      .pricing__grid { grid-template-columns: 1fr; }
+      .reviews__grid { grid-template-columns: 1fr; }
+      .contact__inner { grid-template-columns: 1fr; gap: 56px; }
+      .footer__inner { grid-template-columns: 1fr; }
+      .form__row { grid-template-columns: 1fr; }
+      .trust-strip__inner { gap: 0; }
+      .trust-item { padding: 8px 16px; }
+    }
+    @media (max-width: 600px) {
+      .tasks__grid { grid-template-columns: 1fr; grid-template-rows: repeat(6, 220px); }
+      .nav__links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav__brand">
+      <svg width="32" height="32" viewBox="0 0 120 120" fill="none">
+        <rect x="6" y="6" width="108" height="108" stroke="#B8975A" stroke-width="1.8"/>
+        <rect x="14" y="14" width="92" height="92" stroke="#B8975A" stroke-width="0.7" stroke-dasharray="3 3"/>
+        <text x="60" y="71" text-anchor="middle" font-family="Georgia,serif" font-size="32" fill="#B8975A" letter-spacing="5">GDC</text>
+      </svg>
+      <div class="nav__brand-name">Grace Dougan<em> Consulting</em></div>
+    </div>
+    <ul class="nav__links">
+      <li><a href="#tasks">Services</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#contact" class="nav__cta">Book a Call</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__left fi">
+      <p class="hero__eyebrow">Marin &amp; Sonoma County</p>
+      <h1 class="hero__headline">Your time is<br /><em>precious.</em><br />Spend it well.</h1>
+      <p class="hero__sub">A dedicated personal assistant for busy professionals and families across the North Bay — handling everything so you don't have to.</p>
+      <div class="hero__chips">
+        <span class="hero__chip active">Errands</span>
+        <span class="hero__chip">Scheduling</span>
+        <span class="hero__chip">Travel</span>
+        <span class="hero__chip">Home Coordination</span>
+        <span class="hero__chip">Event Planning</span>
+        <span class="hero__chip">Research</span>
+      </div>
+      <a href="#contact" class="hero__btn">Get Started Today</a>
+    </div>
+    <div class="hero__right">
+      <img
+        src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=900&q=80&fit=crop&crop=center"
+        alt="Beautiful North Bay home"
+      />
+      <div class="hero__right-overlay"></div>
+      <div class="hero__stat-bar">
+        <div class="hero__stat">
+          <div class="hero__stat-n">15+</div>
+          <div class="hero__stat-l">Years Experience</div>
+        </div>
+        <div class="hero__stat">
+          <div class="hero__stat-n">200+</div>
+          <div class="hero__stat-l">Clients Served</div>
+        </div>
+        <div class="hero__stat">
+          <div class="hero__stat-n">2</div>
+          <div class="hero__stat-l">Counties Covered</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST STRIP -->
+  <div class="trust-strip">
+    <div class="trust-strip__inner">
+      <div class="trust-item">
+        <svg class="trust-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622C17.176 19.29 21 14.591 21 9c0-1.077-.176-2.11-.382-3.016z"/>
+        </svg>
+        <span class="trust-item__text">Background Checked</span>
+      </div>
+      <div class="trust-item">
+        <svg class="trust-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+          <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        <span class="trust-item__text">Locally Based in the North Bay</span>
+      </div>
+      <div class="trust-item">
+        <svg class="trust-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+        </svg>
+        <span class="trust-item__text">Full Confidentiality</span>
+      </div>
+      <div class="trust-item">
+        <svg class="trust-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <span class="trust-item__text">Flexible Hours</span>
+      </div>
+      <div class="trust-item">
+        <svg class="trust-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+        </svg>
+        <span class="trust-item__text">Trusted Since 2010</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TASK GRID -->
+  <section class="tasks" id="tasks">
+    <div class="wrap">
+      <div class="sh fi">
+        <p class="sh__eye">What We Handle</p>
+        <h2 class="sh__title">Every task on<br /><em>your list.</em></h2>
+        <p class="sh__sub">From the mundane to the complex — if it's on your plate and you'd rather not deal with it, we've got it.</p>
+      </div>
+      <div class="tasks__grid">
+
+        <div class="task-card fi">
+          <img class="task-card__img"
+            src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=900&q=80&fit=crop"
+            alt="Calendar management" />
+          <div class="task-card__overlay"></div>
+          <div class="task-card__body">
+            <div class="task-card__label">Calendar &amp;<br />Scheduling</div>
+            <div class="task-card__sub">Appointments · Reminders · Daily Briefings</div>
+            <span class="task-card__arrow">Book this task</span>
+          </div>
+        </div>
+
+        <div class="task-card fi">
+          <img class="task-card__img"
+            src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=700&q=80&fit=crop"
+            alt="Travel planning" />
+          <div class="task-card__overlay"></div>
+          <div class="task-card__body">
+            <div class="task-card__label">Travel Planning</div>
+            <div class="task-card__sub">Flights · Hotels · Itineraries</div>
+            <span class="task-card__arrow">Book this task</span>
+          </div>
+        </div>
+
+        <div class="task-card fi">
+          <img class="task-card__img"
+            src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=700&q=80&fit=crop"
+            alt="Errands and shopping" />
+          <div class="task-card__overlay"></div>
+          <div class="task-card__body">
+            <div class="task-card__label">Errands &amp;<br />Shopping</div>
+            <div class="task-card__sub">Groceries · Pharmacy · Returns</div>
+            <span class="task-card__arrow">Book this task</span>
+          </div>
+        </div>
+
+        <div class="task-card fi">
+          <img class="task-card__img"
+            src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=700&q=80&fit=crop"
+            alt="Home coordination" />
+          <div class="task-card__overlay"></div>
+          <div class="task-card__body">
+            <div class="task-card__label">Home<br />Coordination</div>
+            <div class="task-card__sub">Vendors · Repairs · Service Calls</div>
+            <span class="task-card__arrow">Book this task</span>
+          </div>
+        </div>
+
+        <div class="task-card fi">
+          <img class="task-card__img"
+            src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=900&q=80&fit=crop"
+            alt="Event planning" />
+          <div class="task-card__overlay"></div>
+          <div class="task-card__body">
+            <div class="task-card__label">Events &amp;<br />Occasions</div>
+            <div class="task-card__sub">Parties · Dinners · Milestones</div>
+            <span class="task-card__arrow">Book this task</span>
+          </div>
+        </div>
+
+        <div class="task-card fi">
+          <img class="task-card__img"
+            src="https://images.unsplash.com/photo-1521747116042-5a810fda9664?w=700&q=80&fit=crop"
+            alt="Research and reservations" />
+          <div class="task-card__overlay"></div>
+          <div class="task-card__body">
+            <div class="task-card__label">Research &amp;<br />Reservations</div>
+            <div class="task-card__sub">Vendors · Dining · Comparisons</div>
+            <span class="task-card__arrow">Book this task</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how">
+    <div class="wrap">
+      <div class="sh fi">
+        <p class="sh__eye">How It Works</p>
+        <h2 class="sh__title">Simple to start,<br /><em>seamless to keep.</em></h2>
+        <p class="sh__sub">Getting started takes one conversation. After that, everything runs in the background — the way good support should.</p>
+      </div>
+      <div class="how__steps">
+        <div class="how__step fi">
+          <svg class="how__step-icon" viewBox="0 0 40 40" fill="none" stroke="#B8975A" stroke-width="1.2">
+            <circle cx="20" cy="20" r="19"/>
+            <path d="M13 20h14M20 13v14" stroke-linecap="round"/>
+          </svg>
+          <div class="how__step-n">01</div>
+          <div class="how__step-title">Tell us what you need</div>
+          <p class="how__step-desc">A quick 20-minute call to understand your life, your schedule, and what would make the biggest difference. No commitment required.</p>
+        </div>
+        <div class="how__step fi">
+          <svg class="how__step-icon" viewBox="0 0 40 40" fill="none" stroke="#B8975A" stroke-width="1.2">
+            <circle cx="20" cy="20" r="19"/>
+            <path d="M13 20l4 4 10-8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="how__step-n">02</div>
+          <div class="how__step-title">We match you with<br />your assistant</div>
+          <p class="how__step-desc">We pair you with a dedicated assistant who knows Marin and Sonoma, aligns with your working style, and is ready to hit the ground running.</p>
+        </div>
+        <div class="how__step fi">
+          <svg class="how__step-icon" viewBox="0 0 40 40" fill="none" stroke="#B8975A" stroke-width="1.2">
+            <circle cx="20" cy="20" r="19"/>
+            <path d="M12 28c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke-linecap="round"/>
+            <circle cx="20" cy="17" r="3"/>
+          </svg>
+          <div class="how__step-n">03</div>
+          <div class="how__step-title">Your tasks disappear</div>
+          <p class="how__step-desc">Hand off your to-do list. We'll handle everything, confirm as we go, and proactively flag anything that needs your attention. That's it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE / ABOUT -->
+  <section class="feature">
+    <div class="wrap">
+      <div class="feature__inner fi">
+        <div class="feature__img-wrap">
+          <img class="feature__img"
+            src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/1536167412555-TM2XCZHB9CWAIOBD0GZG/GDC_Headshot_Grace_3a.jpg"
+            alt="Grace Dougan" />
+          <div class="feature__img-badge">
+            <div class="feature__img-badge-n">15+</div>
+            <div class="feature__img-badge-l">Years in<br/>the North Bay</div>
+          </div>
+        </div>
+        <div>
+          <p class="feature__eye">Why Grace Dougan Consulting</p>
+          <h2 class="feature__title">Not an app.<br /><em>A real person<br />who knows your life.</em></h2>
+          <p class="feature__body">We're not a marketplace where you're matched with a stranger from a list. You work with a dedicated assistant who becomes familiar with your preferences, your household, and your schedule — and stays that way.</p>
+          <ul class="feature__list">
+            <li>Local to Marin and Sonoma — we know the vendors, the neighborhoods, the best spots</li>
+            <li>Consistent point of contact — same person every time, not a rotating pool</li>
+            <li>Professional, discreet, and thorough — we treat your household like our own</li>
+            <li>Backed by Grace Dougan Consulting's 15-year track record</li>
+          </ul>
+          <a href="#contact" class="feature__btn">Schedule a Free Call</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <div class="wrap">
+      <div class="sh fi">
+        <p class="sh__eye">Simple Pricing</p>
+        <h2 class="sh__title">Start with what<br /><em>you need.</em></h2>
+        <p class="sh__sub">No long-term contracts. No surprise fees. Scale up or down as your life changes.</p>
+      </div>
+      <div class="pricing__grid">
+        <div class="pricing__card fi">
+          <span class="pricing__badge">Occasional</span>
+          <div class="pricing__name">A La Carte</div>
+          <div class="pricing__rate">Hourly rate</div>
+          <p class="pricing__desc">For one-off tasks or seasonal support. Book as you need, no retainer required.</p>
+          <ul class="pricing__list">
+            <li>On-demand availability</li>
+            <li>Billed weekly</li>
+            <li>Any task type</li>
+            <li>No commitment</li>
+          </ul>
+        </div>
+        <div class="pricing__card pricing__card--dark fi">
+          <span class="pricing__badge">Most Popular</span>
+          <div class="pricing__name">Monthly Retainer</div>
+          <div class="pricing__rate">Monthly agreement</div>
+          <p class="pricing__desc">A dedicated block of hours — your assistant learns your life and handles things before you ask.</p>
+          <ul class="pricing__list">
+            <li>10–40 hours per month</li>
+            <li>Same assistant every time</li>
+            <li>Priority response within 2 hrs</li>
+            <li>Monthly planning call</li>
+            <li>Unused hours roll over</li>
+          </ul>
+        </div>
+        <div class="pricing__card fi">
+          <span class="pricing__badge">Full Coverage</span>
+          <div class="pricing__name">Executive &amp; Family</div>
+          <div class="pricing__rate">Custom scope</div>
+          <p class="pricing__desc">White-glove support for households or executives requiring daily, multi-area coordination.</p>
+          <ul class="pricing__list">
+            <li>Near full-time availability</li>
+            <li>Multiple locations supported</li>
+            <li>Dedicated team member</li>
+            <li>Weekly reporting sessions</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="reviews">
+    <div class="wrap">
+      <div class="sh fi">
+        <p class="sh__eye">Client Stories</p>
+        <h2 class="sh__title"><em>"I don't know how<br />I managed before."</em></h2>
+      </div>
+      <div class="reviews__grid">
+
+        <div class="review-card fi">
+          <div class="review-card__mark">&ldquo;</div>
+          <div class="review-card__stars">
+            <svg class="review-card__star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            <svg class="review-card__star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            <svg class="review-card__star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            <svg class="review-card__star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            <svg class="review-card__star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="review-card__quote">"Having someone who actually knows Marin — the vendors, the neighborhoods — makes all the difference. It doesn't feel like outsourcing. It feels like having a trusted colleague."</p>
+          <div class="review-card__author">
+            <strong>Small Business Owner</strong>
+            <span>Sonoma County, CA</span>
+          </div>
+        </div>
+
+        <div class="review-card fi">
+          <div class="review-card__mark">&ldquo;</div>
+          <div class="review-card__stars">
+            <svg class="review-card__star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            <svg class="review-card__star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            <svg class="review-card__star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            <svg class="review-card__star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            <svg class="review-card__star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="review-card__quote">"Grace Dougan Consulting has been my rock for 10 years. They manage everything from my schedule to errands with total reliability. The business side of my life just feels effortless now."</p>
+          <div class="review-card__author">
+            <strong>Professional &amp; Homeowner</strong>
+            <span>Marin County, CA</span>
+          </div>
+        </div>
+
+        <div class="review-card fi">
+          <div class="review-card__mark">&ldquo;</div>
+          <div class="review-card__stars">
+            <svg class="review-card__star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            <svg class="review-card__star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            <svg class="review-card__star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            <svg class="review-card__star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+            <svg class="review-card__star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="review-card__quote">"The retainer model is perfect. I know what I'm getting each month, and the team is proactive enough that half the time things are handled before I even think to ask."</p>
+          <div class="review-card__author">
+            <strong>Executive</strong>
+            <span>Mill Valley, CA</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="cta-banner">
+    <div class="cta-banner__bg">
+      <img src="img/golden-gate.jpg" alt="" aria-hidden="true" />
+    </div>
+    <div class="cta-banner__content fi">
+      <h2 class="cta-banner__title">Ready to get your<br /><em>time back?</em></h2>
+      <p class="cta-banner__sub">One conversation is all it takes. No commitment, no pressure.</p>
+      <a href="#contact" class="cta-banner__btn">Schedule a Free Call</a>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <div class="contact__inner">
+        <div class="fi">
+          <p class="contact__eye">Get in Touch</p>
+          <h2 class="contact__title">Let's talk about<br /><em>your day.</em></h2>
+          <p class="contact__body">Tell us what's on your plate — we'll follow up within one business day to discuss how a personal assistant can make your life easier.</p>
+          <div class="contact__detail">
+            <div class="contact__detail-item">
+              <span class="contact__detail-label">Phone</span>
+              <span class="contact__detail-val"><a href="tel:4158279648">415-827-9648</a></span>
+            </div>
+            <div class="contact__detail-item">
+              <span class="contact__detail-label">Email</span>
+              <span class="contact__detail-val"><a href="mailto:contact@gracedouganconsulting.com">contact@gracedouganconsulting.com</a></span>
+            </div>
+            <div class="contact__detail-item">
+              <span class="contact__detail-label">Area</span>
+              <span class="contact__detail-val">Marin &amp; Sonoma Counties, CA</span>
+            </div>
+          </div>
+          <p class="contact__area-note">We primarily serve clients in Marin and Sonoma Counties. Some services are available remotely across the Bay Area.</p>
+        </div>
+
+        <form class="form fi" onsubmit="return false;">
+          <div class="form__row">
+            <div class="form__group">
+              <label for="fn">First Name</label>
+              <input type="text" id="fn" placeholder="Jane" />
+            </div>
+            <div class="form__group">
+              <label for="ln">Last Name</label>
+              <input type="text" id="ln" placeholder="Smith" />
+            </div>
+          </div>
+          <div class="form__group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="jane@example.com" />
+          </div>
+          <div class="form__row">
+            <div class="form__group">
+              <label for="county">County</label>
+              <select id="county">
+                <option value="">Select…</option>
+                <option>Marin County</option>
+                <option>Sonoma County</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form__group">
+              <label for="hours">Hours / Month</label>
+              <select id="hours">
+                <option value="">Estimate…</option>
+                <option>1–5 hours</option>
+                <option>5–15 hours</option>
+                <option>15–30 hours</option>
+                <option>30+ hours</option>
+                <option>Not sure yet</option>
+              </select>
+            </div>
+          </div>
+          <div class="form__group">
+            <label for="tasks-need">What would you like help with?</label>
+            <textarea id="tasks-need" placeholder="Tell us what's on your to-do list — the more detail, the better we can help…"></textarea>
+          </div>
+          <button type="submit" class="form__btn">Send Message →</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer__inner">
+        <div>
+          <div class="footer__brand-name">Grace Dougan<em> Consulting</em></div>
+          <p class="footer__tagline">Personal assistant services for busy professionals and families in Marin and Sonoma Counties. Trusted since 2010.</p>
+        </div>
+        <div>
+          <div class="footer__col-head">Services</div>
+          <ul class="footer__links">
+            <li><a href="#tasks">Calendar &amp; Scheduling</a></li>
+            <li><a href="#tasks">Travel Planning</a></li>
+            <li><a href="#tasks">Errands &amp; Shopping</a></li>
+            <li><a href="#tasks">Home Coordination</a></li>
+            <li><a href="#tasks">Event Planning</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer__col-head">Company</div>
+          <ul class="footer__links">
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#how">How It Works</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="/">Main Website</a></li>
+            <li><a href="/personalassistant">View Option 1</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="footer__copy">© 2026 Grace Dougan Consulting · Marin &amp; Sonoma Counties, CA · 415-827-9648</p>
+    </div>
+  </footer>
+
+  <script>
+    // Fade-in on scroll
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+
+    // Hero chips
+    document.querySelectorAll('.hero__chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.hero__chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
