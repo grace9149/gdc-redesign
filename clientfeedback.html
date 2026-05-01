@@ -254,13 +254,8 @@
     <form
       class="feedback-form"
       id="feedbackForm"
-      action="https://formspree.io/f/mbdqgvje"
-      method="POST"
     >
-      <!-- Hidden routing fields -->
-      <input type="hidden" name="_subject" value="Client Feedback — Grace Dougan Consulting" />
-      <input type="hidden" name="_to" value="hr@gracedouganconsulting.com" />
-      <input type="hidden" name="_replyto" id="replyto_field" value="" />
+      <!-- No hidden fields needed — submission handled by JS below -->
 
       <!-- 1. Contact Info -->
       <div class="form-section">
@@ -379,20 +374,18 @@
   </footer>
 
   <script>
-    // Pre-fill today's date
+    // ── Google Apps Script endpoint ───────────────────────────────────────
+    // Replace this URL after deploying the Apps Script (see setup instructions)
+    const APPS_SCRIPT_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
+
+    // ── Pre-fill today's date ─────────────────────────────────────────────
     document.getElementById('feedback_date').valueAsDate = new Date();
 
-    // Star rating — reverse order (stars displayed right-to-left via flex-direction trick, so we reverse in HTML)
-    // We render 5→1 in markup but display with CSS order; use JS for visual highlight
-    const starWrap = document.getElementById('starRating');
-    const starLabels = starWrap.querySelectorAll('label');
-    const starInputs = starWrap.querySelectorAll('input[type="radio"]');
+    // ── Star rating (flex row-reverse so 5★ is leftmost) ─────────────────
+    document.getElementById('starRating').style.flexDirection = 'row-reverse';
+    document.getElementById('starRating').style.justifyContent = 'flex-end';
 
-    // Reorder for left-to-right display using flex row-reverse
-    starWrap.style.flexDirection = 'row-reverse';
-    starWrap.style.justifyContent = 'flex-end';
-
-    // Submit handler
+    // ── Submit ────────────────────────────────────────────────────────────
     const form = document.getElementById('feedbackForm');
     const success = document.getElementById('formSuccess');
 
@@ -402,22 +395,22 @@
       btn.textContent = 'Submitting…';
       btn.disabled = true;
 
+      // Collect form values into a plain object
+      const fd = new FormData(form);
+      const payload = {};
+      fd.forEach((v, k) => { payload[k] = v; });
+
       try {
-        const data = new FormData(form);
-        const res = await fetch(form.action, {
+        await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
-          body: data,
-          headers: { 'Accept': 'application/json' }
+          mode: 'no-cors',   // Apps Script doesn't return CORS headers for non-preflight
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
         });
-        if (res.ok) {
-          form.style.display = 'none';
-          success.style.display = 'block';
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-          btn.textContent = 'Submit Feedback';
-          btn.disabled = false;
-          alert('Something went wrong. Please email us directly at hr@gracedouganconsulting.com');
-        }
+        // no-cors means response is opaque — assume success if no network error
+        form.style.display = 'none';
+        success.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch(err) {
         btn.textContent = 'Submit Feedback';
         btn.disabled = false;
