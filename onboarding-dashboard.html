@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Onboarding Dashboard — GDC Internal</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #B8975A;
+      --gold-light: #D4AF72;
+      --cream: #FAF8F4;
+      --cream-mid: #F0EDE8;
+      --text-dark: #111111;
+      --text-mid: #444444;
+      --text-light: #888888;
+      --border: #E2DDD6;
+      --green: #2e7d58;
+      --amber: #c07828;
+      --sidebar-w: 260px;
+    }
+
+    html { font-size: 16px; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── LOGIN ── */
+    #login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 400px;
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 52px 44px;
+    }
+    .login-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+    .login-logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--text-dark);
+      line-height: 1;
+    }
+    .login-logo-text em { font-style: italic; font-weight: 400; }
+    .login-badge {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--text-dark);
+      padding: 2px 7px;
+      margin-left: 2px;
+    }
+    .login-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .login-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 500;
+      margin-bottom: 28px;
+    }
+    .login-title em { font-style: italic; }
+    .login-group { margin-bottom: 16px; }
+    .login-group label {
+      display: block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      margin-bottom: 6px;
+    }
+    .login-group input {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--cream);
+      padding: 11px 14px;
+      outline: none;
+      color: var(--text-dark);
+      transition: border-color 0.2s;
+    }
+    .login-group input:focus { border-color: var(--gold); }
+    .login-error {
+      font-size: 11px;
+      color: #c0392b;
+      margin-bottom: 12px;
+      display: none;
+    }
+    .btn-primary {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cream);
+      background: var(--text-dark);
+      border: none;
+      padding: 14px 28px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: var(--gold); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-primary--full { width: 100%; margin-top: 4px; }
+    .btn-outline {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── APP ── */
+    #app-screen { display: none; }
+
+    .app-layout { display: flex; min-height: 100vh; }
+
+    .sidebar {
+      width: var(--sidebar-w);
+      background: #ffffff;
+      border-right: 1px solid var(--border);
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      z-index: 50;
+    }
+    .sidebar__top {
+      padding: 28px 24px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar__logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      margin-bottom: 14px;
+    }
+    .sidebar__logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-dark);
+      line-height: 1.3;
+    }
+    .sidebar__logo-text em { font-style: italic; }
+    .sidebar__badge {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--gold);
+      padding: 2px 7px;
+    }
+    .sidebar__nav { padding: 16px 0; flex: 1; overflow-y: auto; }
+    .sidebar__nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 24px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-mid);
+      cursor: pointer;
+      border-left: 2px solid transparent;
+      transition: background 0.15s;
+    }
+    .sidebar__nav-item:hover { background: var(--cream); }
+    .sidebar__nav-item.active {
+      border-left-color: var(--gold);
+      background: #fdf9f3;
+      color: var(--text-dark);
+    }
+    .sidebar__footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--text-light);
+    }
+    .btn--logout {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      margin-top: 8px;
+      display: block;
+      transition: color 0.2s;
+    }
+    .btn--logout:hover { color: var(--text-dark); }
+
+    .main-content {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--cream);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .topbar__title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+    }
+    .topbar__refresh {
+      font-size: 11px;
+      color: var(--gold);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .topbar__refresh:hover { opacity: 0.7; }
+
+    .content-area {
+      padding: 40px;
+    }
+
+    /* Stats bar */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .stat-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 20px 24px;
+    }
+    .stat-card__label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 6px;
+    }
+    .stat-card__value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 500;
+      color: var(--text-dark);
+      line-height: 1;
+    }
+
+    /* Section heading */
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .section-heading h2 {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+    }
+
+    /* Client grid */
+    .client-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    .client-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 24px;
+      transition: border-color 0.2s;
+    }
+    .client-card:hover { border-color: var(--gold-light); }
+    .client-card__header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      gap: 12px;
+    }
+    .client-card__company {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text-dark);
+      line-height: 1.2;
+    }
+    .status-badge {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      flex-shrink: 0;
+    }
+    .status-badge--new { background: var(--cream-mid); color: var(--text-light); }
+    .status-badge--progress { background: #fff8ec; color: var(--amber); }
+    .status-badge--complete { background: #edf7f2; color: var(--green); }
+    .client-card__contact {
+      font-size: 11px;
+      color: var(--text-light);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .client-card__contact a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .section-progress {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 14px;
+    }
+    .section-dot {
+      flex: 1;
+      height: 5px;
+      background: var(--cream-mid);
+      position: relative;
+    }
+    .section-dot.done { background: var(--gold); }
+    .section-dot:first-child { border-radius: 2px 0 0 2px; }
+    .section-dot:last-child  { border-radius: 0 2px 2px 0; }
+    .client-card__meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-light);
+      margin-bottom: 16px;
+    }
+    .client-card__actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn-copy {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      background: var(--cream);
+      border: 1px solid var(--border);
+      padding: 7px 12px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .btn-copy:hover { border-color: var(--gold); color: var(--gold); }
+    .empty-state {
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--text-light);
+      font-size: 13px;
+      background: #fff;
+      border: 1px dashed var(--border);
+    }
+
+    /* Create client panel */
+    .create-panel {
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 36px 40px;
+      max-width: 560px;
+      margin-bottom: 40px;
+    }
+    .create-panel__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    .create-panel__title em { font-style: italic; }
+    .create-panel__sub {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+    .form-row { display: grid; gap: 16px; margin-bottom: 16px; }
+    .form-row--2 { grid-template-columns: 1fr 1fr; }
+    .form-row--1 { grid-template-columns: 1fr; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+    }
+    .form-group input {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      color: var(--text-dark);
+      background: var(--cream);
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus { border-color: var(--gold); }
+    .form-group input::placeholder { color: #ccc; }
+
+    /* Generated credentials */
+    .credentials-box {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      padding: 24px;
+      margin-top: 24px;
+    }
+    .credentials-box__label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .credential-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      padding: 10px 14px;
+      background: #fff;
+      border: 1px solid var(--border);
+    }
+    .credential-row__key {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      min-width: 70px;
+    }
+    .credential-row__val {
+      font-size: 12px;
+      color: var(--text-dark);
+      font-family: 'Montserrat', monospace;
+      word-break: break-all;
+      flex: 1;
+    }
+    .btn-tiny-copy {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-mid);
+      padding: 4px 8px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-tiny-copy:hover { border-color: var(--gold); color: var(--gold); }
+    .credentials-box__note {
+      font-size: 11px;
+      color: var(--text-light);
+      line-height: 1.6;
+      margin-top: 12px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: var(--text-dark);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 12px 20px;
+      z-index: 999;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.25s, transform 0.25s;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.gold { background: var(--gold); }
+
+    /* Spinner */
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(184,151,90,0.25);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 768px) {
+      .stats-bar { grid-template-columns: 1fr 1fr; }
+      .client-grid { grid-template-columns: 1fr; }
+      .form-row--2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════════════════════
+     LOGIN
+═══════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <svg width="30" height="30" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="40" height="40" stroke="#B8975A" stroke-width="1.5"/>
+        <rect x="7" y="7" width="30" height="30" stroke="#B8975A" stroke-width="0.8" stroke-dasharray="3 2"/>
+        <text x="22" y="26" text-anchor="middle" font-family="Georgia, serif" font-size="9" letter-spacing="3" fill="#B8975A">GDC</text>
+      </svg>
+      <div>
+        <div class="login-logo-text">Grace Dougan <em>Consulting</em></div>
+        <span class="login-badge">Internal</span>
+      </div>
+    </div>
+    <p class="login-eyebrow">Team Dashboard</p>
+    <h1 class="login-title">Onboarding <em>Portal</em></h1>
+    <div class="login-group">
+      <label>Team Password</label>
+      <input type="password" id="admin-pw" placeholder="GDC team password" autocomplete="current-password" />
+    </div>
+    <p class="login-error" id="login-error">Incorrect password.</p>
+    <button class="btn-primary btn-primary--full" id="login-btn" onclick="doAdminLogin()">Sign In</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     APP
+═══════════════════════════════════════ -->
+<div id="app-screen">
+  <div class="app-layout">
+
+    <aside class="sidebar">
+      <div class="sidebar__top">
+        <a href="/" class="sidebar__logo">
+          <svg width="24" height="24" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="40" height="40" stroke="#B8975A" stroke-width="1.5"/>
+            <rect x="7" y="7" width="30" height="30" stroke="#B8975A" stroke-width="0.8" stroke-dasharray="3 2"/>
+            <text x="22" y="26" text-anchor="middle" font-family="Georgia, serif" font-size="9" letter-spacing="3" fill="#B8975A">GDC</text>
+          </svg>
+          <div class="sidebar__logo-text">Grace Dougan<br/><em>Consulting</em></div>
+        </a>
+        <div class="sidebar__badge">Internal Dashboard</div>
+      </div>
+      <nav class="sidebar__nav">
+        <div class="sidebar__nav-item active" id="nav-clients" onclick="showView('clients')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          All Clients
+        </div>
+        <div class="sidebar__nav-item" id="nav-create" onclick="showView('create')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Create New Client
+        </div>
+      </nav>
+      <div class="sidebar__footer">
+        Signed in as GDC Team
+        <button class="btn--logout" onclick="doLogout()">Sign out</button>
+      </div>
+    </aside>
+
+    <div class="main-content">
+      <div class="topbar">
+        <div class="topbar__title" id="topbar-title">All Clients</div>
+        <button class="topbar__refresh" onclick="loadClients()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+          Refresh
+        </button>
+      </div>
+
+      <!-- ── CLIENTS VIEW ── -->
+      <div id="view-clients" class="content-area">
+        <div class="stats-bar" id="stats-bar">
+          <div class="stat-card">
+            <div class="stat-card__label">Total Clients</div>
+            <div class="stat-card__value" id="stat-total">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__label">In Progress</div>
+            <div class="stat-card__value" id="stat-progress">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__label">Complete</div>
+            <div class="stat-card__value" id="stat-complete">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__label">Not Started</div>
+            <div class="stat-card__value" id="stat-new">—</div>
+          </div>
+        </div>
+
+        <div class="section-heading">
+          <h2>Client Onboarding Status</h2>
+          <button class="btn-outline" onclick="showView('create')">+ New Client</button>
+        </div>
+
+        <div class="client-grid" id="client-grid">
+          <div class="empty-state">Loading clients… <span class="spinner"></span></div>
+        </div>
+      </div>
+
+      <!-- ── CREATE VIEW ── -->
+      <div id="view-create" class="content-area" style="display:none">
+        <div class="create-panel">
+          <h2 class="create-panel__title">Create New <em>Client</em></h2>
+          <p class="create-panel__sub">Generate a unique onboarding link and password for a new client. Share the link and password with them separately.</p>
+
+          <div class="form-row form-row--1">
+            <div class="form-group">
+              <label>Company Name <span style="color:var(--gold)">*</span></label>
+              <input type="text" id="new-company" placeholder="Acme Corp, LLC" />
+            </div>
+          </div>
+          <div class="form-row form-row--2">
+            <div class="form-group">
+              <label>Primary Contact Name <span style="color:var(--gold)">*</span></label>
+              <input type="text" id="new-contact" placeholder="Jane Smith" />
+            </div>
+            <div class="form-group">
+              <label>Contact Email <span style="color:var(--gold)">*</span></label>
+              <input type="email" id="new-email" placeholder="jane@company.com" />
+            </div>
+          </div>
+
+          <p class="login-error" id="create-error" style="margin-top:8px;"></p>
+
+          <button class="btn-primary" id="create-btn" onclick="createClient()">
+            Generate Client Link
+          </button>
+
+          <!-- Generated credentials -->
+          <div class="credentials-box" id="credentials-box" style="display:none">
+            <div class="credentials-box__label">✓ Client Created</div>
+            <div class="credential-row">
+              <span class="credential-row__key">Company</span>
+              <span class="credential-row__val" id="cred-company"></span>
+            </div>
+            <div class="credential-row">
+              <span class="credential-row__key">Link</span>
+              <span class="credential-row__val" id="cred-link" style="font-size:11px; word-break:break-all;"></span>
+              <button class="btn-tiny-copy" onclick="copyText('cred-link', this)">Copy</button>
+            </div>
+            <div class="credential-row">
+              <span class="credential-row__key">Password</span>
+              <span class="credential-row__val" id="cred-password" style="color:var(--gold);"></span>
+              <button class="btn-tiny-copy" onclick="copyText('cred-password', this)">Copy</button>
+            </div>
+            <p class="credentials-box__note">
+              Send the <strong>link</strong> and <strong>password separately</strong> — never together in the same message.
+              The password is case-sensitive. The client will enter both to log in.
+            </p>
+            <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn-outline" onclick="copyAll()">Copy Both</button>
+              <button class="btn-outline" onclick="clearCreate()">Create Another</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /main-content -->
+  </div><!-- /app-layout -->
+</div><!-- /app-screen -->
+
+<script>
+// ──────────────────────────────────────────────────────────────
+// CONFIG
+// ──────────────────────────────────────────────────────────────
+const APPS_SCRIPT_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
+
+const SECTION_LABELS = [
+  'Business & Contact','Banking & Accounts','Bookkeeping','Payroll',
+  'Sales Tax','AP & AR','Reporting & Taxes','Documents'
+];
+
+const SECTION_IDS = ['business','banking','bookkeeping','payroll','salestax','apar','reporting','documents'];
+
+// ──────────────────────────────────────────────────────────────
+// STATE
+// ──────────────────────────────────────────────────────────────
+let adminPw = '';
+let clients = [];
+
+// ──────────────────────────────────────────────────────────────
+// INIT
+// ──────────────────────────────────────────────────────────────
+document.getElementById('admin-pw').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doAdminLogin();
+});
+
+// ──────────────────────────────────────────────────────────────
+// LOGIN
+// ──────────────────────────────────────────────────────────────
+async function doAdminLogin() {
+  const pw = document.getElementById('admin-pw').value.trim();
+  if (!pw) return;
+
+  const btn = document.getElementById('login-btn');
+  const err = document.getElementById('login-error');
+  btn.disabled = true;
+  btn.textContent = 'Signing in…';
+  err.style.display = 'none';
+
+  try {
+    const url = `${APPS_SCRIPT_URL}?action=verify_admin&pw=${encodeURIComponent(pw)}`;
+    const res  = await fetch(url);
+    const json = await res.json();
+
+    if (json.ok) {
+      adminPw = pw;
+      sessionStorage.setItem('gdc_admin_pw', pw);
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app-screen').style.display   = 'block';
+      loadClients();
+    } else {
+      err.textContent = 'Incorrect password.';
+      err.style.display = 'block';
+    }
+  } catch(e) {
+    err.textContent = 'Unable to connect. Please check your internet connection.';
+    err.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Sign In';
+  }
+}
+
+function doLogout() {
+  adminPw = '';
+  sessionStorage.removeItem('gdc_admin_pw');
+  window.location.reload();
+}
+
+// Check session
+(function() {
+  const saved = sessionStorage.getItem('gdc_admin_pw');
+  if (saved) {
+    adminPw = saved;
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app-screen').style.display   = 'block';
+    loadClients();
+  }
+})();
+
+// ──────────────────────────────────────────────────────────────
+// NAV
+// ──────────────────────────────────────────────────────────────
+function showView(id) {
+  document.getElementById('view-clients').style.display = id === 'clients' ? 'block' : 'none';
+  document.getElementById('view-create').style.display  = id === 'create'  ? 'block' : 'none';
+  document.querySelectorAll('.sidebar__nav-item').forEach(el => el.classList.remove('active'));
+  document.getElementById('nav-' + id).classList.add('active');
+  document.getElementById('topbar-title').textContent =
+    id === 'clients' ? 'All Clients' : 'Create New Client';
+}
+
+// ──────────────────────────────────────────────────────────────
+// LOAD CLIENTS
+// ──────────────────────────────────────────────────────────────
+async function loadClients() {
+  const grid = document.getElementById('client-grid');
+  grid.innerHTML = '<div class="empty-state">Loading clients… <span class="spinner"></span></div>';
+
+  try {
+    const url  = `${APPS_SCRIPT_URL}?action=get_clients&pw=${encodeURIComponent(adminPw)}`;
+    const res  = await fetch(url);
+    const json = await res.json();
+
+    if (!json.ok) { grid.innerHTML = '<div class="empty-state">Error loading clients: ' + (json.error||'Unknown') + '</div>'; return; }
+
+    clients = json.clients || [];
+    renderStats();
+    renderClients();
+  } catch(e) {
+    grid.innerHTML = '<div class="empty-state">Unable to connect. Please check your internet connection and refresh.</div>';
+  }
+}
+
+function renderStats() {
+  const total    = clients.length;
+  const progress = clients.filter(c => c.status === 'In Progress').length;
+  const complete = clients.filter(c => c.status === 'Complete').length;
+  const newC     = clients.filter(c => c.status === 'Not Started' || !c.status).length;
+  document.getElementById('stat-total').textContent    = total;
+  document.getElementById('stat-progress').textContent = progress;
+  document.getElementById('stat-complete').textContent = complete;
+  document.getElementById('stat-new').textContent      = newC;
+}
+
+function renderClients() {
+  const grid = document.getElementById('client-grid');
+  if (!clients.length) {
+    grid.innerHTML = '<div class="empty-state">No clients yet. Create your first client using the button above.</div>';
+    return;
+  }
+
+  // Sort: In Progress first, then Not Started, then Complete
+  const order = { 'In Progress': 0, 'Not Started': 1, 'Complete': 2 };
+  const sorted = [...clients].sort((a, b) => (order[a.status] ?? 1) - (order[b.status] ?? 1));
+
+  grid.innerHTML = sorted.map(c => {
+    const completedSections = c.sections || [];
+    const dots = SECTION_IDS.map(id => `<div class="section-dot ${completedSections.includes(id) ? 'done' : ''}"></div>`).join('');
+    const pct  = Math.round((completedSections.length / 8) * 100);
+    const badge = c.status === 'Complete'
+      ? '<span class="status-badge status-badge--complete">Complete</span>'
+      : c.status === 'In Progress'
+      ? '<span class="status-badge status-badge--progress">In Progress</span>'
+      : '<span class="status-badge status-badge--new">Not Started</span>';
+
+    const lastSeen = c.lastSeen ? `Last active: ${c.lastSeen}` : 'Not yet accessed';
+
+    return `
+      <div class="client-card">
+        <div class="client-card__header">
+          <div class="client-card__company">${escHtml(c.company)}</div>
+          ${badge}
+        </div>
+        <div class="client-card__contact">
+          ${escHtml(c.contact)}<br/>
+          <a href="mailto:${escHtml(c.email)}">${escHtml(c.email)}</a>
+        </div>
+        <div class="section-progress">${dots}</div>
+        <div class="client-card__meta">
+          <span>${completedSections.length} / 8 sections &nbsp;·&nbsp; ${pct}%</span>
+          <span>${lastSeen}</span>
+        </div>
+        <div class="client-card__actions">
+          <button class="btn-copy" onclick="copyTextDirect('${escHtml(c.link)}', this)">Copy Link</button>
+          <button class="btn-copy" onclick="copyTextDirect('${escHtml(c.password)}', this)">Copy Password</button>
+          <button class="btn-copy" onclick="copyBoth('${escHtml(c.link)}', '${escHtml(c.password)}')">Copy Both</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ──────────────────────────────────────────────────────────────
+// CREATE CLIENT
+// ──────────────────────────────────────────────────────────────
+async function createClient() {
+  const company = document.getElementById('new-company').value.trim();
+  const contact = document.getElementById('new-contact').value.trim();
+  const email   = document.getElementById('new-email').value.trim();
+  const errEl   = document.getElementById('create-error');
+  const btn     = document.getElementById('create-btn');
+
+  if (!company || !contact || !email) {
+    errEl.textContent = 'Please fill in all fields.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Creating…';
+  errEl.style.display = 'none';
+
+  try {
+    const url = `${APPS_SCRIPT_URL}?action=create_client&pw=${encodeURIComponent(adminPw)}&company=${encodeURIComponent(company)}&contact=${encodeURIComponent(contact)}&email=${encodeURIComponent(email)}`;
+    const res  = await fetch(url);
+    const json = await res.json();
+
+    if (json.ok) {
+      document.getElementById('cred-company').textContent  = json.company;
+      document.getElementById('cred-link').textContent     = json.link;
+      document.getElementById('cred-password').textContent = json.password;
+      document.getElementById('credentials-box').style.display = 'block';
+      showToast('Client created!', true);
+    } else {
+      errEl.textContent = json.error || 'Failed to create client.';
+      errEl.style.display = 'block';
+    }
+  } catch(e) {
+    errEl.textContent = 'Unable to connect. Please check your internet connection.';
+    errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Generate Client Link';
+  }
+}
+
+function clearCreate() {
+  document.getElementById('new-company').value = '';
+  document.getElementById('new-contact').value = '';
+  document.getElementById('new-email').value   = '';
+  document.getElementById('credentials-box').style.display = 'none';
+  document.getElementById('create-error').style.display = 'none';
+}
+
+// ──────────────────────────────────────────────────────────────
+// COPY UTILITIES
+// ──────────────────────────────────────────────────────────────
+async function copyText(elId, btn) {
+  const text = document.getElementById(elId).textContent;
+  await copyTextDirect(text, btn);
+}
+
+async function copyTextDirect(text, btn) {
+  try {
+    await navigator.clipboard.writeText(text);
+    const orig = btn ? btn.textContent : '';
+    if (btn) { btn.textContent = 'Copied!'; btn.style.color = 'var(--gold)'; }
+    showToast('Copied!', true);
+    if (btn) setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 2000);
+  } catch(e) {
+    showToast('Copy failed — please copy manually.');
+  }
+}
+
+async function copyBoth(link, password) {
+  const text = `Onboarding Link: ${link}\nPassword: ${password}`;
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast('Link + password copied!', true);
+  } catch(e) {}
+}
+
+async function copyAll() {
+  const link = document.getElementById('cred-link').textContent;
+  const pw   = document.getElementById('cred-password').textContent;
+  await copyBoth(link, pw);
+}
+
+// ──────────────────────────────────────────────────────────────
+// UTILS
+// ──────────────────────────────────────────────────────────────
+function escHtml(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
+
+let toastTimer;
+function showToast(msg, gold=false) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show' + (gold ? ' gold' : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>

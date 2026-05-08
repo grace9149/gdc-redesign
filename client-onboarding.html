@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Client Onboarding — Grace Dougan Consulting</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #B8975A;
+      --gold-light: #D4AF72;
+      --cream: #FAF8F4;
+      --cream-mid: #F0EDE8;
+      --text-dark: #111111;
+      --text-mid: #444444;
+      --text-light: #888888;
+      --border: #E2DDD6;
+      --sidebar-w: 280px;
+    }
+
+    html { font-size: 16px; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── LOGIN SCREEN ── */
+    #login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 56px 48px;
+    }
+    .login-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 40px;
+      text-decoration: none;
+    }
+    .login-logo__text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--text-dark);
+      line-height: 1;
+    }
+    .login-logo__text em { font-style: italic; font-weight: 400; }
+    .login-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .login-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px;
+      font-weight: 500;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+    .login-title em { font-style: italic; }
+    .login-sub {
+      font-size: 12px;
+      color: var(--text-light);
+      line-height: 1.6;
+      margin-bottom: 36px;
+    }
+    .login-group {
+      margin-bottom: 18px;
+    }
+    .login-group label {
+      display: block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      margin-bottom: 6px;
+    }
+    .login-group input {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--cream);
+      padding: 11px 14px;
+      outline: none;
+      color: var(--text-dark);
+      transition: border-color 0.2s;
+    }
+    .login-group input:focus { border-color: var(--gold); }
+    .login-group input::placeholder { color: #ccc; }
+    .login-error {
+      font-size: 11px;
+      color: #c0392b;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .btn--login {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cream);
+      background: var(--text-dark);
+      border: none;
+      width: 100%;
+      padding: 15px;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+    .btn--login:hover { background: var(--gold); }
+    .btn--login:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ── APP LAYOUT ── */
+    #app-screen { display: none; }
+
+    .app-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: #ffffff;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 50;
+      overflow-y: auto;
+    }
+    .sidebar__header {
+      padding: 28px 28px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sidebar__logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      margin-bottom: 20px;
+    }
+    .sidebar__logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--text-dark);
+      line-height: 1.2;
+    }
+    .sidebar__logo-text em { font-style: italic; }
+    .sidebar__company {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2px;
+    }
+    .sidebar__contact {
+      font-size: 11px;
+      color: var(--text-light);
+    }
+    .sidebar__nav {
+      padding: 20px 0;
+      flex: 1;
+    }
+    .sidebar__nav-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      padding: 0 28px;
+      margin-bottom: 8px;
+    }
+    .sidebar__item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 28px;
+      cursor: pointer;
+      transition: background 0.15s;
+      border-left: 2px solid transparent;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-mid);
+      text-decoration: none;
+    }
+    .sidebar__item:hover { background: var(--cream); }
+    .sidebar__item.active {
+      border-left-color: var(--gold);
+      background: #fdf9f3;
+      color: var(--text-dark);
+    }
+    .sidebar__item.done .item-dot { background: var(--gold); }
+    .item-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .sidebar__item.done .item-dot { background: var(--gold); border-color: var(--gold); }
+    .sidebar__item.active .item-dot { border-color: var(--gold); }
+    .sidebar__footer {
+      padding: 20px 28px;
+      border-top: 1px solid var(--border);
+    }
+    .sidebar__progress-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .sidebar__progress-bar {
+      height: 3px;
+      background: var(--cream-mid);
+      margin-bottom: 16px;
+    }
+    .sidebar__progress-fill {
+      height: 100%;
+      background: var(--gold);
+      transition: width 0.4s ease;
+    }
+    .btn--logout {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: color 0.2s;
+    }
+    .btn--logout:hover { color: var(--text-dark); }
+
+    /* Main content */
+    .main-content {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--cream);
+      border-bottom: 1px solid var(--border);
+      padding: 0 48px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .topbar__title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+    }
+    .topbar__help {
+      font-size: 11px;
+      color: var(--text-light);
+    }
+    .topbar__help a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    .section-panel {
+      padding: 56px 48px 80px;
+      max-width: 740px;
+    }
+    .section-panel__eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .section-panel__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 500;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+    .section-panel__title em { font-style: italic; }
+    .section-panel__sub {
+      font-size: 13px;
+      color: var(--text-light);
+      line-height: 1.7;
+      margin-bottom: 44px;
+      max-width: 500px;
+    }
+
+    /* Form fields */
+    .form-section {
+      margin-bottom: 36px;
+    }
+    .form-section__title {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .form-row {
+      display: grid;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+    .form-row--2 { grid-template-columns: 1fr 1fr; }
+    .form-row--1 { grid-template-columns: 1fr; }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+    }
+    .form-group label .req { color: var(--gold); margin-left: 2px; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      color: var(--text-dark);
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 0;
+      padding: 11px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: #bbb; }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--gold); }
+    .form-group select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23B8975A' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+
+    .radio-group, .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .radio-group label, .checkbox-group label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: none;
+      color: var(--text-mid);
+      cursor: pointer;
+      padding: 7px 12px;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .radio-group input[type="radio"],
+    .checkbox-group input[type="checkbox"] {
+      width: 14px;
+      height: 14px;
+      padding: 0;
+      accent-color: var(--gold);
+      flex-shrink: 0;
+    }
+    .radio-group label:has(input:checked),
+    .checkbox-group label:has(input:checked) {
+      border-color: var(--gold);
+      background: #fdf9f3;
+    }
+
+    /* File upload */
+    .file-upload-area {
+      border: 1.5px dashed var(--border);
+      background: #fff;
+      padding: 32px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .file-upload-area:hover,
+    .file-upload-area.dragover {
+      border-color: var(--gold);
+      background: #fdf9f3;
+    }
+    .file-upload-area svg { margin-bottom: 10px; color: var(--gold); }
+    .file-upload-area p { font-size: 12px; color: var(--text-light); line-height: 1.6; }
+    .file-upload-area strong { color: var(--gold); }
+    .file-list {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .file-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: #fff;
+      border: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--text-mid);
+    }
+    .file-item__remove {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-light);
+      font-size: 14px;
+      line-height: 1;
+      padding: 0 0 0 8px;
+      transition: color 0.2s;
+    }
+    .file-item__remove:hover { color: #c0392b; }
+
+    /* Section actions */
+    .section-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 40px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .save-status {
+      font-size: 11px;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .save-status.saved { color: var(--gold); }
+    .save-status.saving { color: var(--text-light); }
+    .btn--save {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--cream);
+      background: var(--text-dark);
+      border: none;
+      padding: 14px 32px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn--save:hover { background: var(--gold); }
+    .btn--save:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Final submit panel */
+    #submit-panel { display: none; }
+    .submit-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 48px 48px;
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .submit-card__icon {
+      width: 64px;
+      height: 64px;
+      border: 1.5px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .submit-card h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 30px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+    .submit-card h2 em { font-style: italic; }
+    .submit-card p {
+      font-size: 13px;
+      color: var(--text-mid);
+      line-height: 1.7;
+      margin-bottom: 16px;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .submit-checklist {
+      text-align: left;
+      margin: 24px 0;
+      padding: 20px 24px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+    }
+    .submit-checklist__item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text-mid);
+      padding: 5px 0;
+    }
+    .submit-checklist__item svg { flex-shrink: 0; }
+    .submit-checklist__item.missing { color: var(--text-light); }
+    .btn--submit-final {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--cream);
+      background: var(--gold);
+      border: none;
+      padding: 16px 48px;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+    .btn--submit-final:hover { background: #9a7d47; }
+    .btn--submit-final:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Success screen */
+    #success-screen { display: none; }
+    .success-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 60px 24px;
+    }
+    .success-card {
+      max-width: 540px;
+      width: 100%;
+      text-align: center;
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 64px 48px;
+    }
+    .success-mark {
+      width: 72px; height: 72px;
+      border: 1.5px solid var(--gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 28px;
+    }
+    .success-card h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 34px;
+      font-weight: 500;
+      margin-bottom: 14px;
+    }
+    .success-card h2 em { font-style: italic; }
+    .success-card p {
+      font-size: 13px;
+      color: var(--text-mid);
+      line-height: 1.8;
+      margin-bottom: 12px;
+    }
+    .success-contact {
+      margin-top: 28px;
+      padding: 20px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-mid);
+    }
+    .success-contact a { color: var(--gold); text-decoration: none; }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background: var(--text-dark);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 12px 20px;
+      z-index: 999;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.gold { background: var(--gold); }
+
+    /* Mobile hamburger */
+    .sidebar-toggle {
+      display: none;
+      background: none;
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      cursor: pointer;
+      color: var(--text-dark);
+    }
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 49;
+    }
+    .sidebar-overlay.visible { display: block; }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s;
+      }
+      .sidebar.open { transform: translateX(0); }
+      .main-content { margin-left: 0; }
+      .sidebar-toggle { display: flex; align-items: center; gap: 6px; }
+      .section-panel { padding: 36px 24px 60px; }
+      .main-topbar { padding: 0 24px; }
+      .form-row--2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── TOAST ── -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════════════════════════════════
+     LOGIN SCREEN
+═══════════════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <a href="/" class="login-logo">
+      <svg width="32" height="32" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="40" height="40" stroke="#B8975A" stroke-width="1.5"/>
+        <rect x="7" y="7" width="30" height="30" stroke="#B8975A" stroke-width="0.8" stroke-dasharray="3 2"/>
+        <text x="22" y="26" text-anchor="middle" font-family="Georgia, serif" font-size="9" letter-spacing="3" fill="#B8975A" font-weight="400">GDC</text>
+      </svg>
+      <span class="login-logo__text">Grace Dougan <em>&nbsp;Consulting</em></span>
+    </a>
+    <p class="login-eyebrow">Client Portal</p>
+    <h1 class="login-title">Welcome <em>back.</em></h1>
+    <p class="login-sub">Use the link and password provided by your GDC team to access your onboarding portal.</p>
+
+    <div class="login-group">
+      <label for="login-id">Client Access Code</label>
+      <input type="text" id="login-id" placeholder="e.g. abc12345" autocomplete="off" autocapitalize="none" />
+    </div>
+    <div class="login-group">
+      <label for="login-pw">Password</label>
+      <input type="password" id="login-pw" placeholder="your-password" autocomplete="current-password" />
+    </div>
+    <p class="login-error" id="login-error">Invalid access code or password. Please try again.</p>
+    <button class="btn--login" id="login-btn" onclick="doLogin()">Sign In</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     APP SCREEN
+═══════════════════════════════════════════════════ -->
+<div id="app-screen">
+  <div id="sidebar-overlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__header">
+      <a href="/" class="sidebar__logo">
+        <svg width="26" height="26" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="40" height="40" stroke="#B8975A" stroke-width="1.5"/>
+          <rect x="7" y="7" width="30" height="30" stroke="#B8975A" stroke-width="0.8" stroke-dasharray="3 2"/>
+          <text x="22" y="26" text-anchor="middle" font-family="Georgia, serif" font-size="9" letter-spacing="3" fill="#B8975A" font-weight="400">GDC</text>
+        </svg>
+        <div class="sidebar__logo-text">Grace Dougan<br/><em>Consulting</em></div>
+      </a>
+      <div class="sidebar__company" id="sidebar-company">—</div>
+      <div class="sidebar__contact" id="sidebar-contact">—</div>
+    </div>
+
+    <nav class="sidebar__nav">
+      <div class="sidebar__nav-label">Onboarding Sections</div>
+      <!-- items injected by JS -->
+      <div id="nav-items"></div>
+    </nav>
+
+    <div class="sidebar__footer">
+      <div class="sidebar__progress-label">
+        <span>Progress</span>
+        <span id="progress-pct">0%</span>
+      </div>
+      <div class="sidebar__progress-bar">
+        <div class="sidebar__progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+      <button class="btn--logout" onclick="doLogout()">Sign out</button>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <div class="main-topbar">
+      <button class="sidebar-toggle" onclick="openSidebar()">
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="none"><path d="M1 1h16M1 7h16M1 13h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Menu
+      </button>
+      <div class="topbar__title" id="topbar-section-title">Client Onboarding</div>
+      <div class="topbar__help">Questions? <a href="mailto:hr@gracedouganconsulting.com">hr@gracedouganconsulting.com</a></div>
+    </div>
+
+    <div id="sections-container">
+      <!-- Section panels injected by JS -->
+    </div>
+
+    <!-- Submit panel -->
+    <div id="submit-panel">
+      <div class="section-panel">
+        <p class="section-panel__eyebrow">Final Step</p>
+        <h2 class="section-panel__title">Review &amp; <em>Submit</em></h2>
+        <p class="section-panel__sub">Once you submit, our team will receive all of your information and follow up within 1–2 business days.</p>
+        <div class="submit-card">
+          <div class="submit-card__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#B8975A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/>
+            </svg>
+          </div>
+          <h2>Ready to <em>Submit?</em></h2>
+          <p>Review your completed sections below. You may go back and edit any section before submitting.</p>
+          <div class="submit-checklist" id="submit-checklist">
+            <!-- injected by JS -->
+          </div>
+          <p style="font-size:11px; color:var(--text-light); margin-top:16px; margin-bottom:0;">
+            You'll receive a confirmation email once submitted. All information is kept strictly confidential.
+          </p>
+          <br/>
+          <button class="btn--submit-final" id="final-submit-btn" onclick="doFinalSubmit()">
+            Submit Onboarding
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     SUCCESS SCREEN
+═══════════════════════════════════════════════════ -->
+<div id="success-screen">
+  <div class="success-wrap">
+    <div class="success-card">
+      <div class="success-mark">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#B8975A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <h2>Onboarding <em>Complete.</em></h2>
+      <p>Thank you for completing your onboarding with Grace Dougan Consulting. We've received everything and will be in touch shortly.</p>
+      <p>A confirmation has been sent to your email address.</p>
+      <div class="success-contact">
+        Questions? Reach us at <a href="mailto:hr@gracedouganconsulting.com">hr@gracedouganconsulting.com</a> or <a href="tel:4158279648">415.827.9648</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// CONFIG
+// ─────────────────────────────────────────────────────────────────────────────
+const APPS_SCRIPT_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
+
+// Section definitions
+const SECTIONS = [
+  {
+    id: 'business',
+    label: 'Business & Contact',
+    eyebrow: 'Section 1 of 8',
+    title: 'Your <em>Business</em>',
+    sub: 'Tell us about your company so we can set up your accounts correctly.',
+    render: renderBusiness
+  },
+  {
+    id: 'banking',
+    label: 'Banking & Accounts',
+    eyebrow: 'Section 2 of 8',
+    title: 'Banking &amp; <em>Accounts</em>',
+    sub: 'Help us understand your banking relationships and account structure.',
+    render: renderBanking
+  },
+  {
+    id: 'bookkeeping',
+    label: 'Bookkeeping Setup',
+    eyebrow: 'Section 3 of 8',
+    title: 'Bookkeeping <em>Setup</em>',
+    sub: 'Tell us about your current accounting software and books status.',
+    render: renderBookkeeping
+  },
+  {
+    id: 'payroll',
+    label: 'Payroll',
+    eyebrow: 'Section 4 of 8',
+    title: 'Payroll &amp; <em>HR</em>',
+    sub: 'Share details about your payroll process and workforce.',
+    render: renderPayroll
+  },
+  {
+    id: 'salestax',
+    label: 'Sales Tax',
+    eyebrow: 'Section 5 of 8',
+    title: 'Sales Tax &amp; <em>Compliance</em>',
+    sub: 'Let us know about your sales tax obligations and filing requirements.',
+    render: renderSalesTax
+  },
+  {
+    id: 'apar',
+    label: 'Accounts Payable & Receivable',
+    eyebrow: 'Section 6 of 8',
+    title: 'AP &amp; AR',
+    sub: 'Describe your billing, invoicing, and vendor payment processes.',
+    render: renderAPAR
+  },
+  {
+    id: 'reporting',
+    label: 'Reporting & Taxes',
+    eyebrow: 'Section 7 of 8',
+    title: 'Reporting &amp; <em>Taxes</em>',
+    sub: 'Tell us what reports you need and about your tax filing history.',
+    render: renderReporting
+  },
+  {
+    id: 'documents',
+    label: 'Documents',
+    eyebrow: 'Section 8 of 8',
+    title: 'Documents &amp; <em>Files</em>',
+    sub: 'Upload any relevant documents — bank statements, tax returns, prior reports, or anything else that will help us get started.',
+    render: renderDocuments
+  }
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────────────────────
+let clientId   = '';
+let clientPw   = '';
+let clientInfo = {};
+let savedData  = {};    // sectionId → { field: value, ... }
+let doneSections = new Set();
+let uploadedFiles = []; // { name, mimeType, data (base64) }
+let activeSectionId = 'business';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// INIT — read URL param
+// ─────────────────────────────────────────────────────────────────────────────
+(function init() {
+  const params = new URLSearchParams(window.location.search);
+  const urlId  = params.get('id') || '';
+  if (urlId) {
+    document.getElementById('login-id').value = urlId;
+    document.getElementById('login-pw').focus();
+  }
+  document.getElementById('login-pw').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+})();
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LOGIN
+// ─────────────────────────────────────────────────────────────────────────────
+async function doLogin() {
+  const id = document.getElementById('login-id').value.trim();
+  const pw = document.getElementById('login-pw').value.trim();
+  const btn = document.getElementById('login-btn');
+  const err = document.getElementById('login-error');
+
+  if (!id || !pw) { showError('Please enter your access code and password.'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Signing in…';
+  err.style.display = 'none';
+
+  try {
+    const url = `${APPS_SCRIPT_URL}?action=verify_client&id=${encodeURIComponent(id)}&pw=${encodeURIComponent(pw)}`;
+    const res = await fetch(url);
+    const json = await res.json();
+
+    if (json.ok) {
+      clientId   = id;
+      clientPw   = pw;
+      clientInfo = json;
+      sessionStorage.setItem('gdc_client_id', id);
+      sessionStorage.setItem('gdc_client_pw', pw);
+      sessionStorage.setItem('gdc_client_info', JSON.stringify(json));
+      await loadAndRender();
+    } else {
+      showError(json.error || 'Invalid access code or password.');
+    }
+  } catch(e) {
+    // Offline fallback: check sessionStorage
+    const sid  = sessionStorage.getItem('gdc_client_id');
+    const spw  = sessionStorage.getItem('gdc_client_pw');
+    const sinfo = sessionStorage.getItem('gdc_client_info');
+    if (sid === id && spw === pw && sinfo) {
+      clientId = id; clientPw = pw; clientInfo = JSON.parse(sinfo);
+      await loadAndRender();
+    } else {
+      showError('Unable to connect. Please check your internet connection.');
+    }
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Sign In';
+  }
+}
+
+function showError(msg) {
+  const err = document.getElementById('login-error');
+  err.textContent = msg;
+  err.style.display = 'block';
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LOAD PROGRESS + RENDER APP
+// ─────────────────────────────────────────────────────────────────────────────
+async function loadAndRender() {
+  // Load remote progress
+  try {
+    const url = `${APPS_SCRIPT_URL}?action=get_progress&id=${encodeURIComponent(clientId)}&pw=${encodeURIComponent(clientPw)}`;
+    const res = await fetch(url);
+    const json = await res.json();
+    if (json.ok && json.sections) {
+      savedData = json.sections;
+      // Merge with any localStorage drafts
+      const local = JSON.parse(localStorage.getItem('gdc_draft_' + clientId) || '{}');
+      Object.assign(savedData, local);
+      Object.keys(savedData).forEach(k => doneSections.add(k));
+    }
+  } catch(e) {
+    // Use localStorage only
+    const local = JSON.parse(localStorage.getItem('gdc_draft_' + clientId) || '{}');
+    savedData = local;
+    Object.keys(savedData).forEach(k => doneSections.add(k));
+  }
+
+  // Build UI
+  document.getElementById('sidebar-company').textContent = clientInfo.company || '—';
+  document.getElementById('sidebar-contact').textContent  = clientInfo.contact  || '—';
+
+  buildNav();
+  buildSections();
+  showSection('business');
+
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app-screen').style.display   = 'block';
+  updateProgress();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// NAV
+// ─────────────────────────────────────────────────────────────────────────────
+function buildNav() {
+  const container = document.getElementById('nav-items');
+  container.innerHTML = '';
+  SECTIONS.forEach(s => {
+    const el = document.createElement('div');
+    el.className = 'sidebar__item' + (doneSections.has(s.id) ? ' done' : '');
+    el.id = 'nav-' + s.id;
+    el.innerHTML = `<span class="item-dot"></span><span>${s.label}</span>`;
+    el.onclick = () => { showSection(s.id); closeSidebar(); };
+    container.appendChild(el);
+  });
+  // Submit nav item
+  const sub = document.createElement('div');
+  sub.className = 'sidebar__item';
+  sub.id = 'nav-submit';
+  sub.innerHTML = `<span class="item-dot"></span><span>Review &amp; Submit</span>`;
+  sub.onclick = () => { showSubmit(); closeSidebar(); };
+  container.appendChild(sub);
+}
+
+function setNavActive(id) {
+  document.querySelectorAll('.sidebar__item').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById('nav-' + id);
+  if (el) el.classList.add('active');
+}
+
+function updateProgress() {
+  const pct = Math.round((doneSections.size / SECTIONS.length) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent  = pct + '%';
+  SECTIONS.forEach(s => {
+    const el = document.getElementById('nav-' + s.id);
+    if (el) {
+      el.classList.toggle('done', doneSections.has(s.id));
+    }
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION PANELS
+// ─────────────────────────────────────────────────────────────────────────────
+function buildSections() {
+  const container = document.getElementById('sections-container');
+  container.innerHTML = '';
+  SECTIONS.forEach(s => {
+    const panel = document.createElement('div');
+    panel.id = 'panel-' + s.id;
+    panel.className = 'section-panel';
+    panel.style.display = 'none';
+    panel.innerHTML = `
+      <p class="section-panel__eyebrow">${s.eyebrow}</p>
+      <h2 class="section-panel__title">${s.title}</h2>
+      <p class="section-panel__sub">${s.sub}</p>
+      <div id="fields-${s.id}"></div>
+      <div class="section-actions">
+        <span class="save-status" id="status-${s.id}">Unsaved</span>
+        <button class="btn--save" onclick="saveSection('${s.id}')">Save &amp; Continue →</button>
+      </div>
+    `;
+    container.appendChild(panel);
+    s.render('fields-' + s.id, savedData[s.id] || {});
+  });
+}
+
+function showSection(id) {
+  document.querySelectorAll('.section-panel').forEach(p => p.style.display = 'none');
+  document.getElementById('submit-panel').style.display = 'none';
+  const panel = document.getElementById('panel-' + id);
+  if (panel) panel.style.display = 'block';
+  activeSectionId = id;
+  setNavActive(id);
+
+  const sec = SECTIONS.find(s => s.id === id);
+  document.getElementById('topbar-section-title').textContent = sec ? sec.label : 'Onboarding';
+}
+
+function showSubmit() {
+  document.querySelectorAll('.section-panel').forEach(p => p.style.display = 'none');
+  document.getElementById('submit-panel').style.display = 'block';
+  setNavActive('submit');
+  document.getElementById('topbar-section-title').textContent = 'Review & Submit';
+  renderSubmitChecklist();
+}
+
+function renderSubmitChecklist() {
+  const el = document.getElementById('submit-checklist');
+  el.innerHTML = '';
+  SECTIONS.forEach(s => {
+    const done = doneSections.has(s.id);
+    el.innerHTML += `
+      <div class="submit-checklist__item${done ? '' : ' missing'}">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          ${done
+            ? '<circle cx="8" cy="8" r="7" fill="#B8975A"/><path d="M5 8l2 2 4-4" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>'
+            : '<circle cx="8" cy="8" r="7" stroke="#E2DDD6" stroke-width="1.2"/>'
+          }
+        </svg>
+        <span>${s.label}</span>
+      </div>
+    `;
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SECTION RENDERERS
+// ─────────────────────────────────────────────────────────────────────────────
+function v(data, key, def='') { return data[key] !== undefined ? data[key] : def; }
+
+function renderBusiness(containerId, d) {
+  document.getElementById(containerId).innerHTML = `
+    <div class="form-section">
+      <div class="form-section__title">Company Information</div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>Legal Company Name <span class="req">*</span></label>
+          <input type="text" name="company" value="${v(d,'company')}" placeholder="Acme Corp, LLC"/></div>
+        <div class="form-group"><label>DBA / Trade Name</label>
+          <input type="text" name="dba" value="${v(d,'dba')}" placeholder="If different from legal name"/></div>
+      </div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>Entity Type</label>
+          <select name="entity_type">
+            ${['','Sole Proprietor','Single-Member LLC','Multi-Member LLC','S-Corp','C-Corp','Partnership','Nonprofit','Other']
+              .map(o=>`<option ${v(d,'entity_type')===o?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+        <div class="form-group"><label>Industry</label>
+          <input type="text" name="industry" value="${v(d,'industry')}" placeholder="e.g. Construction, Retail, Consulting"/></div>
+      </div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>State of Incorporation</label>
+          <input type="text" name="state_inc" value="${v(d,'state_inc')}" placeholder="CA"/></div>
+        <div class="form-group"><label>Years in Business</label>
+          <input type="text" name="years_in_business" value="${v(d,'years_in_business')}" placeholder="e.g. 5"/></div>
+      </div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>Number of Employees</label>
+          <select name="employees">
+            ${['','Just me','2–5','6–15','16–50','51–100','100+'].map(o=>`<option ${v(d,'employees')===o?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+        <div class="form-group"><label>Annual Revenue (approx.)</label>
+          <select name="revenue">
+            ${['','Under $100K','$100K–$500K','$500K–$1M','$1M–$5M','$5M+','Prefer not to say']
+              .map(o=>`<option ${v(d,'revenue')===o?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+      </div>
+    </div>
+    <div class="form-section">
+      <div class="form-section__title">Primary Contact</div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>First Name <span class="req">*</span></label>
+          <input type="text" name="first_name" value="${v(d,'first_name')}" placeholder="Jane"/></div>
+        <div class="form-group"><label>Last Name <span class="req">*</span></label>
+          <input type="text" name="last_name" value="${v(d,'last_name')}" placeholder="Smith"/></div>
+      </div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>Title / Role</label>
+          <input type="text" name="title" value="${v(d,'title')}" placeholder="Owner, CEO, CFO…"/></div>
+        <div class="form-group"><label>Phone</label>
+          <input type="tel" name="phone" value="${v(d,'phone')}" placeholder="(415) 555-0100"/></div>
+      </div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>Email <span class="req">*</span></label>
+          <input type="email" name="email" value="${v(d,'email')}" placeholder="jane@company.com"/></div>
+        <div class="form-group"><label>Website</label>
+          <input type="url" name="website" value="${v(d,'website')}" placeholder="https://"/></div>
+      </div>
+      <div class="form-row form-row--1">
+        <div class="form-group"><label>Business Address</label>
+          <input type="text" name="address" value="${v(d,'address')}" placeholder="Street, City, State, ZIP"/></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderBanking(containerId, d) {
+  document.getElementById(containerId).innerHTML = `
+    <div class="form-section">
+      <div class="form-section__title">Bank Accounts</div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>Number of Bank Accounts</label>
+          <select name="bank_accounts">
+            ${['','1','2','3','4','5+'].map(o=>`<option ${v(d,'bank_accounts')===o?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+        <div class="form-group"><label>Bank(s) Used</label>
+          <input type="text" name="banks_list" value="${v(d,'banks_list')}" placeholder="Chase, Bank of America…"/></div>
+      </div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>Business Credit Cards</label>
+          <select name="credit_cards">
+            ${['','None','1','2','3','4+'].map(o=>`<option ${v(d,'credit_cards')===o?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+        <div class="form-group"><label>Loans / Lines of Credit</label>
+          <select name="loans">
+            ${['','None','1','2','3+'].map(o=>`<option ${v(d,'loans')===o?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+      </div>
+      <div class="form-row form-row--1">
+        <div class="form-group"><label>How will GDC access your bank data?</label>
+          <div class="radio-group">
+            ${['Read-only bank feed (preferred)','Download & upload statements','Direct login (shared securely)','Not sure yet']
+              .map(o=>`<label><input type="radio" name="access_method" value="${o}" ${v(d,'access_method')===o?'checked':''}/>${o}</label>`).join('')}
+          </div></div>
+      </div>
+      <div class="form-row form-row--1">
+        <div class="form-group"><label>Additional banking notes</label>
+          <textarea name="banking_notes" placeholder="Any other details about your accounts…">${v(d,'banking_notes')}</textarea></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderBookkeeping(containerId, d) {
+  document.getElementById(containerId).innerHTML = `
+    <div class="form-section">
+      <div class="form-section__title">Current Setup</div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>Accounting Software</label>
+          <select name="software">
+            ${['','QuickBooks Online','QuickBooks Desktop','Xero','Wave','FreshBooks','Sage','Spreadsheets only','None','Other']
+              .map(o=>`<option ${v(d,'software')===o?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+        <div class="form-group"><label>Books Status</label>
+          <select name="books_status">
+            ${['','Up to date','1–3 months behind','3–6 months behind','6–12 months behind','More than a year behind','Never set up']
+              .map(o=>`<option ${v(d,'books_status')===o?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+      </div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>Uses Classes / Departments</label>
+          <div class="radio-group">
+            ${['Yes','No','Not sure'].map(o=>`<label><input type="radio" name="uses_classes" value="${o}" ${v(d,'uses_classes')===o?'checked':''}/>${o}</label>`).join('')}
+          </div></div>
+        <div class="form-group"><label>Job Costing Required</label>
+          <div class="radio-group">
+            ${['Yes','No','Not sure'].map(o=>`<label><input type="radio" name="job_costing" value="${o}" ${v(d,'job_costing')===o?'checked':''}/>${o}</label>`).join('')}
+          </div></div>
+      </div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>How are receipts collected?</label>
+          <select name="receipt_method">
+            ${['','Dext / Hubdoc','Email to accountant','Physical / manual entry','Not collected','Other']
+              .map(o=>`<option ${v(d,'receipt_method')===o?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+        <div class="form-group"><label>Chart of Accounts Status</label>
+          <select name="coa_status">
+            ${['','Set up and clean','Needs review / cleanup','Not set up','Not sure']
+              .map(o=>`<option ${v(d,'coa_status')===o?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+      </div>
+      <div class="form-row form-row--1">
+        <div class="form-group"><label>Bookkeeping notes</label>
+          <textarea name="bookkeeping_notes" placeholder="Anything else we should know about your books or accounting setup…">${v(d,'bookkeeping_notes')}</textarea></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderPayroll(containerId, d) {
+  document.getElementById(containerId).innerHTML = `
+    <div class="form-section">
+      <div class="form-section__title">Payroll Details</div>
+      <div class="form-row form-row--1">
+        <div class="form-group"><label>Does your business run payroll?</label>
+          <div class="radio-group">
+            ${['Yes','No – I plan to soon','No – independent contractors only','No – owner only']
+              .map(o=>`<label><input type="radio" name="has_payroll" value="${o}" ${v(d,'has_payroll')===o?'checked':''}/>${o}</label>`).join('')}
+          </div></div>
+      </div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>Current Payroll Provider</label>
+          <select name="payroll_provider">
+            ${['','Gusto','ADP','Paychex','QuickBooks Payroll','Rippling','Manual / none','Other']
+              .map(o=>`<option ${v(d,'payroll_provider')===o?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+        <div class="form-group"><label>Pay Frequency</label>
+          <select name="payroll_frequency">
+            ${['','Weekly','Bi-weekly','Semi-monthly','Monthly','Variable','N/A']
+              .map(o=>`<option ${v(d,'payroll_frequency')===o?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+      </div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>Time Tracking Method</label>
+          <select name="time_tracking">
+            ${['','TSheets / QuickBooks Time','Homebase','When I Work','Spreadsheet','No time tracking','N/A','Other']
+              .map(o=>`<option ${v(d,'time_tracking')===o?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+        <div class="form-group"><label>Who Approves Payroll</label>
+          <input type="text" name="payroll_approver" value="${v(d,'payroll_approver')}" placeholder="Owner, Controller, HR…"/></div>
+      </div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>Retirement / Benefits Plan</label>
+          <select name="retirement">
+            ${['','None','401(k)','SIMPLE IRA','SEP IRA','Health insurance only','Other']
+              .map(o=>`<option ${v(d,'retirement')===o?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+        <div class="form-group"><label>Workers Comp Insurance</label>
+          <div class="radio-group">
+            ${['Yes','No','Not sure'].map(o=>`<label><input type="radio" name="workers_comp" value="${o}" ${v(d,'workers_comp')===o?'checked':''}/>${o}</label>`).join('')}
+          </div></div>
+      </div>
+      <div class="form-row form-row--1">
+        <div class="form-group"><label>PTO / Sick Leave Policy</label>
+          <input type="text" name="pto_policy" value="${v(d,'pto_policy')}" placeholder="e.g. Accrued, flat rate, California mandatory…"/></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderSalesTax(containerId, d) {
+  document.getElementById(containerId).innerHTML = `
+    <div class="form-section">
+      <div class="form-section__title">Sales Tax</div>
+      <div class="form-row form-row--1">
+        <div class="form-group"><label>Does your business collect sales tax?</label>
+          <div class="radio-group">
+            ${['Yes','No','Not sure'].map(o=>`<label><input type="radio" name="has_sales_tax" value="${o}" ${v(d,'has_sales_tax')===o?'checked':''}/>${o}</label>`).join('')}
+          </div></div>
+      </div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>State(s) where you collect sales tax</label>
+          <input type="text" name="states" value="${v(d,'states')}" placeholder="CA, TX, NY…"/></div>
+        <div class="form-group"><label>CDTFA Account Access</label>
+          <div class="radio-group">
+            ${['Yes – I have login','No','N/A'].map(o=>`<label><input type="radio" name="cdtfa_access" value="${o}" ${v(d,'cdtfa_access')===o?'checked':''}/>${o}</label>`).join('')}
+          </div></div>
+      </div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>How are rates calculated?</label>
+          <select name="rate_calculation">
+            ${['','TaxJar','Avalara','Manual / lookup table','Software auto-calculates','Not sure','N/A']
+              .map(o=>`<option ${v(d,'rate_calculation')===o?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+        <div class="form-group"><label>Invoicing / POS Platform</label>
+          <input type="text" name="invoicing_platform" value="${v(d,'invoicing_platform')}" placeholder="QuickBooks, Square, Shopify…"/></div>
+      </div>
+      <div class="form-row form-row--1">
+        <div class="form-group"><label>Do customers make prepayments / deposits?</label>
+          <div class="radio-group">
+            ${['Yes','No','Sometimes'].map(o=>`<label><input type="radio" name="prepayments" value="${o}" ${v(d,'prepayments')===o?'checked':''}/>${o}</label>`).join('')}
+          </div></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderAPAR(containerId, d) {
+  document.getElementById(containerId).innerHTML = `
+    <div class="form-section">
+      <div class="form-section__title">Accounts Payable</div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>AP / Bill Pay Platform</label>
+          <select name="ap_platform">
+            ${['','Bill.com','QuickBooks Bills','Manual / check','ACH / wire only','Other']
+              .map(o=>`<option ${v(d,'ap_platform')===o?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+        <div class="form-group"><label>Who Approves Bills</label>
+          <input type="text" name="ap_approver" value="${v(d,'ap_approver')}" placeholder="Owner, CFO, Manager…"/></div>
+      </div>
+      <div class="form-row form-row--1">
+        <div class="form-group"><label>Weekly AP Meeting / Review</label>
+          <div class="radio-group">
+            ${['Yes','No','Ad hoc'].map(o=>`<label><input type="radio" name="ap_meeting" value="${o}" ${v(d,'ap_meeting')===o?'checked':''}/>${o}</label>`).join('')}
+          </div></div>
+      </div>
+    </div>
+    <div class="form-section">
+      <div class="form-section__title">Accounts Receivable</div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>AR / Invoicing Platform</label>
+          <select name="ar_platform">
+            ${['','QuickBooks Invoicing','FreshBooks','Stripe','Square','HoneyBook','Jobber','Manual','Other']
+              .map(o=>`<option ${v(d,'ar_platform')===o?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+        <div class="form-group"><label>Standard Payment Terms</label>
+          <select name="payment_terms">
+            ${['','Due on receipt','Net 15','Net 30','Net 45','Net 60','Custom']
+              .map(o=>`<option ${v(d,'payment_terms')===o?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+      </div>
+      <div class="form-row form-row--1">
+        <div class="form-group"><label>Billing / Collections Process</label>
+          <textarea name="billing_process" placeholder="Describe how you invoice clients, follow up on late payments, etc…">${v(d,'billing_process')}</textarea></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderReporting(containerId, d) {
+  document.getElementById(containerId).innerHTML = `
+    <div class="form-section">
+      <div class="form-section__title">Reports</div>
+      <div class="form-row form-row--1">
+        <div class="form-group"><label>Reports You Need</label>
+          <div class="checkbox-group">
+            ${['Profit & Loss','Balance Sheet','Cash Flow','Budget vs. Actual','Job Costing','Departmental','Sales by Item','Aging Reports','Custom KPIs']
+              .map(o=>`<label><input type="checkbox" name="reports" value="${o}" ${(v(d,'reports',[])).includes(o)?'checked':''}/>${o}</label>`).join('')}
+          </div></div>
+      </div>
+      <div class="form-row form-row--1">
+        <div class="form-group"><label>How often do you need reports?</label>
+          <div class="radio-group">
+            ${['Weekly','Monthly','Quarterly','Annually','As needed'].map(o=>`<label><input type="radio" name="report_frequency" value="${o}" ${v(d,'report_frequency')===o?'checked':''}/>${o}</label>`).join('')}
+          </div></div>
+      </div>
+      <div class="form-row form-row--1">
+        <div class="form-group"><label>Any custom reports or specific KPIs?</label>
+          <textarea name="custom_reports" placeholder="Describe any specific dashboards or metrics you track…">${v(d,'custom_reports')}</textarea></div>
+      </div>
+    </div>
+    <div class="form-section">
+      <div class="form-section__title">Tax Information</div>
+      <div class="form-row form-row--1">
+        <div class="form-group"><label>Do you have a CPA / Tax Preparer?</label>
+          <div class="radio-group">
+            ${['Yes','No – GDC will handle','No – looking for one'].map(o=>`<label><input type="radio" name="has_cpa" value="${o}" ${v(d,'has_cpa')===o?'checked':''}/>${o}</label>`).join('')}
+          </div></div>
+      </div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>CPA Name / Firm</label>
+          <input type="text" name="cpa_name" value="${v(d,'cpa_name')}" placeholder="John Doe, CPA / Smith Tax Group"/></div>
+        <div class="form-group"><label>CPA Email</label>
+          <input type="email" name="cpa_email" value="${v(d,'cpa_email')}" placeholder="cpa@firm.com"/></div>
+      </div>
+      <div class="form-row form-row--2">
+        <div class="form-group"><label>CPA Phone</label>
+          <input type="tel" name="cpa_phone" value="${v(d,'cpa_phone')}" placeholder="(415) 555-0100"/></div>
+        <div class="form-group"><label>Last Tax Return Filed</label>
+          <select name="last_tax_return">
+            ${['','2024','2023','2022','2021','Not yet filed','Not sure']
+              .map(o=>`<option ${v(d,'last_tax_return')===o?'selected':''}>${o}</option>`).join('')}
+          </select></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderDocuments(containerId, d) {
+  document.getElementById(containerId).innerHTML = `
+    <div class="form-section">
+      <div class="form-section__title">File Uploads</div>
+      <p style="font-size:12px; color:var(--text-light); margin-bottom:20px; line-height:1.7;">
+        Upload any documents that will help us get started — bank statements, prior tax returns,
+        your current chart of accounts, payroll reports, etc. All files are sent directly to
+        our team via encrypted email.
+      </p>
+      <div class="file-upload-area" id="drop-zone" onclick="document.getElementById('file-input').click()"
+           ondragover="event.preventDefault(); this.classList.add('dragover')"
+           ondragleave="this.classList.remove('dragover')"
+           ondrop="handleDrop(event)">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#B8975A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        <p><strong>Click to upload</strong> or drag and drop files here<br/>
+        PDF, Word, Excel, PNG, JPG — up to 10 MB each</p>
+      </div>
+      <input type="file" id="file-input" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg,.csv"
+             style="display:none" onchange="handleFileSelect(this.files)"/>
+      <div class="file-list" id="file-list"></div>
+    </div>
+    <div class="form-section">
+      <div class="form-section__title">Document Notes</div>
+      <div class="form-row form-row--1">
+        <div class="form-group"><label>List any documents you're uploading</label>
+          <textarea name="docs_provided" placeholder="e.g. Q1 2024 bank statement, 2023 tax return, current COA…">${v(d,'docs_provided')}</textarea></div>
+      </div>
+      <div class="form-row form-row--1">
+        <div class="form-group"><label>Any other notes or questions for our team</label>
+          <textarea name="doc_notes" placeholder="Anything else you'd like us to know…">${v(d,'doc_notes')}</textarea></div>
+      </div>
+    </div>
+  `;
+  renderFileList();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FILE HANDLING
+// ─────────────────────────────────────────────────────────────────────────────
+function handleFileSelect(files) {
+  Array.from(files).forEach(f => readFile(f));
+}
+
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.remove('dragover');
+  Array.from(e.dataTransfer.files).forEach(f => readFile(f));
+}
+
+function readFile(file) {
+  if (file.size > 10 * 1024 * 1024) { showToast('File too large: ' + file.name + ' (max 10 MB)'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const b64 = e.target.result.split(',')[1];
+    uploadedFiles.push({ name: file.name, mimeType: file.type, data: b64 });
+    renderFileList();
+  };
+  reader.readAsDataURL(file);
+}
+
+function renderFileList() {
+  const el = document.getElementById('file-list');
+  if (!el) return;
+  el.innerHTML = uploadedFiles.map((f, i) => `
+    <div class="file-item">
+      <span>${f.name}</span>
+      <button class="file-item__remove" onclick="removeFile(${i})">×</button>
+    </div>
+  `).join('');
+}
+
+function removeFile(i) {
+  uploadedFiles.splice(i, 1);
+  renderFileList();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// COLLECT SECTION DATA
+// ─────────────────────────────────────────────────────────────────────────────
+function collectSection(sectionId) {
+  const panel = document.getElementById('panel-' + sectionId);
+  if (!panel) return {};
+  const data = {};
+  panel.querySelectorAll('input, select, textarea').forEach(el => {
+    if (!el.name) return;
+    if (el.type === 'checkbox') {
+      if (!data[el.name]) data[el.name] = [];
+      if (el.checked) data[el.name].push(el.value);
+    } else if (el.type === 'radio') {
+      if (el.checked) data[el.name] = el.value;
+    } else if (el.type === 'file') {
+      // handled separately
+    } else {
+      data[el.name] = el.value;
+    }
+  });
+  return data;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SAVE SECTION
+// ─────────────────────────────────────────────────────────────────────────────
+async function saveSection(sectionId) {
+  const sectionData = collectSection(sectionId);
+  savedData[sectionId] = sectionData;
+  doneSections.add(sectionId);
+
+  // Save to localStorage immediately
+  const local = JSON.parse(localStorage.getItem('gdc_draft_' + clientId) || '{}');
+  local[sectionId] = sectionData;
+  localStorage.setItem('gdc_draft_' + clientId, JSON.stringify(local));
+
+  // Update UI
+  const statusEl = document.getElementById('status-' + sectionId);
+  if (statusEl) { statusEl.className = 'save-status saving'; statusEl.textContent = 'Saving…'; }
+
+  updateProgress();
+
+  // Push to Apps Script
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'save_section',
+        id: clientId,
+        pw: clientPw,
+        company: clientInfo.company || '',
+        section: sectionId,
+        sectionData
+      })
+    });
+  } catch(e) { /* offline OK — localStorage has the data */ }
+
+  if (statusEl) { statusEl.className = 'save-status saved'; statusEl.textContent = '✓ Saved'; }
+  showToast('Section saved!', true);
+
+  // Advance to next section
+  const idx = SECTIONS.findIndex(s => s.id === sectionId);
+  setTimeout(() => {
+    if (idx < SECTIONS.length - 1) {
+      showSection(SECTIONS[idx + 1].id);
+    } else {
+      showSubmit();
+    }
+  }, 600);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FINAL SUBMIT
+// ─────────────────────────────────────────────────────────────────────────────
+async function doFinalSubmit() {
+  const btn = document.getElementById('final-submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  // Collect any unsaved data from currently visible section
+  SECTIONS.forEach(s => {
+    const panel = document.getElementById('panel-' + s.id);
+    if (panel && panel.style.display !== 'none') {
+      savedData[s.id] = collectSection(s.id);
+    }
+  });
+
+  try {
+    const payload = {
+      action:      'final_submit',
+      id:          clientId,
+      pw:          clientPw,
+      company:     clientInfo.company || '',
+      contact:     clientInfo.contact || '',
+      allSections: savedData,
+      files:       uploadedFiles
+    };
+
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    // Clear localStorage
+    localStorage.removeItem('gdc_draft_' + clientId);
+    sessionStorage.removeItem('gdc_client_id');
+    sessionStorage.removeItem('gdc_client_pw');
+    sessionStorage.removeItem('gdc_client_info');
+
+    document.getElementById('app-screen').style.display = 'none';
+    document.getElementById('success-screen').style.display = 'block';
+
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = 'Submit Onboarding';
+    showToast('Submission failed — please check your connection and try again.');
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// UTILS
+// ─────────────────────────────────────────────────────────────────────────────
+function doLogout() {
+  sessionStorage.removeItem('gdc_client_id');
+  sessionStorage.removeItem('gdc_client_pw');
+  sessionStorage.removeItem('gdc_client_info');
+  window.location.reload();
+}
+
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebar-overlay').classList.add('visible');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('visible');
+}
+
+let toastTimer;
+function showToast(msg, gold=false) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show' + (gold ? ' gold' : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
