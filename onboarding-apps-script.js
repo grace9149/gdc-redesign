@@ -13,7 +13,7 @@
 //     where it says:  const APPS_SCRIPT_URL = 'PASTE_URL_HERE';
 // ─────────────────────────────────────────────────────────────────────────────
 
-var SHEET_ID     = 'YOUR_ONBOARDING_SHEET_ID';   // ← replace after creating sheet
+var SHEET_ID     = '19-vge0YZsmsPBTmFs0bG5uRbMWYP4lydsl6aji6xILQ';
 var NOTIFY_EMAIL = 'hr@gracedouganconsulting.com';
 var ADMIN_PW     = 'GDCteam2026';                 // ← change to something private
 
