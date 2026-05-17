@@ -89,7 +89,7 @@ function createClient(adminPw, company, contact, email) {
     new Date().toLocaleString('en-US', {timeZone:'America/Los_Angeles'}),
     'Not Started', '', '']);
 
-  var link = 'https://gdc-redesign.pages.dev/client-onboarding?id=' + id;
+  var link = 'https://www.gracedouganconsulting.com/client-onboarding?id=' + id;
   return { ok: true, id: id, password: password, link: link, company: company };
 }
 
@@ -124,7 +124,7 @@ function getClients(adminPw) {
       status:    clientRows[j][6],
       lastSeen:  clientRows[j][7],
       sections:  sectionMap[id] || [],
-      link:      'https://gdc-redesign.pages.dev/client-onboarding?id=' + id
+      link:      'https://www.gracedouganconsulting.com/client-onboarding?id=' + id
     });
   }
   return { ok: true, clients: clients };
