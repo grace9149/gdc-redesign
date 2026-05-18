@@ -276,6 +276,51 @@
       font-size: 15px; color: var(--mid); line-height: 1.8; font-weight: 600;
     }
 
+    /* ── BEFORE / AFTER ─────────────────────────────────── */
+    .ba-section { padding: 80px 0; background: var(--cream); border-bottom: 2px solid var(--border); }
+    .ba-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 24px; align-items: center;
+    }
+    .ba-card {
+      position: relative; border-radius: 20px; overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+    .ba-img {
+      width: 100%; height: 480px; object-fit: cover; object-position: top;
+      display: block;
+    }
+    .ba-label {
+      position: absolute; top: 16px; left: 16px;
+      font-family: var(--display); font-size: 18px;
+      padding: 8px 20px; border-radius: 50px;
+      z-index: 2;
+    }
+    .ba-label--before {
+      background: rgba(45,39,38,0.75); color: var(--white);
+      backdrop-filter: blur(4px);
+    }
+    .ba-label--after {
+      background: var(--pink-dark); color: var(--white);
+      box-shadow: 0 4px 12px rgba(196,96,126,0.4);
+    }
+    .ba-caption {
+      background: var(--white); padding: 14px 20px;
+      font-size: 13px; font-weight: 700; color: var(--mid);
+      text-align: center;
+    }
+    .ba-divider {
+      font-size: 40px; color: var(--pink-dark);
+      font-weight: 900; text-align: center;
+      flex-shrink: 0;
+    }
+    @media (max-width: 760px) {
+      .ba-grid { grid-template-columns: 1fr; }
+      .ba-divider { transform: rotate(90deg); font-size: 32px; }
+      .ba-img { height: 340px; }
+    }
+
     /* ── SEARCH SECTION ─────────────────────────────────── */
     .search-hero {
       background: var(--cream);
@@ -805,8 +850,8 @@
     </div>
     <div class="hero__right">
       <img
-        src="https://images.unsplash.com/photo-1768875845344-5663fa9acf15?w=900&q=80&fit=crop&crop=center"
-        alt="A beautifully organized pantry wall with neatly arranged shelves"
+        src="after.jpeg"
+        alt="A beautifully organized pantry — after Samara's Organization"
       />
       <div class="hero__right-overlay"></div>
       <div class="hero__stat-bar">
@@ -853,6 +898,30 @@
       </div>
     </div>
   </div>
+
+  <!-- BEFORE / AFTER -->
+  <section class="ba-section">
+    <div class="wrap">
+      <div class="sh fi">
+        <p class="sh__eye">Real Results</p>
+        <h2 class="sh__title">See the <span class="c-pink">difference</span> ✨</h2>
+        <p class="sh__sub">This is a real pantry we transformed. Same space — totally different life.</p>
+      </div>
+      <div class="ba-grid fi">
+        <div class="ba-card">
+          <div class="ba-label ba-label--before">😬 Before</div>
+          <img src="before.jpeg" alt="Pantry before organizing — cluttered and hard to use" class="ba-img" />
+          <div class="ba-caption">Overwhelming, hard to find anything, wasted space</div>
+        </div>
+        <div class="ba-divider">→</div>
+        <div class="ba-card">
+          <div class="ba-label ba-label--after">🌸 After</div>
+          <img src="after.jpeg" alt="Pantry after organizing — clean, labeled, and easy to use" class="ba-img" />
+          <div class="ba-caption">Everything visible, labeled, and easy to maintain</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- SEARCH / WHAT DO YOU NEED? -->
   <section class="search-hero" id="book">
