@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Samara's Organization — Happy Spaces for Happy Families</title>
+  <meta name="description" content="Samara's Organization brings joy and order to your home! Kid-friendly, colorful, and fun organizing for families everywhere." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,700&family=Pacifico&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Tokens ──────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --pink:        #F9C0D0;
+      --pink-lt:     #FAD5E2;
+      --pink-dim:    rgba(249,192,208,0.25);
+      --pink-dark:   #C4607E;
+      --yellow:      #FDE9A0;
+      --yellow-lt:   #FEF3C7;
+      --yellow-dark: #B08A10;
+      --mint:        #B8EAC0;
+      --mint-lt:     #D4F2D8;
+      --mint-dark:   #3A8A48;
+      --purple:      #D4BBFF;
+      --purple-lt:   #EAE0FF;
+      --purple-dark: #6B3CBD;
+      --teal:        #B0E4F8;
+      --teal-lt:     #D4F0FF;
+      --teal-dark:   #0A7BAD;
+      --dark:        #2D2726;
+      --mid:         #5A4E4B;
+      --light:       #9B8F8C;
+      --border:      #F5D8E5;
+      --cream:       #FFFAF6;
+      --cream-dk:    #FFF3F7;
+      --white:       #FFFFFF;
+      --display:     'Pacifico', cursive;
+      --body:        'Nunito', Arial, sans-serif;
+      --ease:        0.3s ease;
+      --max:         1180px;
+      --radius:      16px;
+    }
+
+    body {
+      font-family: var(--body);
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--dark);
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    .wrap { width: 92%; max-width: var(--max); margin: 0 auto; }
+
+    /* Fade-in */
+    .fi { opacity: 0; transform: translateY(22px); transition: opacity .7s ease, transform .7s ease; }
+    .fi.on { opacity: 1; transform: none; }
+
+    /* Wiggly underline utility */
+    .wiggly {
+      text-decoration: underline wavy var(--yellow) 3px;
+      text-underline-offset: 4px;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 72px;
+      display: flex; align-items: center;
+      padding: 0 5%;
+      background: rgba(255,249,240,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid var(--border);
+      justify-content: space-between;
+    }
+    .nav__brand {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .nav__logo {
+      width: 42px; height: 42px;
+      background: var(--pink);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+    }
+    .nav__brand-name {
+      font-family: var(--display);
+      font-size: 20px;
+      color: var(--pink-dark);
+      letter-spacing: 0.01em;
+    }
+    .nav__links {
+      display: flex; gap: 32px; list-style: none; align-items: center;
+    }
+    .nav__links a {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.06em;
+      color: var(--mid);
+      transition: color var(--ease);
+    }
+    .nav__links a:hover { color: var(--pink); }
+    .nav__cta {
+      background: var(--pink-dark); color: var(--white) !important;
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-size: 13px; font-weight: 800;
+      transition: background var(--ease) !important, transform .2s !important;
+      box-shadow: 0 4px 14px rgba(196,96,126,0.3);
+    }
+    .nav__cta:hover { background: var(--purple-dark) !important; transform: scale(1.04) !important; }
+
+    /* ── HERO ────────────────────────────────────────────── */
+    .hero {
+      margin-top: 72px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - 72px);
+      background: var(--cream);
+      overflow: hidden;
+      position: relative;
+    }
+    /* Floating blobs */
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, var(--yellow-lt) 0%, transparent 70%);
+      top: -100px; right: 30%;
+      border-radius: 50%;
+      z-index: 0; pointer-events: none;
+    }
+    .hero__left {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 80px 7% 80px 7%;
+    }
+    .hero__eyebrow {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--purple);
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .hero__eyebrow-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--yellow);
+      display: inline-block; flex-shrink: 0;
+    }
+    .hero__headline {
+      font-family: var(--display);
+      font-size: clamp(42px, 5vw, 68px);
+      font-weight: 400;
+      color: var(--dark);
+      line-height: 1.15;
+      margin-bottom: 24px;
+    }
+    .hero__headline .accent-pink { color: var(--pink); }
+    .hero__headline .accent-yellow { color: var(--yellow); text-shadow: 0 2px 0 rgba(0,0,0,0.08); }
+    .hero__sub {
+      font-size: 15px; color: var(--mid);
+      line-height: 1.9; max-width: 420px;
+      margin-bottom: 36px;
+      font-weight: 600;
+    }
+
+    /* Task chips */
+    .hero__chips {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin-bottom: 36px;
+    }
+    .hero__chip {
+      font-size: 12px; font-weight: 700;
+      border: 2px solid var(--border);
+      color: var(--mid);
+      padding: 8px 18px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all var(--ease);
+      background: var(--white);
+    }
+    .hero__chip:hover, .hero__chip.active {
+      border-color: var(--pink-dark);
+      color: var(--pink-dark);
+      background: var(--pink-dim);
+      transform: scale(1.05);
+    }
+
+    .hero__btn {
+      display: inline-block;
+      background: var(--pink-dark); color: var(--white);
+      font-family: var(--body); font-size: 14px; font-weight: 800;
+      letter-spacing: 0.06em;
+      padding: 16px 40px;
+      border-radius: 50px;
+      border: none; cursor: pointer;
+      transition: background var(--ease), transform .2s;
+      box-shadow: 0 6px 20px rgba(196,96,126,0.3);
+    }
+    .hero__btn:hover { background: var(--purple-dark); transform: translateY(-2px); }
+
+    .hero__right {
+      position: relative; overflow: hidden; z-index: 1;
+    }
+    .hero__right img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .hero__right-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(255,249,240,0.3) 0%, transparent 50%);
+    }
+    .hero__stat-bar {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      display: flex;
+      background: rgba(45,39,38,0.82);
+      backdrop-filter: blur(6px);
+    }
+    .hero__stat {
+      flex: 1; padding: 18px 20px;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      text-align: center;
+    }
+    .hero__stat:last-child { border-right: none; }
+    .hero__stat-n {
+      font-family: var(--display); font-size: 26px;
+      color: var(--yellow-dark); line-height: 1; margin-bottom: 4px;
+    }
+    .hero__stat-l {
+      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(255,255,255,0.6); font-weight: 700;
+    }
+
+    /* ── FUN STRIP ───────────────────────────────────────── */
+    .fun-strip {
+      background: var(--pink);
+      padding: 14px 0;
+      overflow: hidden;
+    }
+    .fun-strip__inner {
+      display: flex; align-items: center; gap: 0;
+      white-space: nowrap;
+    }
+    .fun-item {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 0 32px;
+      border-right: 1px solid rgba(196,96,126,0.25);
+      flex-shrink: 0;
+    }
+    .fun-item:last-child { border-right: none; }
+    .fun-item__emoji { font-size: 20px; }
+    .fun-item__text {
+      font-size: 12px; font-weight: 800; letter-spacing: 0.08em;
+      color: var(--pink-dark);
+    }
+
+    /* ── SECTION HEADERS ─────────────────────────────────── */
+    .sh { text-align: center; max-width: 620px; margin: 0 auto 64px; }
+    .sh__eye {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--purple);
+      margin-bottom: 12px;
+    }
+    .sh__title {
+      font-family: var(--display);
+      font-size: clamp(32px, 3.5vw, 50px);
+      font-weight: 400; line-height: 1.2;
+      color: var(--dark); margin-bottom: 16px;
+    }
+    .sh__title .c-pink { color: var(--pink); }
+    .sh__title .c-teal { color: var(--teal); }
+    .sh__title .c-mint { color: var(--mint); }
+    .sh__sub {
+      font-size: 15px; color: var(--mid); line-height: 1.8; font-weight: 600;
+    }
+
+    /* ── SEARCH SECTION ─────────────────────────────────── */
+    .search-hero {
+      background: var(--cream);
+      padding: 72px 0 80px;
+      border-bottom: 2px solid var(--border);
+    }
+    .search-hero .sh { margin-bottom: 44px; }
+    .search-wrap {
+      position: relative; max-width: 720px; margin: 0 auto;
+    }
+    .search-input-row {
+      display: flex; align-items: center;
+      border: 2.5px solid var(--border);
+      border-radius: 60px;
+      background: var(--white);
+      transition: border-color .2s;
+      box-shadow: 0 4px 24px rgba(255,107,157,0.12);
+    }
+    .search-input-row:focus-within { border-color: var(--pink); }
+    .search-input-row input {
+      flex: 1; border: none; background: transparent;
+      padding: 18px 28px;
+      font-family: var(--body); font-size: 15px; color: var(--dark);
+      font-weight: 600;
+      outline: none; border-radius: 60px 0 0 60px;
+    }
+    .search-input-row input::placeholder { color: var(--light); font-weight: 400; }
+    .search-submit {
+      background: var(--pink-dark); border: none; cursor: pointer;
+      width: 58px; height: 58px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-right: 4px; flex-shrink: 0;
+      transition: background .2s, transform .2s;
+      box-shadow: 0 4px 12px rgba(196,96,126,0.3);
+    }
+    .search-submit:hover { background: var(--purple-dark); transform: scale(1.08); }
+    .search-submit svg { width: 20px; height: 20px; color: #fff; }
+    .search-dropdown {
+      display: none;
+      position: absolute; top: calc(100% + 10px); left: 0; right: 0;
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 12px 40px rgba(255,107,157,0.15);
+      z-index: 50; overflow: hidden;
+    }
+    .search-dropdown.open { display: block; }
+    .search-dropdown-item {
+      padding: 16px 28px;
+      font-size: 14px; color: var(--mid); font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; gap: 14px;
+      border-bottom: 1px solid var(--border);
+      transition: background .15s, color .15s;
+    }
+    .search-dropdown-item:last-child { border-bottom: none; }
+    .search-dropdown-item:hover { background: var(--cream); color: var(--pink); }
+    .search-dropdown-item .dd-icon { font-size: 20px; flex-shrink: 0; }
+
+    /* ── SERVICES GRID ──────────────────────────────────── */
+    .services { padding: 96px 0; background: var(--white); }
+    .services__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 300px 280px;
+      gap: 14px;
+    }
+    .svc-card:nth-child(1) { grid-column: span 2; }
+
+    .svc-card {
+      position: relative; overflow: hidden; cursor: pointer;
+      border-radius: var(--radius);
+      background: var(--cream-dk);
+    }
+    .svc-card__img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .svc-card:hover .svc-card__img { transform: scale(1.06); }
+    .svc-card__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(45,39,38,0.78) 0%, transparent 55%);
+      transition: background var(--ease);
+      border-radius: var(--radius);
+    }
+    .svc-card:hover .svc-card__overlay {
+      background: linear-gradient(to top, rgba(45,39,38,0.9) 0%, rgba(45,39,38,0.08) 70%);
+    }
+    .svc-card__body {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 26px 24px;
+    }
+    .svc-card__emoji {
+      font-size: 28px; margin-bottom: 8px; display: block;
+    }
+    .svc-card__label {
+      font-family: var(--display); font-size: 20px;
+      color: var(--white); line-height: 1.2; margin-bottom: 6px;
+    }
+    .svc-card:nth-child(1) .svc-card__label,
+    .svc-card:nth-child(5) .svc-card__label { font-size: 26px; }
+    .svc-card__sub {
+      font-size: 11px; letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.7); text-transform: uppercase;
+      margin-bottom: 12px; font-weight: 700;
+    }
+    .svc-card__arrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 800;
+      color: var(--yellow);
+      opacity: 0; transform: translateY(8px);
+      transition: opacity var(--ease), transform var(--ease);
+    }
+    .svc-card:hover .svc-card__arrow { opacity: 1; transform: none; }
+    .svc-card__arrow::after { content: ' →'; }
+
+    /* ── HOW IT WORKS ────────────────────────────────────── */
+    .how {
+      padding: 96px 0;
+      background: linear-gradient(135deg, #EDE0FF 0%, #DDD0FF 100%);
+      position: relative; overflow: hidden;
+    }
+    .how::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(253,233,160,0.45) 0%, transparent 70%);
+      top: -100px; right: -100px;
+      border-radius: 50%; pointer-events: none;
+    }
+    .how .sh__eye { color: var(--purple-dark); }
+    .how .sh__title { color: var(--dark); }
+    .how .sh__title .c-yellow { color: var(--yellow-dark); }
+    .how .sh__sub { color: var(--mid); }
+    .how__steps {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px; margin-top: 64px;
+    }
+    .how__step {
+      background: rgba(255,255,255,0.7);
+      border: 1.5px solid rgba(212,187,255,0.5);
+      padding: 44px 36px;
+      border-radius: 24px;
+      position: relative;
+      transition: background var(--ease), transform .2s;
+    }
+    .how__step:hover { background: rgba(255,255,255,0.9); transform: translateY(-4px); }
+    .how__step-emoji {
+      font-size: 48px; margin-bottom: 16px; display: block;
+    }
+    .how__step-n {
+      font-family: var(--display); font-size: 48px;
+      color: var(--yellow-dark); opacity: 0.5; line-height: 1;
+      margin-bottom: 16px;
+    }
+    .how__step-title {
+      font-family: var(--display); font-size: 22px;
+      color: var(--dark); margin-bottom: 12px;
+    }
+    .how__step-desc {
+      font-size: 13px; color: var(--mid);
+      line-height: 1.9; font-weight: 600;
+    }
+
+    /* ── FEATURE / ABOUT ─────────────────────────────────── */
+    .feature { padding: 96px 0; background: var(--cream); }
+    .feature__inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+      align-items: center;
+    }
+    .feature__img-wrap { position: relative; }
+    .feature__img {
+      width: 100%; aspect-ratio: 4/5;
+      object-fit: cover;
+      border-radius: 32px;
+    }
+    .feature__img-badge {
+      position: absolute; bottom: -18px; right: -18px;
+      background: var(--yellow); color: var(--dark);
+      padding: 20px 24px; text-align: center;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(255,217,61,0.5);
+    }
+    .feature__img-badge-n {
+      font-family: var(--display); font-size: 32px;
+      line-height: 1;
+    }
+    .feature__img-badge-l {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-top: 4px;
+      opacity: 0.75;
+    }
+    .feature__eye {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--mint);
+      margin-bottom: 14px;
+    }
+    .feature__title {
+      font-family: var(--display);
+      font-size: clamp(30px, 3vw, 44px);
+      font-weight: 400; line-height: 1.2;
+      color: var(--dark); margin-bottom: 20px;
+    }
+    .feature__title .c-pink { color: var(--pink); }
+    .feature__body {
+      font-size: 14px; color: var(--mid); line-height: 1.9;
+      margin-bottom: 32px; font-weight: 600;
+    }
+    .feature__list {
+      list-style: none; margin-bottom: 40px;
+    }
+    .feature__list li {
+      font-size: 13px; color: var(--mid); font-weight: 600;
+      padding: 11px 0; border-bottom: 1.5px solid var(--border);
+      display: flex; align-items: flex-start; gap: 14px;
+    }
+    .feature__list li .check-emoji { font-size: 18px; flex-shrink: 0; }
+    .feature__btn {
+      display: inline-block;
+      background: var(--mint-dark); color: var(--white);
+      font-family: var(--body); font-size: 14px; font-weight: 800;
+      letter-spacing: 0.06em;
+      padding: 14px 36px;
+      border-radius: 50px;
+      transition: background var(--ease), transform .2s;
+      box-shadow: 0 6px 18px rgba(58,138,72,0.25);
+    }
+    .feature__btn:hover { background: var(--pink-dark); transform: translateY(-2px); }
+
+    /* ── PRICING ─────────────────────────────────────────── */
+    .pricing { padding: 96px 0; background: var(--white); }
+    .pricing__grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 64px;
+    }
+    .pricing__card {
+      background: var(--cream);
+      padding: 44px 32px;
+      border-radius: 24px;
+      border: 2px solid var(--border);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .pricing__card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(255,107,157,0.15); }
+    .pricing__card--star {
+      background: linear-gradient(145deg, #F2D4FF, #D4BBFF);
+      border-color: #C9AAFF;
+    }
+    .pricing__badge {
+      font-size: 10px; font-weight: 800; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--purple-dark);
+      margin-bottom: 20px; display: block;
+    }
+    .pricing__card--star .pricing__badge { color: var(--purple-dark); }
+    .pricing__name {
+      font-family: var(--display); font-size: 26px;
+      color: var(--dark); margin-bottom: 8px; line-height: 1.15;
+    }
+    .pricing__card--star .pricing__name { color: var(--dark); }
+    .pricing__rate {
+      font-family: var(--display); font-size: 18px;
+      color: var(--pink-dark); margin-bottom: 18px;
+    }
+    .pricing__card--star .pricing__rate { color: var(--purple-dark); }
+    .pricing__desc {
+      font-size: 13px; line-height: 1.8; color: var(--light); font-weight: 600;
+      padding-bottom: 20px; margin-bottom: 20px;
+      border-bottom: 1.5px solid var(--border);
+    }
+    .pricing__card--star .pricing__desc { color: var(--mid); border-bottom-color: rgba(107,60,189,0.2); }
+    .pricing__list { list-style: none; }
+    .pricing__list li {
+      font-size: 13px; color: var(--mid); font-weight: 600;
+      padding: 9px 0; border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; gap: 12px; line-height: 1.5;
+    }
+    .pricing__card--star .pricing__list li { color: var(--dark); border-bottom-color: rgba(107,60,189,0.15); }
+    .pricing__list li .li-emoji { font-size: 16px; flex-shrink: 0; }
+    .pricing__list li:last-child { border-bottom: none; }
+
+    /* ── REVIEWS ─────────────────────────────────────────── */
+    .reviews { padding: 96px 0; background: var(--cream-dk); }
+    .reviews__grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px; margin-top: 64px;
+    }
+    .review-card {
+      background: var(--white);
+      padding: 36px 30px;
+      border-radius: 20px;
+      border: 2px solid var(--border);
+      transition: transform var(--ease), box-shadow var(--ease);
+    }
+    .review-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(155,93,229,0.12); }
+    .review-card__emoji {
+      font-size: 40px; margin-bottom: 16px;
+    }
+    .review-card__stars {
+      display: flex; gap: 3px; margin-bottom: 14px;
+      font-size: 18px;
+    }
+    .review-card__quote {
+      font-family: var(--body); font-size: 15px; font-style: italic;
+      font-weight: 600; color: var(--mid); line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .review-card__author { font-size: 12px; color: var(--light); font-weight: 700; }
+    .review-card__author strong { display: block; color: var(--dark); font-size: 14px; font-weight: 800; margin-bottom: 2px; }
+
+    /* ── CONTACT ─────────────────────────────────────────── */
+    .contact { padding: 96px 0; background: var(--white); }
+    .contact__inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start;
+    }
+    .contact__eye {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--teal); margin-bottom: 14px;
+    }
+    .contact__title {
+      font-family: var(--display);
+      font-size: clamp(30px, 3vw, 44px);
+      font-weight: 400; line-height: 1.2;
+      color: var(--dark); margin-bottom: 20px;
+    }
+    .contact__title .c-pink { color: var(--pink); }
+    .contact__body { font-size: 14px; color: var(--mid); line-height: 1.85; margin-bottom: 36px; font-weight: 600; }
+    .contact__detail {
+      display: flex; flex-direction: column; gap: 14px; margin-bottom: 40px;
+    }
+    .contact__detail-item {
+      display: flex; gap: 16px; align-items: center;
+    }
+    .contact__detail-emoji { font-size: 22px; flex-shrink: 0; }
+    .contact__detail-label {
+      font-size: 10px; font-weight: 800; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--purple);
+      min-width: 64px;
+    }
+    .contact__detail-val { font-size: 14px; color: var(--mid); font-weight: 600; }
+    .contact__detail-val a { color: var(--mid); transition: color var(--ease); }
+    .contact__detail-val a:hover { color: var(--pink); }
+    .contact__note {
+      font-size: 12px; color: var(--mid); font-weight: 600;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: var(--pink-dim);
+      border-left: 4px solid var(--pink);
+    }
+
+    /* Form */
+    .form { display: flex; flex-direction: column; gap: 18px; }
+    .form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form__group { display: flex; flex-direction: column; gap: 7px; }
+    .form__group label {
+      font-size: 11px; font-weight: 800; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--mid);
+    }
+    .form__group input,
+    .form__group select,
+    .form__group textarea {
+      border: 2px solid var(--border);
+      background: var(--cream);
+      padding: 13px 16px;
+      font-family: var(--body); font-size: 14px; color: var(--dark); font-weight: 600;
+      outline: none; border-radius: 12px;
+      transition: border-color var(--ease), background var(--ease);
+      -webkit-appearance: none;
+    }
+    .form__group input:focus,
+    .form__group select:focus,
+    .form__group textarea:focus {
+      border-color: var(--pink); background: var(--white);
+    }
+    .form__group textarea { resize: vertical; min-height: 120px; }
+    .form__btn {
+      background: var(--pink-dark); color: var(--white);
+      border: none; cursor: pointer;
+      font-family: var(--body); font-size: 14px; font-weight: 800;
+      letter-spacing: 0.08em;
+      padding: 16px 36px; align-self: flex-start;
+      border-radius: 50px;
+      transition: background var(--ease), transform .2s;
+      box-shadow: 0 6px 20px rgba(196,96,126,0.3);
+    }
+    .form__btn:hover { background: var(--purple-dark); transform: translateY(-2px); }
+
+    /* ── CTA BANNER ──────────────────────────────────────── */
+    .cta-banner {
+      position: relative; overflow: hidden;
+      min-height: 420px;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      background: linear-gradient(135deg, #D6F5E0 0%, #C8EEFF 100%);
+    }
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(253,233,160,0.35) 0%, transparent 70%);
+      top: -200px; left: -100px;
+      border-radius: 50%; pointer-events: none;
+    }
+    .cta-banner__content {
+      position: relative; z-index: 2;
+      padding: 80px 5%;
+    }
+    .cta-banner__emoji { font-size: 60px; margin-bottom: 16px; display: block; }
+    .cta-banner__title {
+      font-family: var(--display);
+      font-size: clamp(36px, 4.5vw, 60px);
+      font-weight: 400; color: var(--dark); line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .cta-banner__title .c-yellow { color: var(--yellow-dark); }
+    .cta-banner__sub {
+      font-size: 15px; color: var(--mid); font-weight: 700;
+      margin-bottom: 36px;
+    }
+    .cta-banner__btn {
+      display: inline-block;
+      background: var(--pink-dark); color: var(--white);
+      font-family: var(--body); font-size: 14px; font-weight: 800;
+      letter-spacing: 0.08em;
+      padding: 16px 44px;
+      border-radius: 50px;
+      transition: background var(--ease), color var(--ease), transform .2s;
+      box-shadow: 0 6px 20px rgba(196,96,126,0.3);
+    }
+    .cta-banner__btn:hover { background: var(--purple-dark); color: var(--white); transform: scale(1.04); }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    .footer {
+      background: var(--dark); padding: 56px 0 36px;
+    }
+    .footer__inner {
+      display: grid; grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 40px; margin-bottom: 48px;
+    }
+    .footer__brand-name {
+      font-family: var(--display); font-size: 22px;
+      color: var(--pink); margin-bottom: 10px;
+    }
+    .footer__tagline {
+      font-size: 12px; color: rgba(255,255,255,0.4);
+      line-height: 1.7; max-width: 280px; font-weight: 600;
+    }
+    .footer__col-head {
+      font-size: 10px; font-weight: 800; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--yellow);
+      margin-bottom: 18px;
+    }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a { font-size: 13px; color: rgba(255,255,255,0.45); font-weight: 600; transition: color var(--ease); }
+    .footer__links a:hover { color: var(--pink); }
+    .footer__copy {
+      font-size: 11px; color: rgba(255,255,255,0.25); font-weight: 700;
+      letter-spacing: 0.04em; text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.08); padding-top: 28px;
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero__right { height: 50vw; }
+      .services__grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(4, 240px);
+      }
+      .svc-card:nth-child(1) { grid-column: span 1; }
+      .how__steps { grid-template-columns: 1fr; gap: 14px; }
+      .feature__inner { grid-template-columns: 1fr; gap: 48px; }
+      .pricing__grid { grid-template-columns: 1fr; }
+      .reviews__grid { grid-template-columns: 1fr; }
+      .contact__inner { grid-template-columns: 1fr; gap: 48px; }
+      .footer__inner { grid-template-columns: 1fr; }
+      .form__row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .services__grid { grid-template-columns: 1fr; grid-template-rows: repeat(7, 220px); }
+      .nav__links { display: none; }
+      .fun-strip__inner { justify-content: center; flex-wrap: wrap; gap: 8px; padding: 4px 20px; }
+      .fun-item { border-right: none; padding: 4px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav__brand">
+      <div class="nav__logo">🌸</div>
+      <div class="nav__brand-name">Samara's Organization</div>
+    </div>
+    <ul class="nav__links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#contact" class="nav__cta">Let's Get Organized! ✨</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__left fi">
+      <p class="hero__eyebrow">
+        <span class="hero__eyebrow-dot"></span>
+        Happy Homes · Happy Families
+      </p>
+      <h1 class="hero__headline">
+        A place for<br />
+        <span class="accent-pink">everything</span><br />
+        <span class="accent-yellow">— and fun!</span>
+      </h1>
+      <p class="hero__sub">
+        Samara's Organization brings color, joy, and order to your home.
+        We help families, kids, and busy households find their perfect organized space — stress-free and totally fun!
+      </p>
+      <div class="hero__chips">
+        <span class="hero__chip active">🧸 Playrooms</span>
+        <span class="hero__chip">👗 Closets</span>
+        <span class="hero__chip">🍳 Kitchens</span>
+        <span class="hero__chip">📚 Home Offices</span>
+        <span class="hero__chip">📦 Moving Help</span>
+        <span class="hero__chip">🗄️ Storage</span>
+      </div>
+      <a href="#contact" class="hero__btn">Let's Get Started! 🎉</a>
+    </div>
+    <div class="hero__right">
+      <img
+        src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=900&q=80&fit=crop&crop=center"
+        alt="A beautifully organized, colorful home"
+      />
+      <div class="hero__right-overlay"></div>
+      <div class="hero__stat-bar">
+        <div class="hero__stat">
+          <div class="hero__stat-n">500+</div>
+          <div class="hero__stat-l">Happy Clients</div>
+        </div>
+        <div class="hero__stat">
+          <div class="hero__stat-n">5⭐</div>
+          <div class="hero__stat-l">Average Rating</div>
+        </div>
+        <div class="hero__stat">
+          <div class="hero__stat-n">100%</div>
+          <div class="hero__stat-l">Satisfaction</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FUN STRIP -->
+  <div class="fun-strip">
+    <div class="wrap">
+      <div class="fun-strip__inner">
+        <div class="fun-item">
+          <span class="fun-item__emoji">✅</span>
+          <span class="fun-item__text">Kid-Friendly Process</span>
+        </div>
+        <div class="fun-item">
+          <span class="fun-item__emoji">🌈</span>
+          <span class="fun-item__text">Colorful &amp; Creative Solutions</span>
+        </div>
+        <div class="fun-item">
+          <span class="fun-item__emoji">⚡</span>
+          <span class="fun-item__text">Fast &amp; Efficient</span>
+        </div>
+        <div class="fun-item">
+          <span class="fun-item__emoji">💕</span>
+          <span class="fun-item__text">Family Owned &amp; Loved</span>
+        </div>
+        <div class="fun-item">
+          <span class="fun-item__emoji">🔒</span>
+          <span class="fun-item__text">Background Checked</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEARCH / WHAT DO YOU NEED? -->
+  <section class="search-hero" id="book">
+    <div class="wrap">
+      <div class="sh fi">
+        <p class="sh__eye">Find Your Service</p>
+        <h2 class="sh__title">What needs to get<br /><span class="c-pink">organized?</span> 🔍</h2>
+        <p class="sh__sub">Tell us what space is feeling a little messy — we'll swoop in and make it magical!</p>
+      </div>
+      <div class="search-wrap fi">
+        <div class="search-input-row">
+          <input type="text" id="task-input" placeholder="My playroom is a disaster… 😅" autocomplete="off"
+            onfocus="openDropdown()" oninput="filterDropdown(this.value)" />
+          <button class="search-submit" onclick="submitSearch()" aria-label="Search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+            </svg>
+          </button>
+        </div>
+        <div class="search-dropdown" id="task-dropdown">
+          <div class="search-dropdown-item" onclick="goToService('playroom')">
+            <span class="dd-icon">🧸</span>
+            Playroom &amp; Kids' Room Organization
+          </div>
+          <div class="search-dropdown-item" onclick="goToService('closet')">
+            <span class="dd-icon">👗</span>
+            Closet Makeovers
+          </div>
+          <div class="search-dropdown-item" onclick="goToService('kitchen')">
+            <span class="dd-icon">🍳</span>
+            Kitchen &amp; Pantry Organization
+          </div>
+          <div class="search-dropdown-item" onclick="goToService('office')">
+            <span class="dd-icon">📚</span>
+            Home Office Setup
+          </div>
+          <div class="search-dropdown-item" onclick="goToService('moving')">
+            <span class="dd-icon">📦</span>
+            Moving &amp; Unpacking Help
+          </div>
+          <div class="search-dropdown-item" onclick="goToService('garage')">
+            <span class="dd-icon">🏠</span>
+            Garage &amp; Storage Areas
+          </div>
+          <div class="search-dropdown-item" onclick="goToService('whole-home')">
+            <span class="dd-icon">🌟</span>
+            Whole-Home Organization
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES GRID -->
+  <section class="services" id="services">
+    <div class="wrap">
+      <div class="sh fi">
+        <p class="sh__eye">What We Do</p>
+        <h2 class="sh__title">Every space,<br /><span class="c-teal">transformed.</span> ✨</h2>
+        <p class="sh__sub">From the messiest junk drawer to the most chaotic playroom — we turn clutter into calm (with a splash of color).</p>
+      </div>
+      <div class="services__grid">
+
+        <div class="svc-card fi">
+          <img class="svc-card__img"
+            src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=900&q=80&fit=crop"
+            alt="Colorful playroom organization" />
+          <div class="svc-card__overlay"></div>
+          <div class="svc-card__body">
+            <span class="svc-card__emoji">🧸</span>
+            <div class="svc-card__label">Playroom &amp;<br />Kids' Rooms</div>
+            <div class="svc-card__sub">Toys · Books · Art Supplies</div>
+            <span class="svc-card__arrow">Book this service</span>
+          </div>
+        </div>
+
+        <div class="svc-card fi">
+          <img class="svc-card__img"
+            src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=80&fit=crop"
+            alt="Beautiful closet organization" />
+          <div class="svc-card__overlay"></div>
+          <div class="svc-card__body">
+            <span class="svc-card__emoji">👗</span>
+            <div class="svc-card__label">Closet Makeovers</div>
+            <div class="svc-card__sub">Clothes · Shoes · Accessories</div>
+            <span class="svc-card__arrow">Book this service</span>
+          </div>
+        </div>
+
+        <div class="svc-card fi">
+          <img class="svc-card__img"
+            src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=700&q=80&fit=crop"
+            alt="Kitchen and pantry organization" />
+          <div class="svc-card__overlay"></div>
+          <div class="svc-card__body">
+            <span class="svc-card__emoji">🍳</span>
+            <div class="svc-card__label">Kitchen &amp;<br />Pantry</div>
+            <div class="svc-card__sub">Cabinets · Pantry · Fridge</div>
+            <span class="svc-card__arrow">Book this service</span>
+          </div>
+        </div>
+
+        <div class="svc-card fi">
+          <img class="svc-card__img"
+            src="https://images.unsplash.com/photo-1593642532744-d377ab507dc8?w=700&q=80&fit=crop"
+            alt="Home office organization" />
+          <div class="svc-card__overlay"></div>
+          <div class="svc-card__body">
+            <span class="svc-card__emoji">📚</span>
+            <div class="svc-card__label">Home Office</div>
+            <div class="svc-card__sub">Desk · Files · Supplies</div>
+            <span class="svc-card__arrow">Book this service</span>
+          </div>
+        </div>
+
+        <div class="svc-card fi">
+          <img class="svc-card__img"
+            src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=900&q=80&fit=crop"
+            alt="Moving and unpacking help" />
+          <div class="svc-card__overlay"></div>
+          <div class="svc-card__body">
+            <span class="svc-card__emoji">📦</span>
+            <div class="svc-card__label">Moving &amp;<br />Unpacking</div>
+            <div class="svc-card__sub">Boxes · Setup · Settling In</div>
+            <span class="svc-card__arrow">Book this service</span>
+          </div>
+        </div>
+
+        <div class="svc-card fi">
+          <img class="svc-card__img"
+            src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=700&q=80&fit=crop"
+            alt="Garage and storage organization" />
+          <div class="svc-card__overlay"></div>
+          <div class="svc-card__body">
+            <span class="svc-card__emoji">🏠</span>
+            <div class="svc-card__label">Garage &amp;<br />Storage</div>
+            <div class="svc-card__sub">Garage · Basement · Attic</div>
+            <span class="svc-card__arrow">Book this service</span>
+          </div>
+        </div>
+
+        <div class="svc-card fi">
+          <img class="svc-card__img"
+            src="https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=700&q=80&fit=crop"
+            alt="Whole home organization" />
+          <div class="svc-card__overlay"></div>
+          <div class="svc-card__body">
+            <span class="svc-card__emoji">🌟</span>
+            <div class="svc-card__label">Whole-Home<br />Transformation</div>
+            <div class="svc-card__sub">Every Room · Every Corner</div>
+            <span class="svc-card__arrow">Book this service</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how">
+    <div class="wrap">
+      <div class="sh fi">
+        <p class="sh__eye">Super Easy Process</p>
+        <h2 class="sh__title">Easy as<br /><span style="color:var(--yellow-dark)">1, 2, 3! 🎊</span></h2>
+        <p class="sh__sub">Getting organized has never been this fun. Here's how it works!</p>
+      </div>
+      <div class="how__steps">
+        <div class="how__step fi">
+          <span class="how__step-emoji">📞</span>
+          <div class="how__step-n">01</div>
+          <div class="how__step-title">Tell Us Your Space</div>
+          <p class="how__step-desc">Hop on a free 20-minute call! Tell us which rooms need love, what's been driving you crazy, and what your dream organized home looks like. No commitment needed — just fun ideas!</p>
+        </div>
+        <div class="how__step fi">
+          <span class="how__step-emoji">🎨</span>
+          <div class="how__step-n">02</div>
+          <div class="how__step-title">We Create Your Plan</div>
+          <p class="how__step-desc">Samara designs a custom plan just for you! We figure out the best bins, labels, systems, and color-coded solutions to make your home feel like a dream. It's like a makeover for your stuff!</p>
+        </div>
+        <div class="how__step fi">
+          <span class="how__step-emoji">🌈</span>
+          <div class="how__step-n">03</div>
+          <div class="how__step-title">Watch the Magic Happen</div>
+          <p class="how__step-desc">We come in, roll up our sleeves, and get to work! You'll walk away with a home that's tidy, beautiful, AND actually easy to keep organized. We'll even show your kids how to maintain it!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURE / ABOUT -->
+  <section class="feature">
+    <div class="wrap">
+      <div class="feature__inner fi">
+        <div class="feature__img-wrap">
+          <img class="feature__img"
+            src="https://images.unsplash.com/photo-1607748862156-7c548e7e98f4?w=700&q=80&fit=crop&crop=face"
+            alt="Samara, professional organizer" />
+          <div class="feature__img-badge">
+            <div class="feature__img-badge-n">500+</div>
+            <div class="feature__img-badge-l">Happy<br/>Spaces</div>
+          </div>
+        </div>
+        <div>
+          <p class="feature__eye">Why Samara's Organization?</p>
+          <h2 class="feature__title">
+            Not just tidy —<br />
+            <span class="c-pink">joyfully organized!</span>
+          </h2>
+          <p class="feature__body">We don't just shove things into boxes and call it a day. Samara's Organization creates systems that actually work for YOUR family — including the kids! We use fun labels, bright bins, and genius storage hacks that make staying organized something everyone (even the little ones) actually wants to do.</p>
+          <ul class="feature__list">
+            <li><span class="check-emoji">🌸</span> Kid-inclusive process — the whole family gets involved and excited</li>
+            <li><span class="check-emoji">🎨</span> Color-coded systems that are beautiful AND functional</li>
+            <li><span class="check-emoji">💡</span> Custom solutions for every home, every budget, every style</li>
+            <li><span class="check-emoji">🤝</span> Ongoing support — we don't disappear after day one</li>
+          </ul>
+          <a href="#contact" class="feature__btn">Book a Free Consultation 🎉</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <div class="wrap">
+      <div class="sh fi">
+        <p class="sh__eye">Simple Pricing</p>
+        <h2 class="sh__title">Find your <span class="c-mint">perfect plan</span> 💝</h2>
+        <p class="sh__sub">No hidden fees, no surprises — just fun, fair pricing for every family!</p>
+      </div>
+      <div class="pricing__grid">
+        <div class="pricing__card fi">
+          <span class="pricing__badge">🌱 Starting Fresh</span>
+          <div class="pricing__name">Single Room Session</div>
+          <div class="pricing__rate">One-time rate</div>
+          <p class="pricing__desc">Perfect for one problem room — whether it's a chaotic closet, wild playroom, or overwhelmed kitchen.</p>
+          <ul class="pricing__list">
+            <li><span class="li-emoji">✅</span> One room of your choice</li>
+            <li><span class="li-emoji">🗓️</span> Scheduled at your convenience</li>
+            <li><span class="li-emoji">🏷️</span> Custom labeling included</li>
+            <li><span class="li-emoji">💬</span> 30-day follow-up support</li>
+          </ul>
+        </div>
+        <div class="pricing__card pricing__card--star fi">
+          <span class="pricing__badge">⭐ Most Popular!</span>
+          <div class="pricing__name">Family Refresh Package</div>
+          <div class="pricing__rate">Multi-room bundle</div>
+          <p class="pricing__desc">Give your whole home a transformation! Great for growing families, new home moves, or a big seasonal reset.</p>
+          <ul class="pricing__list">
+            <li><span class="li-emoji">🏠</span> 3–5 rooms included</li>
+            <li><span class="li-emoji">🎨</span> Custom color system design</li>
+            <li><span class="li-emoji">🧸</span> Kid-friendly solutions</li>
+            <li><span class="li-emoji">📋</span> Maintenance guide &amp; checklist</li>
+            <li><span class="li-emoji">📞</span> 60-day check-in call</li>
+          </ul>
+        </div>
+        <div class="pricing__card fi">
+          <span class="pricing__badge">🌟 Dream Home</span>
+          <div class="pricing__name">Full-Home Makeover</div>
+          <div class="pricing__rate">Custom quote</div>
+          <p class="pricing__desc">The ultimate organization experience — every room, every corner, every drawer completely transformed.</p>
+          <ul class="pricing__list">
+            <li><span class="li-emoji">🏡</span> Entire home covered</li>
+            <li><span class="li-emoji">🛒</span> Shopping service included</li>
+            <li><span class="li-emoji">👨‍👩‍👧</span> Family organization coaching</li>
+            <li><span class="li-emoji">🔄</span> 90-day ongoing support</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="reviews" id="reviews">
+    <div class="wrap">
+      <div class="sh fi">
+        <p class="sh__eye">Happy Families</p>
+        <h2 class="sh__title">They <span class="c-pink">love it!</span> 💕</h2>
+        <p class="sh__sub">Don't just take our word for it — hear from the families we've helped!</p>
+      </div>
+      <div class="reviews__grid">
+        <div class="review-card fi">
+          <div class="review-card__emoji">🌟</div>
+          <div class="review-card__stars">⭐⭐⭐⭐⭐</div>
+          <p class="review-card__quote">"Samara transformed our absolute disaster of a playroom into something out of a magazine! My kids actually keep it clean now — I'm shocked and delighted!"</p>
+          <div class="review-card__author">
+            <strong>Jennifer M.</strong>
+            Mom of 3 · San Jose, CA
+          </div>
+        </div>
+        <div class="review-card fi">
+          <div class="review-card__emoji">🎉</div>
+          <div class="review-card__stars">⭐⭐⭐⭐⭐</div>
+          <p class="review-card__quote">"We just moved into a new house and the unpacking was overwhelming. Samara swooped in and made the whole thing feel like a fun adventure. Best money I've ever spent!"</p>
+          <div class="review-card__author">
+            <strong>Marcus &amp; Tanya R.</strong>
+            Family of 4 · Oakland, CA
+          </div>
+        </div>
+        <div class="review-card fi">
+          <div class="review-card__emoji">🌈</div>
+          <div class="review-card__stars">⭐⭐⭐⭐⭐</div>
+          <p class="review-card__quote">"My daughter actually got EXCITED about organizing after Samara involved her in picking out the colorful bins. She calls it her 'rainbow closet.' Total game changer for our family."</p>
+          <div class="review-card__author">
+            <strong>Priya K.</strong>
+            Parent &amp; Educator · Fremont, CA
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="cta-banner">
+    <div class="cta-banner__content fi">
+      <span class="cta-banner__emoji">🎊</span>
+      <h2 class="cta-banner__title">Ready for a<br /><span class="c-yellow">happy, organized home?</span></h2>
+      <p class="cta-banner__sub">One call is all it takes. No stress, no pressure — just lots of fun!</p>
+      <a href="#contact" class="cta-banner__btn">Book Your Free Call Today! 🌸</a>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <div class="contact__inner">
+        <div class="fi">
+          <p class="contact__eye">Let's Connect!</p>
+          <h2 class="contact__title">Ready to <span class="c-pink">get organized?</span></h2>
+          <p class="contact__body">Tell us about your space and we'll reach out within one business day to set up your free consultation. No commitment — just a fun conversation about turning your home into something you love!</p>
+          <div class="contact__detail">
+            <div class="contact__detail-item">
+              <span class="contact__detail-emoji">📞</span>
+              <span class="contact__detail-label">Phone</span>
+              <span class="contact__detail-val"><a href="tel:4158279648">415-827-9648</a></span>
+            </div>
+            <div class="contact__detail-item">
+              <span class="contact__detail-emoji">📧</span>
+              <span class="contact__detail-label">Email</span>
+              <span class="contact__detail-val"><a href="mailto:hello@samarasorganization.com">hello@samarasorganization.com</a></span>
+            </div>
+            <div class="contact__detail-item">
+              <span class="contact__detail-emoji">📍</span>
+              <span class="contact__detail-label">Service Area</span>
+              <span class="contact__detail-val">Bay Area, CA &amp; Surrounding Regions</span>
+            </div>
+          </div>
+          <p class="contact__note">💡 We serve families all across the Bay Area! Remote virtual organizing consultations are also available everywhere.</p>
+        </div>
+
+        <form class="form fi" onsubmit="return false;">
+          <div class="form__row">
+            <div class="form__group">
+              <label for="fn">First Name</label>
+              <input type="text" id="fn" placeholder="Your first name" />
+            </div>
+            <div class="form__group">
+              <label for="ln">Last Name</label>
+              <input type="text" id="ln" placeholder="Your last name" />
+            </div>
+          </div>
+          <div class="form__group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="your@email.com" />
+          </div>
+          <div class="form__row">
+            <div class="form__group">
+              <label for="service">Service I Need</label>
+              <select id="service">
+                <option value="">Pick one! 🎯</option>
+                <option>Playroom / Kids' Room</option>
+                <option>Closet Makeover</option>
+                <option>Kitchen &amp; Pantry</option>
+                <option>Home Office</option>
+                <option>Moving &amp; Unpacking</option>
+                <option>Garage &amp; Storage</option>
+                <option>Whole-Home Transformation</option>
+                <option>Not sure yet!</option>
+              </select>
+            </div>
+            <div class="form__group">
+              <label for="rooms">Number of Rooms</label>
+              <select id="rooms">
+                <option value="">How many?</option>
+                <option>Just 1 room</option>
+                <option>2–3 rooms</option>
+                <option>4–5 rooms</option>
+                <option>The whole house!</option>
+              </select>
+            </div>
+          </div>
+          <div class="form__group">
+            <label for="message">Tell Us About Your Space!</label>
+            <textarea id="message" placeholder="Describe what's going on — the more detail, the better! No judgment, we've seen it all 😄"></textarea>
+          </div>
+          <button type="submit" class="form__btn">Send My Message! 🌸</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer__inner">
+        <div>
+          <div class="footer__brand-name">Samara's Organization</div>
+          <p class="footer__tagline">Bringing joy, color, and order to families and kids everywhere. Let's make your home the happiest place on earth! 🌈</p>
+        </div>
+        <div>
+          <div class="footer__col-head">Our Services</div>
+          <ul class="footer__links">
+            <li><a href="#services">🧸 Playrooms &amp; Kids' Rooms</a></li>
+            <li><a href="#services">👗 Closet Makeovers</a></li>
+            <li><a href="#services">🍳 Kitchen &amp; Pantry</a></li>
+            <li><a href="#services">📚 Home Office</a></li>
+            <li><a href="#services">📦 Moving Help</a></li>
+            <li><a href="#services">🌟 Whole-Home Makeovers</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer__col-head">Quick Links</div>
+          <ul class="footer__links">
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#how">How It Works</a></li>
+            <li><a href="#reviews">Reviews</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="/">Back to Main Site</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="footer__copy">© 2026 Samara's Organization · Bay Area, CA · Made with 💕 for happy families everywhere</p>
+    </div>
+  </footer>
+
+  <script>
+    // Fade-in on scroll
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+
+    // Hero chips
+    document.querySelectorAll('.hero__chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.hero__chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+      });
+    });
+
+    // Search dropdown
+    function openDropdown() {
+      document.getElementById('task-dropdown').classList.add('open');
+    }
+    function filterDropdown(val) {
+      const items = document.querySelectorAll('.search-dropdown-item');
+      const v = val.toLowerCase();
+      let any = false;
+      items.forEach(item => {
+        const match = item.textContent.toLowerCase().includes(v);
+        item.style.display = match ? '' : 'none';
+        if (match) any = true;
+      });
+      document.getElementById('task-dropdown').classList.toggle('open', any || val === '');
+    }
+    function goToService(service) {
+      document.getElementById('task-dropdown').classList.remove('open');
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+      const sel = document.getElementById('service');
+      const map = {
+        'playroom': 'Playroom / Kids\' Room',
+        'closet': 'Closet Makeover',
+        'kitchen': 'Kitchen & Pantry',
+        'office': 'Home Office',
+        'moving': 'Moving & Unpacking',
+        'garage': 'Garage & Storage',
+        'whole-home': 'Whole-Home Transformation'
+      };
+      if (map[service]) {
+        for (let i = 0; i < sel.options.length; i++) {
+          if (sel.options[i].text === map[service]) { sel.selectedIndex = i; break; }
+        }
+      }
+    }
+    function submitSearch() {
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+    }
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.search-wrap')) {
+        document.getElementById('task-dropdown').classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>
