@@ -540,18 +540,18 @@
           <img src="https://images.squarespace-cdn.com/content/v1/5b64781e12b13f3a5850dac1/1534962104072-Y45RFHP37FY9YR2KBMPZ/GDC_WavyLines_Light.png" alt="" aria-hidden="true" />
         </div>
       </div>
-      <form class="contact__form fade-in" onsubmit="return false;">
+      <form class="contact__form fade-in" id="contactForm" onsubmit="submitContact(event)">
         <div class="form-group">
           <label for="name">Your Name</label>
-          <input type="text" id="name" placeholder="Jane Smith" />
+          <input type="text" id="name" name="name" placeholder="Jane Smith" required />
         </div>
         <div class="form-group">
           <label for="email">Email Address</label>
-          <input type="email" id="email" placeholder="jane@yourbusiness.com" />
+          <input type="email" id="email" name="email" placeholder="jane@yourbusiness.com" required />
         </div>
         <div class="form-group">
           <label for="service">Service Interest</label>
-          <select id="service">
+          <select id="service" name="service">
             <option value="">Select a service…</option>
             <option>Business Strategy</option>
             <option>Remote Bookkeeping</option>
@@ -563,11 +563,34 @@
         </div>
         <div class="form-group">
           <label for="message">Message</label>
-          <textarea id="message" rows="4" placeholder="Tell us a bit about your business and what you need…"></textarea>
+          <textarea id="message" name="message" rows="4" placeholder="Tell us a bit about your business and what you need…"></textarea>
         </div>
-        <button type="submit" class="btn btn--dark btn--full">Send Message</button>
+        <button type="submit" class="btn btn--dark btn--full" id="contactBtn">Send Message</button>
+        <div id="contactSuccess" style="display:none;margin-top:16px;padding:16px;background:#fdf9f3;border:1px solid #D4AF72;font-size:13px;color:#444;text-align:center;">
+          Thank you! We'll be in touch within one business day.
+        </div>
         <p style="margin-top:18px;font-size:11px;color:#aaa;letter-spacing:0.04em;">Interested in joining our team? <a href="/application-form.html" style="color:#B8975A;text-decoration:none;border-bottom:1px solid #D4AF72;">Apply here &rarr;</a></p>
       </form>
+      <script>
+        async function submitContact(e) {
+          e.preventDefault();
+          const btn = document.getElementById('contactBtn');
+          btn.disabled = true; btn.textContent = 'Sending…';
+          try {
+            await fetch('https://formspree.io/f/mbdqgvje', {
+              method: 'POST',
+              headers: { 'Accept': 'application/json' },
+              body: new FormData(document.getElementById('contactForm'))
+            });
+            document.getElementById('contactForm').querySelectorAll('input,select,textarea').forEach(el => el.value = '');
+            btn.style.display = 'none';
+            document.getElementById('contactSuccess').style.display = 'block';
+          } catch(err) {
+            btn.disabled = false; btn.textContent = 'Send Message';
+            alert('Something went wrong. Please try again or email us directly.');
+          }
+        }
+      </script>
     </div>
   </section>
 
