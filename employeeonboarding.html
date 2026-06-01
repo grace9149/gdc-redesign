@@ -542,18 +542,31 @@ function renderGetStarted() {
 
 // ── TAB: TOOLS ────────────────────────────────────────────────────────────────
 function renderTools() {
-  const saved     = progressData['tools'] || {};
+  const saved        = progressData['tools'] || {};
+  const isPast       = activeWeek <= currentWeek;
   let completedTools = 0;
 
   const cards = TOOLS.map(tool => {
-    const toolData     = saved[tool.id] || {};
-    const pendingItems = tool.items.filter(it => !toolData[it.id]);
-    const doneCount    = tool.items.length - pendingItems.length;
+    const toolData      = saved[tool.id] || {};
+    const pendingItems  = tool.items.filter(it => !toolData[it.id]);
+    const doneItems     = tool.items.filter(it =>  toolData[it.id]);
+    const doneCount     = doneItems.length;
 
-    // Hide fully completed tools
-    if (pendingItems.length === 0) {
+    // In future weeks: hide fully completed tools
+    if (pendingItems.length === 0 && !isPast) {
       completedTools++;
       return null;
+    }
+    // In past/current weeks: show completed tool as a done card
+    if (pendingItems.length === 0 && isPast) {
+      completedTools++;
+      return `
+      <div class="card" style="opacity:0.6;">
+        <div class="card-header" style="cursor:default;">
+          <div class="card-title"><span class="card-icon">${tool.icon}</span>${tool.label}</div>
+          <div class="card-completion" style="color:var(--gold);">✓ Complete</div>
+        </div>
+      </div>`;
     }
 
     const pct = Math.round((doneCount / tool.items.length) * 100);
@@ -573,6 +586,11 @@ function renderTools() {
                 <input type="checkbox" id="t_${tool.id}_${it.id}" onchange="saveTools()" />
                 <div><div class="sub-item-text">${it.label}</div></div>
               </div>`).join('')}
+            ${isPast ? doneItems.map(it => `
+              <div class="sub-item" style="opacity:0.5;">
+                <span style="color:var(--gold);font-size:14px;flex-shrink:0;width:16px;text-align:center;">✓</span>
+                <div><div class="sub-item-text" style="text-decoration:line-through;color:var(--text-light);">${it.label}</div></div>
+              </div>`).join('') : ''}
           </div>
           <div class="tool-notes">
             <label>Notes</label>
@@ -620,13 +638,14 @@ function renderClients(w) {
 
 // ── TAB: PROCEDURES ───────────────────────────────────────────────────────────
 function renderProcedures() {
-  const saved     = progressData['procedures'] || {};
+  const saved      = progressData['procedures'] || {};
+  const isPast     = activeWeek <= currentWeek;
   if (!procedureData.length) return '<p class="no-clients-note">Procedures will be added here by Grace.</p>';
 
-  const pending   = procedureData.filter(p => !saved[p.id]);
-  const doneCount = procedureData.length - pending.length;
+  const pending    = procedureData.filter(p => !saved[p.id]);
+  const completed  = procedureData.filter(p =>  saved[p.id]);
 
-  const items = pending.map(p => {
+  const pendingHtml = pending.map(p => {
     const hasContent = p.description || p.videoUrl;
     const embedUrl   = getDriveEmbedUrl(p.videoUrl);
     return `
@@ -645,16 +664,25 @@ function renderProcedures() {
         </div>
       </div>
     </div>`;
-  }).join('') + (doneCount > 0 ? `<div style="font-size:11px;color:var(--gold);padding:10px 0;">✓ ${doneCount} item${doneCount>1?'s':''} completed</div>` : '');
+  }).join('');
 
-  // Custom section items for procedures section
+  // Show completed items as done in current/past weeks, hide in future weeks
+  const completedHtml = isPast && completed.length ? completed.map(p => `
+    <div style="border-bottom:1px solid var(--border);padding:10px 0;opacity:0.55;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="color:var(--gold);font-size:14px;flex-shrink:0;">✓</span>
+        <span style="font-size:13px;color:var(--text-mid);text-decoration:line-through;">${escHtml(p.text)}</span>
+      </div>
+    </div>`).join('') : '';
+
   const customItems = renderCustomSectionItems('procedures');
 
   return `
     <div class="card">
       <div class="card-header open"><div class="card-title">📋 GDC Procedures</div></div>
       <div class="card-body open">
-        ${items}
+        ${pendingHtml}
+        ${completedHtml}
         ${customItems}
         <div class="save-row"><span class="save-status" id="save_procedures"></span><button class="btn-save" onclick="saveProcedures()">Save</button></div>
       </div>
@@ -676,12 +704,13 @@ function getDriveEmbedUrl(url) {
 
 // ── CUSTOM SECTION ITEMS (from dashboard) ─────────────────────────────────────
 function renderCustomSectionItems(section) {
-  const saved    = progressData['custom_' + section] || {};
-  const all      = sectionItemsData.filter(i => i.section === section);
-  const items    = all.filter(i => !saved[i.id]);
-  const doneCount = all.length - items.length;
+  const saved     = progressData['custom_' + section] || {};
+  const isPast    = activeWeek <= currentWeek;
+  const all       = sectionItemsData.filter(i => i.section === section);
+  const items     = all.filter(i => !saved[i.id]);
+  const completed = all.filter(i =>  saved[i.id]);
   if (!all.length) return '';
-  if (!items.length) return `<div style="font-size:11px;color:var(--gold);padding:10px 0;">✓ All items completed</div>`;
+  if (!items.length && !isPast) return '';
   return items.map(item => {
     const embedUrl   = getDriveEmbedUrl(item.videoUrl);
     const hasContent = item.description || item.videoUrl;
@@ -701,7 +730,13 @@ function renderCustomSectionItems(section) {
         </div>
       </div>
     </div>`;
-  }).join('') + (doneCount > 0 ? `<div style="font-size:11px;color:var(--gold);padding:8px 0;">✓ ${doneCount} item${doneCount>1?'s':''} completed</div>` : '');
+  }).join('') + (isPast && completed.length ? completed.map(item => `
+    <div style="border-bottom:1px solid var(--border);padding:10px 0;opacity:0.55;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="color:var(--gold);font-size:14px;flex-shrink:0;">✓</span>
+        <span style="font-size:13px;color:var(--text-mid);text-decoration:line-through;">${escHtml(item.title)}</span>
+      </div>
+    </div>`).join('') : '');
 }
 
 async function saveCustomItems(section) {
