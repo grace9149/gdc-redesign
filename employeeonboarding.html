@@ -60,7 +60,7 @@
     .candy-stop:hover .candy-dot { border-color:var(--gold); color:var(--gold); }
     .candy-dot.done { background:var(--gold); border-color:var(--gold); color:#fff; }
     .candy-dot.current { background:var(--charcoal); border-color:var(--charcoal); color:#fff; box-shadow:0 0 0 3px rgba(184,151,90,0.3); }
-    .candy-dot.locked { opacity:0.4; cursor:default; }
+    .candy-dot.locked { opacity:0.5; cursor:pointer; }
     .candy-stop-label { font-size:9px; color:var(--light); font-weight:500; white-space:nowrap; }
     .candy-stop.current-stop .candy-stop-label { color:var(--gold); font-weight:600; }
     .candy-line { width:20px; height:2px; background:var(--border); flex-shrink:0; margin-bottom:19px; }
@@ -418,7 +418,6 @@ function isWeekComplete(w) {
 }
 
 function selectWeek(w) {
-  if (w > currentWeek) return; // locked
   activeWeek = w;
   renderCandyMap();
   showWeek(w);
