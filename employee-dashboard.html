@@ -999,6 +999,16 @@ async function createTeamMember() {
   } catch(e) { showToast('Connection error.'); }
 }
 
+async function removeProcedure(procId, text) {
+  if (!confirm(`Remove "${text}" from the procedures list?`)) return;
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=remove_procedure&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&procId=${encodeURIComponent(procId)}`);
+    const data = await res.json();
+    if (data.ok) { allProcedures = allProcedures.filter(p => p.id !== procId); renderProcedures(); showToast('Procedure removed.'); }
+    else showToast('Error removing procedure.');
+  } catch(e) { showToast('Connection error.'); }
+}
+
 async function removeTeamMember(tmId, name) {
   if (!confirm(`Remove ${name} from dashboard access?`)) return;
   try {
@@ -1024,6 +1034,7 @@ function renderProcedures() {
   list.innerHTML = allProcedures.map(p => `
     <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);">
       <div style="font-size:13px;color:var(--charcoal);">${escHtml(p.text)}</div>
+      <button class="btn-sm" style="color:#c0392b;border-color:#f5c6cb;flex-shrink:0;" onclick="removeProcedure('${escHtml(p.id)}','${escHtml(p.text)}')">Remove</button>
     </div>`).join('');
 }
 

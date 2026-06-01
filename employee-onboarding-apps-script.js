@@ -50,6 +50,7 @@ function doGet(e) {
     if (p.action === 'remove_client')      return respond(removeClient(p));
     if (p.action === 'add_procedure')      return respond(addProcedure(p));
     if (p.action === 'remove_team_member') return respond(removeTeamMember(p));
+    if (p.action === 'remove_procedure')   return respond(removeProcedure(p));
     return respond({ ok: false, error: 'Unknown action' });
   } catch(err) {
     return respond({ ok: false, error: err.toString() });
@@ -238,6 +239,19 @@ function removeTeamMember(p) {
     }
   }
   return { ok: false, error: 'Team member not found' };
+}
+
+function removeProcedure(p) {
+  if (!isDashboardUser(p.id, p.pw)) return { ok: false, error: 'Unauthorized' };
+  var sheet = getSheet(TABS.PROCEDURES);
+  var rows  = sheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]) === String(p.procId)) {
+      sheet.deleteRow(i + 1);
+      return { ok: true };
+    }
+  }
+  return { ok: false, error: 'Procedure not found' };
 }
 
 function getTeamMembers(id, pw) {
