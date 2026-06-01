@@ -1111,6 +1111,10 @@ function renderProcedures() {
       </div>
       <div id="proc-detail-${escHtml(p.id)}" style="display:none;padding:0 0 20px 22px;">
         <div class="form-group" style="margin-bottom:12px;">
+          <label>Title</label>
+          <input type="text" id="proc-title-${escHtml(p.id)}" value="${escHtml(p.text)}" style="width:100%;padding:10px 12px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" />
+        </div>
+        <div class="form-group" style="margin-bottom:12px;">
           <label>Details / Instructions</label>
           <textarea id="proc-desc-${escHtml(p.id)}" style="width:100%;padding:10px 12px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;resize:vertical;min-height:100px;outline:none;" placeholder="Describe this procedure — what it involves, steps to follow, resources..." onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">${escHtml(p.description||'')}</textarea>
         </div>
@@ -1136,16 +1140,17 @@ function toggleProcedure(procId) {
 }
 
 async function saveProcedureDetail(procId) {
-  const desc   = document.getElementById('proc-desc-' + procId)?.value  || '';
-  const video  = document.getElementById('proc-video-' + procId)?.value || '';
+  const title  = document.getElementById('proc-title-' + procId)?.value.trim() || '';
+  const desc   = document.getElementById('proc-desc-'  + procId)?.value  || '';
+  const video  = document.getElementById('proc-video-' + procId)?.value  || '';
   const status = document.getElementById('proc-save-status-' + procId);
   if (status) status.textContent = 'Saving…';
   try {
-    const res  = await fetch(`${APPS_SCRIPT_URL}?action=update_procedure&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&procId=${encodeURIComponent(procId)}&description=${encodeURIComponent(desc)}&videoUrl=${encodeURIComponent(video)}`);
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=update_procedure&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&procId=${encodeURIComponent(procId)}&text=${encodeURIComponent(title)}&description=${encodeURIComponent(desc)}&videoUrl=${encodeURIComponent(video)}`);
     const data = await res.json();
     if (data.ok) {
       const p = allProcedures.find(p => p.id === procId);
-      if (p) { p.description = desc; p.videoUrl = video; }
+      if (p) { p.text = title; p.description = desc; p.videoUrl = video; }
       if (status) { status.textContent = '✓ Saved — live in employee portal'; status.style.color = 'var(--green)'; }
       renderProcedures();
     } else { if (status) status.textContent = 'Error: ' + (data.error||'unknown'); }

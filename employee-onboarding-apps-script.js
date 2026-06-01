@@ -343,6 +343,7 @@ function updateProcedure(p) {
   var rows  = sheet.getDataRange().getValues();
   for (var i = 1; i < rows.length; i++) {
     if (String(rows[i][0]) === String(p.procId)) {
+      if (p.text)        sheet.getRange(i+1, 2).setValue(p.text);
       sheet.getRange(i+1, 5).setValue(p.description || '');
       sheet.getRange(i+1, 6).setValue(p.videoUrl    || '');
       return { ok: true };
