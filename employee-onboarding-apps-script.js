@@ -49,6 +49,7 @@ function doGet(e) {
     if (p.action === 'add_client')         return respond(addClient(p));
     if (p.action === 'remove_client')      return respond(removeClient(p));
     if (p.action === 'add_procedure')      return respond(addProcedure(p));
+    if (p.action === 'remove_employee')    return respond(removeEmployee(p));
     if (p.action === 'remove_team_member') return respond(removeTeamMember(p));
     if (p.action === 'remove_procedure')   return respond(removeProcedure(p));
     return respond({ ok: false, error: 'Unknown action' });
@@ -226,6 +227,19 @@ function createTeamMember(p) {
   ensureHeaders(sheet, ['ID','Name','Email','Password','Created','Last Activity']);
   sheet.appendRow([tmId, p.name||'', p.email||'', password, now(), '']);
   return { ok: true, tmId: tmId, password: password, name: p.name };
+}
+
+function removeEmployee(p) {
+  if (!isDashboardUser(p.id, p.pw)) return { ok: false, error: 'Unauthorized' };
+  var sheet = getSheet(TABS.EMPLOYEES);
+  var rows  = sheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]) === String(p.empId)) {
+      sheet.deleteRow(i + 1);
+      return { ok: true };
+    }
+  }
+  return { ok: false, error: 'Employee not found' };
 }
 
 function removeTeamMember(p) {

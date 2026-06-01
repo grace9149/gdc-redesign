@@ -597,6 +597,7 @@ function renderEmployeeTable(emps) {
       <td><div class="action-btns">
         <button class="btn-sm" onclick="openDetail('${escHtml(emp.id)}')">View</button>
         <button class="btn-sm gold" onclick="quickCopyLogin('${escHtml(emp.id)}','${escHtml(emp.firstName+' '+emp.lastName)}','${escHtml(emp.password||'')}')">Login</button>
+        <button class="btn-sm" style="color:#c0392b;border-color:#f5c6cb;" onclick="removeEmployee('${escHtml(emp.id)}','${escHtml(emp.firstName+' '+emp.lastName)}')">Remove</button>
       </div></td>
     </tr>`;
   }).join('');
@@ -1000,6 +1001,16 @@ async function createTeamMember() {
       document.getElementById('newTeamForm').style.display    = 'none';
       document.getElementById('newTeamSuccess').style.display = 'block';
     } else { showToast('Error: ' + (data.error||'unknown')); }
+  } catch(e) { showToast('Connection error.'); }
+}
+
+async function removeEmployee(empId, name) {
+  if (!confirm(`Remove ${name} from the system? This cannot be undone.`)) return;
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=remove_employee&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&empId=${encodeURIComponent(empId)}`);
+    const data = await res.json();
+    if (data.ok) { showToast(`${name} removed.`); loadEmployees(); }
+    else showToast('Error: ' + (data.error||'unknown'));
   } catch(e) { showToast('Connection error.'); }
 }
 
