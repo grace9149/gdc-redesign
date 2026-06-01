@@ -766,15 +766,17 @@ function renderCheckin(w) {
       <div class="card-body open">
         <div class="form-section__title" style="font-size:10px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);">Insightful Score</div>
         ${ins.score
-          ? `<div style="display:flex;align-items:baseline;gap:12px;margin-bottom:${ins.goal?'6px':'16px'};">
+          ? `<div style="display:flex;align-items:baseline;gap:12px;margin-bottom:${ins.goal?'6px':'8px'};">
                <div style="font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:500;color:var(--charcoal);line-height:1;">${escHtml(ins.score)}</div>
                <div style="font-size:12px;color:var(--text-light);">Week ${w} score</div>
              </div>
-             ${ins.goal ? `<div style="font-size:12px;color:var(--text-light);margin-bottom:16px;font-style:italic;">Goal: ${escHtml(ins.goal)}</div>` : ''}`
-          : `<div style="font-size:13px;color:var(--text-light);font-style:italic;margin-bottom:16px;">Your score will appear here once entered by your team member.</div>`}
-        <div class="form-group">
-          <label>Your Feedback</label>
-          <textarea id="ci_feedback_${w}" placeholder="Share any feedback, observations, or notes about this week..."></textarea>
+             ${ins.goal ? `<div style="font-size:12px;color:var(--text-light);margin-bottom:8px;font-style:italic;">Goal: ${escHtml(ins.goal)}</div>` : ''}`
+          : `<div style="font-size:13px;color:var(--text-light);font-style:italic;margin-bottom:8px;">Your score will appear here once entered by your team member.</div>`}
+        <div style="margin-bottom:16px;">
+          <div style="font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-light);margin-bottom:6px;">Operations Team Feedback</div>
+          ${ins.ops_feedback
+            ? `<div style="font-size:13px;color:var(--charcoal);line-height:1.7;background:var(--cream);border:1px solid var(--border);padding:12px 14px;">${escHtml(ins.ops_feedback).replace(/\n/g,'<br>')}</div>`
+            : `<div style="font-size:13px;color:var(--text-light);font-style:italic;">Feedback from your team will appear here.</div>`}
         </div>
         <div style="border-top:1px solid var(--border);margin:20px 0 16px;"></div>
         <div class="form-section__title" style="font-size:10px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Weekly Check-in</div>

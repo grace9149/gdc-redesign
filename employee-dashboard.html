@@ -776,7 +776,8 @@ function renderInsightfulForm(w) {
         <div class="form-group"><label>Productivity Score</label><input type="text" id="ins_score_${w}" value="${escHtml(ins.score||'')}" placeholder="e.g. 85%" /></div>
         <div class="form-group"><label>Goal for Next Week</label><input type="text" id="ins_goal_${w}" value="${escHtml(ins.goal||'')}" placeholder="e.g. 90%" /></div>
       </div>
-      <div class="form-group"><label>Notes</label><textarea id="ins_notes_${w}" placeholder="Observations, areas to improve...">${escHtml(ins.notes||'')}</textarea></div>
+      <div class="form-group"><label>Internal Notes (not visible to employee)</label><textarea id="ins_notes_${w}" placeholder="Internal observations, areas to improve...">${escHtml(ins.notes||'')}</textarea></div>
+      <div class="form-group"><label>Operations Team Feedback <span style="font-size:10px;color:var(--light);font-weight:400;text-transform:none;letter-spacing:0;">(visible to employee)</span></label><textarea id="ins_ops_${w}" placeholder="Write feedback for the employee to see in their portal...">${escHtml(ins.ops_feedback||'')}</textarea></div>
       <div style="display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:12px;">
         <span id="ins_status_${w}" style="font-size:11px;color:var(--light);"></span>
         <button class="btn-primary" onclick="saveInsightful(${w})">Save Week ${w}</button>
@@ -785,15 +786,16 @@ function renderInsightfulForm(w) {
 }
 
 async function saveInsightful(w) {
-  const score = document.getElementById('ins_score_'+w)?.value || '';
-  const goal  = document.getElementById('ins_goal_'+w)?.value  || '';
-  const notes = document.getElementById('ins_notes_'+w)?.value || '';
-  const st    = document.getElementById('ins_status_'+w);
+  const score      = document.getElementById('ins_score_'+w)?.value || '';
+  const goal       = document.getElementById('ins_goal_'+w)?.value  || '';
+  const notes      = document.getElementById('ins_notes_'+w)?.value || '';
+  const ops_feedback = document.getElementById('ins_ops_'+w)?.value || '';
+  const st         = document.getElementById('ins_status_'+w);
   if (st) { st.textContent = 'Saving…'; }
   try {
     await fetch(APPS_SCRIPT_URL, { method:'POST', mode:'no-cors',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ action:'save_insightful', userId, userPw, empId: currentEmpDetail.employee.id, week:w, score, goal, notes })
+      body: JSON.stringify({ action:'save_insightful', userId, userPw, empId: currentEmpDetail.employee.id, week:w, score, goal, notes, ops_feedback })
     });
     if (!currentEmpDetail.insightful) currentEmpDetail.insightful = {};
     currentEmpDetail.insightful[String(w)] = { score, goal, notes };

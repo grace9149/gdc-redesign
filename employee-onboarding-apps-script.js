@@ -204,7 +204,7 @@ function getEmployeeDetail(id, pw, empId) {
   var insightful = {};
   for (var m = 1; m < insRows.length; m++) {
     if (String(insRows[m][1]) === String(empId)) {
-      insightful[insRows[m][2]] = { score: insRows[m][3], goal: insRows[m][4], notes: insRows[m][5], by: insRows[m][6] };
+      insightful[insRows[m][2]] = { score: insRows[m][3], goal: insRows[m][4], notes: insRows[m][5], by: insRows[m][6], ops_feedback: insRows[m][7]||'' };
     }
   }
 
@@ -433,7 +433,7 @@ function saveInsightful(data) {
   if (!isDashboardUser(data.userId, data.userPw)) return { ok: false, error: 'Unauthorized' };
 
   var sheet = getSheet(TABS.INSIGHTFUL);
-  ensureHeaders(sheet, ['Timestamp','Employee ID','Week','Score','Goal','Notes','Entered By']);
+  ensureHeaders(sheet, ['Timestamp','Employee ID','Week','Score','Goal','Notes','Entered By','Ops Feedback']);
 
   var rows  = sheet.getDataRange().getValues();
   var found = false;
@@ -444,11 +444,12 @@ function saveInsightful(data) {
       sheet.getRange(i+1, 5).setValue(data.goal || '');
       sheet.getRange(i+1, 6).setValue(data.notes || '');
       sheet.getRange(i+1, 7).setValue(data.userId);
+      sheet.getRange(i+1, 8).setValue(data.ops_feedback || '');
       found = true; break;
     }
   }
   if (!found) {
-    sheet.appendRow([now(), data.empId, data.week, data.score||'', data.goal||'', data.notes||'', data.userId]);
+    sheet.appendRow([now(), data.empId, data.week, data.score||'', data.goal||'', data.notes||'', data.userId, data.ops_feedback||'']);
   }
   return { ok: true };
 }
@@ -512,7 +513,7 @@ function getEmployeeProgress(id, pw) {
     var ir = insSheet.getDataRange().getValues();
     for (var k = 1; k < ir.length; k++) {
       if (String(ir[k][1]) === String(id)) {
-        insightful[String(ir[k][2])] = { score: ir[k][3], goal: ir[k][4], notes: ir[k][5] };
+        insightful[String(ir[k][2])] = { score: ir[k][3], goal: ir[k][4], notes: ir[k][5], ops_feedback: ir[k][7]||'' };
       }
     }
   }
