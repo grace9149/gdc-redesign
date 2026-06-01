@@ -398,8 +398,8 @@
         </div>
         <div class="section-card">
           <table>
-            <thead><tr><th>Name</th><th>Email</th><th>Password</th><th>Created</th></tr></thead>
-            <tbody id="teamTableBody"><tr><td colspan="4" style="padding:32px;text-align:center;color:var(--light);font-size:13px;">Loading…</td></tr></tbody>
+            <thead><tr><th>Name</th><th>Email</th><th>Password</th><th>Created</th><th></th></tr></thead>
+            <tbody id="teamTableBody"><tr><td colspan="5" style="padding:32px;text-align:center;color:var(--light);font-size:13px;">Loading…</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -979,6 +979,7 @@ function renderTeamTable(members) {
     <td style="color:var(--mid);">${escHtml(m.email||'—')}</td>
     <td><span style="font-family:monospace;font-size:12px;color:var(--mid);">${escHtml(m.password||'—')}</span></td>
     <td style="color:var(--light);font-size:12px;">${escHtml(m.created||'—')}</td>
+    <td><button class="btn-sm" style="color:#c0392b;border-color:#f5c6cb;" onclick="removeTeamMember('${escHtml(m.id)}','${escHtml(m.name)}')">Remove</button></td>
   </tr>`).join('');
 }
 
@@ -995,6 +996,16 @@ async function createTeamMember() {
       document.getElementById('newTeamForm').style.display    = 'none';
       document.getElementById('newTeamSuccess').style.display = 'block';
     } else { showToast('Error: ' + (data.error||'unknown')); }
+  } catch(e) { showToast('Connection error.'); }
+}
+
+async function removeTeamMember(tmId, name) {
+  if (!confirm(`Remove ${name} from dashboard access?`)) return;
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=remove_team_member&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&tmId=${encodeURIComponent(tmId)}`);
+    const data = await res.json();
+    if (data.ok) { showToast(`${name} removed.`); loadTeam(); }
+    else showToast('Error removing team member.');
   } catch(e) { showToast('Connection error.'); }
 }
 

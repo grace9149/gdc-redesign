@@ -13,7 +13,7 @@
 //     where it says: const APPS_SCRIPT_URL = 'PASTE_URL_HERE';
 // =============================================================================
 
-var SHEET_ID      = 'PASTE_YOUR_EMPLOYEE_SHEET_ID_HERE';
+var SHEET_ID      = '1OcgqBD7Zacyr78XZ-djrcZEQ9AfSnN6a5d5G1-HWLqU';
 var NOTIFY_EMAIL  = 'grace@gracedouganconsulting.com';
 var GRACE_ID      = 'grace';
 var GRACE_PW      = 'GDCteam2026';
@@ -49,6 +49,7 @@ function doGet(e) {
     if (p.action === 'add_client')         return respond(addClient(p));
     if (p.action === 'remove_client')      return respond(removeClient(p));
     if (p.action === 'add_procedure')      return respond(addProcedure(p));
+    if (p.action === 'remove_team_member') return respond(removeTeamMember(p));
     return respond({ ok: false, error: 'Unknown action' });
   } catch(err) {
     return respond({ ok: false, error: err.toString() });
@@ -224,6 +225,19 @@ function createTeamMember(p) {
   ensureHeaders(sheet, ['ID','Name','Email','Password','Created','Last Activity']);
   sheet.appendRow([tmId, p.name||'', p.email||'', password, now(), '']);
   return { ok: true, tmId: tmId, password: password, name: p.name };
+}
+
+function removeTeamMember(p) {
+  if (!isDashboardUser(p.id, p.pw)) return { ok: false, error: 'Unauthorized' };
+  var sheet = getSheet(TABS.TEAM);
+  var rows  = sheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]) === String(p.tmId)) {
+      sheet.deleteRow(i + 1);
+      return { ok: true };
+    }
+  }
+  return { ok: false, error: 'Team member not found' };
 }
 
 function getTeamMembers(id, pw) {
@@ -428,7 +442,7 @@ function finalSubmit(data) {
   body += 'Submitted: ' + now() + '\n';
   body += 'View sheet: https://docs.google.com/spreadsheets/d/' + SHEET_ID;
 
-  GmailApp.sendEmail(NOTIFY_EMAIL, '90-Day Onboarding Complete — ' + emp.firstName + ' ' + emp.lastName, body,
+  MailApp.sendEmail(NOTIFY_EMAIL, '90-Day Onboarding Complete — ' + emp.firstName + ' ' + emp.lastName, body,
     { name: 'GDC Onboarding System' });
 
   return { ok: true };
