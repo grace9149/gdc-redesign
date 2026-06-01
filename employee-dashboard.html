@@ -509,7 +509,11 @@
     <button class="modal-close" onclick="closeModal('newTeamModal')">×</button>
     <h3>Add Team Member</h3>
     <div id="newTeamForm">
-      <div class="form-group"><label>Full Name *</label><input type="text" id="nt_name" placeholder="Alex Johnson" /></div>
+      <div class="form-row-2">
+        <div class="form-group"><label>First Name *</label><input type="text" id="nt_first" placeholder="Alex" /></div>
+        <div class="form-group"><label>Last Name *</label><input type="text" id="nt_last" placeholder="Johnson" /></div>
+      </div>
+      <div style="font-size:11px;color:var(--light);margin:-8px 0 12px;">Username will be: <strong id="nt_preview" style="color:var(--charcoal);">alexjohnson</strong></div>
       <div class="form-group"><label>Email</label><input type="email" id="nt_email" placeholder="alex@gracedouganconsulting.com" /></div>
       <div class="modal-actions">
         <button class="btn-cancel" onclick="closeModal('newTeamModal')">Cancel</button>
@@ -1055,12 +1059,23 @@ function renderTeamTable(members) {
   </tr>`).join('');
 }
 
+// Live username preview
+document.addEventListener('input', e => {
+  if (e.target.id === 'nt_first' || e.target.id === 'nt_last') {
+    const first = document.getElementById('nt_first')?.value.trim() || '';
+    const last  = document.getElementById('nt_last')?.value.trim()  || '';
+    const preview = document.getElementById('nt_preview');
+    if (preview) preview.textContent = (first + last).toLowerCase().replace(/[^a-z0-9]/g, '') || 'username';
+  }
+});
+
 async function createTeamMember() {
-  const name  = document.getElementById('nt_name').value.trim();
+  const first = document.getElementById('nt_first').value.trim();
+  const last  = document.getElementById('nt_last').value.trim();
   const email = document.getElementById('nt_email').value.trim();
-  if (!name) { showToast('Please enter a name.'); return; }
+  if (!first || !last) { showToast('Please enter first and last name.'); return; }
   try {
-    const res  = await fetch(`${APPS_SCRIPT_URL}?action=create_team_member&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`);
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=create_team_member&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&firstName=${encodeURIComponent(first)}&lastName=${encodeURIComponent(last)}&email=${encodeURIComponent(email)}`);
     const data = await res.json();
     if (data.ok) {
       document.getElementById('nt_id').textContent = data.tmId;

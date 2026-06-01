@@ -227,12 +227,23 @@ function buildProgressMap() {
 // -- TEAM MEMBERS --------------------------------------------------------------
 function createTeamMember(p) {
   if (!isDashboardUser(p.id, p.pw)) return { ok: false, error: 'Unauthorized' };
-  var tmId     = generateId();
-  var password = generatePassword();
-  var sheet    = getSheet(TABS.TEAM);
+  // Username = firstname+lastname, lowercase, no spaces or special chars
+  var firstName = (p.firstName || '').trim();
+  var lastName  = (p.lastName  || '').trim();
+  var fullName  = firstName + (lastName ? ' ' + lastName : '');
+  var tmId      = (firstName + lastName).toLowerCase().replace(/[^a-z0-9]/g, '') || generateId();
+  var password  = generatePassword();
+  var sheet     = getSheet(TABS.TEAM);
   ensureHeaders(sheet, ['ID','Name','Email','Password','Created','Last Activity']);
-  sheet.appendRow([tmId, p.name||'', p.email||'', password, now(), '']);
-  return { ok: true, tmId: tmId, password: password, name: p.name };
+  // Check for duplicate username
+  if (sheet.getLastRow() > 1) {
+    var rows = sheet.getDataRange().getValues();
+    for (var i = 1; i < rows.length; i++) {
+      if (String(rows[i][0]) === tmId) return { ok: false, error: 'Username ' + tmId + ' already exists.' };
+    }
+  }
+  sheet.appendRow([tmId, fullName, p.email||'', password, now(), '']);
+  return { ok: true, tmId: tmId, password: password, name: fullName };
 }
 
 function removeEmployee(p) {
