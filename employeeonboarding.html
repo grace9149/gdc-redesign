@@ -760,14 +760,24 @@ async function saveCustomItems(section) {
 // ── TAB: WEEKLY CHECK-IN ──────────────────────────────────────────────────────
 function renderCheckin(w) {
   const ins = insightfulData[String(w)] || {};
-  const insBox = ins.score
-    ? `<div class="insightful-box"><div class="ib-label">Insightful — Week ${w} Score</div><div class="ib-score">${ins.score}</div>${ins.goal?`<div class="ib-goal">Goal: ${escHtml(ins.goal)}</div>`:''}</div>`
-    : `<div class="insightful-box"><div class="ib-label">Insightful — Week ${w}</div><div class="ib-empty">Your productivity score will appear here once entered by your team member.</div></div>`;
   return `
-    ${insBox}
     <div class="card">
-      <div class="card-header open"><div class="card-title">💬 Weekly Check-in — Week ${w}</div></div>
+      <div class="card-header open"><div class="card-title">📊 GDC Feedback — Week ${w}</div></div>
       <div class="card-body open">
+        <div class="form-section__title" style="font-size:10px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);">Insightful Score</div>
+        ${ins.score
+          ? `<div style="display:flex;align-items:baseline;gap:12px;margin-bottom:${ins.goal?'6px':'16px'};">
+               <div style="font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:500;color:var(--charcoal);line-height:1;">${escHtml(ins.score)}</div>
+               <div style="font-size:12px;color:var(--text-light);">Week ${w} score</div>
+             </div>
+             ${ins.goal ? `<div style="font-size:12px;color:var(--text-light);margin-bottom:16px;font-style:italic;">Goal: ${escHtml(ins.goal)}</div>` : ''}`
+          : `<div style="font-size:13px;color:var(--text-light);font-style:italic;margin-bottom:16px;">Your score will appear here once entered by your team member.</div>`}
+        <div class="form-group">
+          <label>Your Feedback</label>
+          <textarea id="ci_feedback_${w}" placeholder="Share any feedback, observations, or notes about this week..."></textarea>
+        </div>
+        <div style="border-top:1px solid var(--border);margin:20px 0 16px;"></div>
+        <div class="form-section__title" style="font-size:10px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">Weekly Check-in</div>
         <div class="form-group">
           <label>Overall, how is this week going?</label>
           <div class="star-row" id="stars_${w}">
@@ -918,12 +928,13 @@ async function saveProcedures() {
 }
 
 async function saveCheckin(w) {
-  const rating   = document.querySelector(`input[name="rating_${w}"]:checked`)?.value || '';
-  const exciting = document.getElementById('ci_exciting_' + w)?.value || '';
-  const working  = document.getElementById('ci_working_' + w)?.value || '';
-  const hard     = document.getElementById('ci_hard_' + w)?.value || '';
+  const rating    = document.querySelector(`input[name="rating_${w}"]:checked`)?.value || '';
+  const feedback  = document.getElementById('ci_feedback_' + w)?.value  || '';
+  const exciting  = document.getElementById('ci_exciting_' + w)?.value  || '';
+  const working   = document.getElementById('ci_working_' + w)?.value   || '';
+  const hard      = document.getElementById('ci_hard_' + w)?.value      || '';
   setStatus('save_checkin_' + w, 'Saving…');
-  await postSave('checkin_' + w, { rating, exciting, working, hard });
+  await postSave('checkin_' + w, { rating, feedback, exciting, working, hard });
   setStatus('save_checkin_' + w, '✓ Saved', 'saved');
   renderCandyMap();
 }
@@ -974,7 +985,7 @@ function restoreTabValues(tabId, w) {
   if (tabId === 'checkin') {
     const d = progressData['checkin_' + w] || {};
     if (d.rating) { const r = document.getElementById('s' + w + '_' + d.rating); if (r) r.checked = true; }
-    ['exciting','working','hard'].forEach(k => {
+    ['feedback','exciting','working','hard'].forEach(k => {
       const el = document.getElementById('ci_' + k + '_' + w);
       if (el && d[k]) el.value = d[k];
     });
