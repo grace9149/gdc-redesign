@@ -248,21 +248,67 @@ function createTeamMember(p) {
   // Send invitation email if email provided
   if (p.email) {
     var subject = 'You now have access to the GDC Employee Dashboard';
-    var body =
+
+    var htmlBody =
+      '<div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;color:#1C1C1C;">' +
+
+      // Body
+      '<p style="font-size:14px;line-height:1.7;margin:0 0 16px;">Hi ' + firstName + ',</p>' +
+      '<p style="font-size:14px;line-height:1.7;margin:0 0 16px;">Grace has given you access to the <strong>GDC Employee Onboarding Dashboard</strong>. Use it to track employee progress, enter weekly Insightful scores, and add feedback for your team members.</p>' +
+
+      // Credentials box
+      '<table cellpadding="0" cellspacing="0" border="0" style="background:#FAF8F4;border:1px solid #E5E0D8;margin:24px 0;width:100%;">' +
+        '<tr><td style="padding:20px 24px;">' +
+          '<div style="font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#B8975A;margin-bottom:14px;">Your Login Credentials</div>' +
+          '<table cellpadding="0" cellspacing="0" border="0">' +
+            '<tr><td style="font-size:12px;color:#888;padding-bottom:6px;padding-right:16px;">Dashboard</td><td style="font-size:13px;padding-bottom:6px;"><a href="https://www.gracedouganconsulting.com/employee-dashboard" style="color:#B8975A;text-decoration:none;">gracedouganconsulting.com/employee-dashboard</a></td></tr>' +
+            '<tr><td style="font-size:12px;color:#888;padding-bottom:6px;padding-right:16px;">Username</td><td style="font-size:13px;font-weight:600;padding-bottom:6px;font-family:monospace;">' + tmId + '</td></tr>' +
+            '<tr><td style="font-size:12px;color:#888;padding-right:16px;">Password</td><td style="font-size:13px;font-weight:600;font-family:monospace;">' + password + '</td></tr>' +
+          '</table>' +
+        '</td></tr>' +
+      '</table>' +
+
+      '<p style="font-size:14px;line-height:1.7;margin:0 0 32px;">Questions? Just reply to this email.</p>' +
+
+      // Signature
+      '<table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;max-width:520px;width:100%;">' +
+        '<tr><td style="padding:0 0 20px 0;"><table cellpadding="0" cellspacing="0" border="0" style="width:100%;"><tr><td style="height:2px;background-color:#B8975A;padding:0;font-size:0;"></td></tr></table></td></tr>' +
+        '<tr><td style="padding:0 0 16px 0;">' +
+          '<table cellpadding="0" cellspacing="0" border="0"><tr>' +
+            '<td style="vertical-align:top;padding-right:18px;">' +
+              '<table cellpadding="0" cellspacing="0" border="0" style="border:2px solid #B8975A;background:#ffffff;width:52px;height:52px;"><tr><td style="padding:5px;"><table cellpadding="0" cellspacing="0" border="0" style="border:1px dashed #B8975A;width:100%;height:100%;"><tr><td style="text-align:center;vertical-align:middle;font-family:Georgia,serif;font-size:11px;color:#B8975A;letter-spacing:3px;padding-left:3px;">GDC</td></tr></table></td></tr></table>' +
+            '</td>' +
+            '<td style="vertical-align:top;">' +
+              '<div style="font-family:Georgia,serif;font-size:19px;color:#111;margin-bottom:2px;">Grace Dougan</div>' +
+              '<div style="font-size:11px;color:#888;margin-bottom:8px;">Founder &amp; Principal</div>' +
+              '<table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:8px;"><tr><td style="width:24px;height:1.5px;background-color:#B8975A;font-size:0;line-height:0;">&nbsp;</td></tr></table>' +
+              '<div style="font-family:Georgia,serif;font-size:12px;letter-spacing:0.05em;color:#B8975A;margin-bottom:8px;">GRACE DOUGAN <span style="font-style:italic;">Consulting</span></div>' +
+              '<table cellpadding="0" cellspacing="0" border="0">' +
+                '<tr><td style="padding-bottom:3px;"><span style="font-size:11px;color:#666;">P:&nbsp;<a href="tel:4158279648" style="color:#666;text-decoration:none;">415.827.9648</a></span></td></tr>' +
+                '<tr><td style="padding-bottom:3px;"><span style="font-size:11px;color:#666;">E:&nbsp;<a href="mailto:grace@gracedouganconsulting.com" style="color:#B8975A;text-decoration:none;">grace@gracedouganconsulting.com</a></span></td></tr>' +
+                '<tr><td><span style="font-size:11px;color:#666;">W:&nbsp;<a href="https://www.gracedouganconsulting.com" style="color:#B8975A;text-decoration:none;">gracedouganconsulting.com</a></span></td></tr>' +
+              '</table>' +
+            '</td>' +
+          '</tr></table>' +
+        '</td></tr>' +
+        '<tr><td style="padding-bottom:14px;"><div style="font-family:Georgia,serif;font-size:11px;font-style:italic;color:#aaa;">Your business in a box. &mdash; Bay Area Back-Office Consulting since 2010.</div></td></tr>' +
+        '<tr><td><table cellpadding="0" cellspacing="0" border="0" style="width:100%;"><tr><td style="height:1px;background-color:#E8E4DE;padding:0;font-size:0;"></td></tr></table></td></tr>' +
+      '</table>' +
+
+      '</div>';
+
+    var plainBody =
       'Hi ' + firstName + ',\n\n' +
       'Grace has given you access to the GDC Employee Onboarding Dashboard.\n\n' +
-      'Log in here:\n' +
-      'https://www.gracedouganconsulting.com/employee-dashboard\n\n' +
-      'Your login credentials:\n' +
-      '  Username: ' + tmId + '\n' +
-      '  Password: ' + password + '\n\n' +
-      'You can use this dashboard to track employee onboarding progress, ' +
-      'enter weekly Insightful scores, and add feedback for your team members.\n\n' +
-      'Questions? Reply to this email or reach out to Grace directly.\n\n' +
-      'Warm regards,\n' +
-      'Grace Dougan Consulting\n' +
-      'gracedouganconsulting.com';
-    MailApp.sendEmail(p.email, subject, body, { name: 'Grace Dougan Consulting' });
+      'Dashboard: https://www.gracedouganconsulting.com/employee-dashboard\n' +
+      'Username: ' + tmId + '\n' +
+      'Password: ' + password + '\n\n' +
+      'Grace Dougan Consulting\n415.827.9648\ngracedouganconsulting.com';
+
+    MailApp.sendEmail(p.email, subject, plainBody, {
+      name: 'Grace Dougan Consulting',
+      htmlBody: htmlBody
+    });
   }
 
   return { ok: true, tmId: tmId, password: password, name: fullName };
