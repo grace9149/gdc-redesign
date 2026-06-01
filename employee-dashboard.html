@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Dashboard — Grace Dougan Consulting</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold:#B8975A; --gold-light:#D4AF72; --cream:#FAF8F4;
+      --charcoal:#1C1C1C; --mid:#555; --light:#888; --border:#E5E0D8;
+      --green:#2E7D32; --green-bg:#E8F5E9; --amber:#E65100; --amber-bg:#FFF3E0;
+      --blue:#1565C0; --blue-bg:#E3F2FD;
+    }
+    body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--charcoal); min-height:100vh; }
+
+    /* LOGIN */
+    #loginScreen { min-height:100vh; display:flex; align-items:center; justify-content:center; background:var(--charcoal); padding:24px; }
+    .login-card { background:#fff; border-radius:4px; padding:52px 48px; width:100%; max-width:420px; box-shadow:0 8px 40px rgba(0,0,0,0.25); text-align:center; }
+    .login-logo { display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:28px; }
+    .login-logo-text { font-family:'Cormorant Garamond',serif; font-size:16px; font-weight:500; }
+    .login-logo-text em { font-style:italic; }
+    .login-title { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:500; margin-bottom:6px; }
+    .login-sub { font-size:12px; color:var(--light); margin-bottom:28px; line-height:1.6; }
+    .login-group { margin-bottom:12px; text-align:left; }
+    .login-group label { display:block; font-size:10px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--mid); margin-bottom:5px; }
+    .login-group input { width:100%; padding:11px 14px; border:1px solid var(--border); background:var(--cream); font-family:'Inter',sans-serif; font-size:13px; outline:none; transition:border-color 0.2s; }
+    .login-group input:focus { border-color:var(--gold); }
+    .login-error { font-size:11px; color:#c0392b; margin-bottom:10px; display:none; text-align:left; }
+    .btn-login { width:100%; padding:13px; background:var(--charcoal); color:#fff; border:none; font-family:'Inter',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:background 0.2s; margin-top:4px; }
+    .btn-login:hover { background:var(--gold); }
+    .btn-login:disabled { opacity:0.5; cursor:not-allowed; }
+
+    /* APP LAYOUT */
+    #appScreen { display:none; }
+    .app-header { background:var(--charcoal); color:#fff; height:56px; display:flex; align-items:center; justify-content:space-between; padding:0 28px; position:sticky; top:0; z-index:200; }
+    .app-header-brand { display:flex; align-items:center; gap:12px; }
+    .app-header-brand span { font-family:'Cormorant Garamond',serif; font-size:16px; color:var(--gold-light); }
+    .app-header-brand small { font-size:10px; color:#aaa; display:block; line-height:1; }
+    .app-header-right { display:flex; align-items:center; gap:14px; }
+    .user-badge { font-size:12px; color:#ccc; }
+    .btn-signout { background:none; border:1px solid rgba(255,255,255,0.25); color:#ccc; padding:5px 14px; border-radius:3px; font-size:11px; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.2s; }
+    .btn-signout:hover { border-color:#fff; color:#fff; }
+
+    .app-body { display:flex; min-height:calc(100vh - 56px); }
+
+    /* SIDEBAR */
+    .sidebar { width:240px; background:#fff; border-right:1px solid var(--border); padding:20px 0; flex-shrink:0; }
+    .sidebar-section { margin-bottom:6px; }
+    .sidebar-label { font-size:9px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--light); padding:8px 20px 4px; }
+    .sidebar-item { display:flex; align-items:center; gap:10px; padding:9px 20px; font-size:13px; color:var(--mid); cursor:pointer; transition:background 0.15s; border-left:2px solid transparent; }
+    .sidebar-item:hover { background:var(--cream); }
+    .sidebar-item.active { background:#fdf9f3; color:var(--charcoal); border-left-color:var(--gold); font-weight:600; }
+    .sidebar-item svg { flex-shrink:0; color:var(--light); }
+    .sidebar-item.active svg { color:var(--gold); }
+
+    /* MAIN */
+    .main { flex:1; padding:32px 28px 80px; overflow-x:hidden; }
+    .view { display:none; }
+    .view.active { display:block; }
+    .view-title { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:500; margin-bottom:4px; }
+    .view-sub { font-size:13px; color:var(--light); margin-bottom:24px; }
+
+    /* PRIMARY BUTTON */
+    .btn-primary { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:var(--charcoal); color:#fff; border:none; border-radius:3px; font-family:'Inter',sans-serif; font-size:12px; font-weight:600; cursor:pointer; transition:background 0.2s; letter-spacing:0.03em; }
+    .btn-primary:hover { background:#333; }
+    .btn-secondary { display:inline-flex; align-items:center; gap:8px; padding:8px 16px; background:#fff; color:var(--charcoal); border:1px solid var(--border); border-radius:3px; font-family:'Inter',sans-serif; font-size:12px; font-weight:500; cursor:pointer; transition:all 0.15s; }
+    .btn-secondary:hover { border-color:var(--charcoal); }
+    .btn-gold { background:var(--gold) !important; }
+    .btn-gold:hover { background:#9a7d47 !important; }
+
+    /* STATS ROW */
+    .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; margin-bottom:24px; }
+    .stat-card { background:#fff; border:1px solid var(--border); border-radius:4px; padding:18px 20px; }
+    .stat-label { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--light); margin-bottom:6px; }
+    .stat-val { font-family:'Cormorant Garamond',serif; font-size:34px; font-weight:500; line-height:1; color:var(--charcoal); }
+
+    /* EMPLOYEE LIST */
+    .section-card { background:#fff; border:1px solid var(--border); border-radius:4px; overflow:hidden; margin-bottom:20px; }
+    .section-card-header { padding:16px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .section-card-header h3 { font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:500; }
+    .search-box { position:relative; }
+    .search-box input { padding:7px 12px 7px 30px; border:1px solid var(--border); font-family:'Inter',sans-serif; font-size:12px; outline:none; width:200px; transition:border-color 0.2s; }
+    .search-box input:focus { border-color:var(--gold); }
+    .search-box svg { position:absolute; left:9px; top:50%; transform:translateY(-50%); color:#bbb; }
+
+    table { width:100%; border-collapse:collapse; }
+    thead th { text-align:left; font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--light); padding:10px 16px; background:#FAFAF8; border-bottom:1px solid var(--border); white-space:nowrap; }
+    tbody tr { border-bottom:1px solid var(--border); transition:background 0.15s; }
+    tbody tr:last-child { border-bottom:none; }
+    tbody tr:hover { background:#FDFCFB; }
+    tbody td { padding:13px 16px; font-size:13px; vertical-align:middle; }
+    .emp-name { font-weight:600; }
+    .emp-role { font-size:11px; color:var(--light); margin-top:2px; }
+
+    /* MINI CANDYLAND */
+    .mini-candy { display:flex; align-items:center; gap:3px; }
+    .mini-dot { width:20px; height:20px; border-radius:50%; border:1.5px solid var(--border); background:#fff; display:flex; align-items:center; justify-content:center; font-size:8px; font-weight:700; color:#bbb; flex-shrink:0; }
+    .mini-dot.done { background:var(--gold); border-color:var(--gold); color:#fff; }
+    .mini-dot.current { background:var(--charcoal); border-color:var(--charcoal); color:#fff; }
+    .mini-line { width:6px; height:1.5px; background:var(--border); flex-shrink:0; }
+    .mini-line.done { background:var(--gold); }
+    .mini-divider { width:1px; height:14px; background:var(--border); margin:0 4px; }
+
+    /* BADGE */
+    .badge { display:inline-block; padding:3px 9px; border-radius:10px; font-size:10px; font-weight:700; letter-spacing:0.03em; }
+    .badge-active { background:var(--green-bg); color:var(--green); }
+    .badge-new { background:var(--amber-bg); color:var(--amber); }
+    .badge-complete { background:var(--blue-bg); color:var(--blue); }
+    .badge-inactive { background:#F5F5F5; color:#777; }
+
+    /* ACTION BUTTONS */
+    .action-btns { display:flex; gap:6px; flex-wrap:wrap; }
+    .btn-sm { padding:5px 12px; border-radius:3px; font-size:11px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; border:1px solid var(--border); background:#fff; color:var(--charcoal); transition:all 0.15s; white-space:nowrap; }
+    .btn-sm:hover { background:var(--charcoal); color:#fff; border-color:var(--charcoal); }
+    .btn-sm.gold { border-color:var(--gold); color:var(--gold); }
+    .btn-sm.gold:hover { background:var(--gold); color:#fff; }
+
+    /* EMPTY STATE */
+    .empty-state { text-align:center; padding:48px 20px; color:var(--light); }
+    .empty-state p { font-size:13px; }
+
+    /* MODAL */
+    .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:500; align-items:center; justify-content:center; padding:20px; }
+    .modal-overlay.open { display:flex; }
+    .modal { background:#fff; border-radius:4px; width:100%; max-width:520px; padding:36px 40px; position:relative; max-height:90vh; overflow-y:auto; }
+    .modal h3 { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:500; margin-bottom:20px; }
+    .modal-close { position:absolute; top:14px; right:18px; background:none; border:none; font-size:22px; cursor:pointer; color:#aaa; line-height:1; }
+    .modal-close:hover { color:var(--charcoal); }
+    .form-group { margin-bottom:16px; }
+    .form-group label { display:block; font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--mid); margin-bottom:5px; }
+    .form-group input, .form-group select, .form-group textarea { width:100%; padding:10px 14px; border:1px solid var(--border); font-family:'Inter',sans-serif; font-size:13px; outline:none; transition:border-color 0.2s; background:#fff; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--gold); }
+    .form-row-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:20px; }
+    .btn-cancel { padding:9px 20px; background:none; border:1px solid var(--border); font-family:'Inter',sans-serif; font-size:12px; cursor:pointer; border-radius:3px; }
+
+    /* CREDENTIALS BOX */
+    .cred-box { background:#FAFAF8; border:1px solid var(--border); border-radius:3px; padding:16px 18px; margin:16px 0; }
+    .cred-row { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
+    .cred-row:last-child { margin-bottom:0; }
+    .cred-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--light); min-width:70px; }
+    .cred-val { font-size:13px; color:var(--charcoal); word-break:break-all; flex:1; }
+    .btn-copy { background:none; border:1px solid var(--border); padding:3px 10px; font-size:10px; font-family:'Inter',sans-serif; cursor:pointer; border-radius:2px; transition:all 0.15s; white-space:nowrap; }
+    .btn-copy:hover { background:var(--charcoal); color:#fff; border-color:var(--charcoal); }
+
+    /* DETAIL VIEW */
+    .detail-back { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--light); cursor:pointer; margin-bottom:20px; transition:color 0.15s; }
+    .detail-back:hover { color:var(--charcoal); }
+    .detail-header { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:24px; }
+    .detail-name { font-family:'Cormorant Garamond',serif; font-size:30px; font-weight:500; line-height:1.1; }
+    .detail-role { font-size:13px; color:var(--light); margin-top:3px; }
+    .detail-actions { display:flex; gap:8px; flex-wrap:wrap; }
+
+    /* FULL CANDYLAND */
+    .candy-wrap { background:#fff; border:1px solid var(--border); border-radius:4px; padding:20px 24px 16px; margin-bottom:20px; overflow-x:auto; }
+    .candy-wrap h4 { font-size:10px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--light); margin-bottom:14px; }
+    .candyland { display:flex; align-items:flex-start; gap:0; min-width:520px; }
+    .candy-month { display:flex; flex-direction:column; }
+    .candy-month-label { font-size:9px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--light); margin-bottom:8px; }
+    .candy-stops { display:flex; align-items:center; }
+    .candy-stop { display:flex; flex-direction:column; align-items:center; gap:4px; }
+    .candy-dot { width:30px; height:30px; border-radius:50%; border:2px solid var(--border); background:#fff; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#bbb; flex-shrink:0; }
+    .candy-dot.done { background:var(--gold); border-color:var(--gold); color:#fff; }
+    .candy-dot.current { background:var(--charcoal); border-color:var(--charcoal); color:#fff; }
+    .candy-stop-label { font-size:8px; color:var(--light); }
+    .candy-line { width:16px; height:2px; background:var(--border); flex-shrink:0; margin-bottom:17px; }
+    .candy-line.done { background:var(--gold); }
+    .candy-divider { width:1px; background:var(--border); height:30px; margin:0 12px; margin-bottom:17px; }
+
+    /* DETAIL TABS */
+    .detail-tabs { display:flex; gap:0; border-bottom:1px solid var(--border); margin-bottom:20px; overflow-x:auto; }
+    .detail-tab { padding:9px 18px; font-size:12px; font-weight:500; color:var(--light); cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap; transition:all 0.15s; }
+    .detail-tab:hover { color:var(--charcoal); }
+    .detail-tab.active { color:var(--charcoal); border-bottom-color:var(--gold); font-weight:600; }
+
+    /* DETAIL CONTENT */
+    .detail-panel { display:none; }
+    .detail-panel.active { display:block; }
+    .data-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; margin-bottom:16px; }
+    .data-cell .dc-label { font-size:10px; color:var(--light); margin-bottom:2px; }
+    .data-cell .dc-val { font-size:13px; color:var(--charcoal); font-weight:500; }
+
+    /* WEEK SELECTOR */
+    .week-selector { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px; }
+    .week-btn { padding:5px 12px; border:1px solid var(--border); background:#fff; font-family:'Inter',sans-serif; font-size:11px; cursor:pointer; border-radius:3px; transition:all 0.15s; }
+    .week-btn:hover { border-color:var(--gold); color:var(--gold); }
+    .week-btn.active { background:var(--charcoal); color:#fff; border-color:var(--charcoal); }
+
+    /* INSIGHTFUL ENTRY */
+    .ins-form { background:#fff; border:1px solid var(--border); border-radius:4px; padding:20px; margin-bottom:12px; }
+    .ins-form h4 { font-size:12px; font-weight:600; color:var(--charcoal); margin-bottom:14px; }
+    .ins-form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+    .ins-form-row .form-group { margin:0; }
+
+    /* CLIENT TABLE */
+    .client-add-row { display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; margin-bottom:16px; }
+    .client-add-row .form-group { margin:0; flex:1; min-width:140px; }
+
+    /* TOAST */
+    #toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(8px); background:var(--charcoal); color:#fff; padding:9px 20px; border-radius:4px; font-size:12px; opacity:0; pointer-events:none; transition:opacity 0.25s,transform 0.25s; z-index:9999; }
+    #toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+    @media(max-width:700px) {
+      .sidebar { display:none; }
+      .form-row-2 { grid-template-columns:1fr; }
+      .modal { padding:28px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">
+      <svg width="32" height="32" viewBox="0 0 120 120" fill="none">
+        <rect x="6" y="6" width="108" height="108" stroke="#B8975A" stroke-width="2"/>
+        <rect x="14" y="14" width="92" height="92" stroke="#B8975A" stroke-width="0.7" stroke-dasharray="3 3"/>
+        <text x="60" y="70" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="28" fill="#B8975A" letter-spacing="4">GDC</text>
+      </svg>
+      <span class="login-logo-text">Grace Dougan<em> Consulting</em></span>
+    </div>
+    <h2 class="login-title">Employee Dashboard</h2>
+    <p class="login-sub">Internal use only</p>
+    <div class="login-group"><label>Username</label><input type="text" id="loginId" placeholder="grace" autocomplete="username" /></div>
+    <div class="login-group"><label>Password</label><input type="password" id="loginPw" placeholder="••••••••" autocomplete="current-password" /></div>
+    <p class="login-error" id="loginError">Invalid credentials. Please try again.</p>
+    <button class="btn-login" id="loginBtn" onclick="doLogin()">Sign In</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appScreen">
+  <header class="app-header">
+    <div class="app-header-brand">
+      <svg width="24" height="24" viewBox="0 0 120 120" fill="none">
+        <rect x="6" y="6" width="108" height="108" stroke="#B8975A" stroke-width="2.5"/>
+        <text x="60" y="70" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="32" fill="#B8975A" letter-spacing="4">GDC</text>
+      </svg>
+      <div><span>Employee Dashboard</span><small>Grace Dougan Consulting</small></div>
+    </div>
+    <div class="app-header-right">
+      <span class="user-badge" id="userBadge"></span>
+      <button class="btn-signout" onclick="doLogout()">Sign Out</button>
+    </div>
+  </header>
+
+  <div class="app-body">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Employees</div>
+        <div class="sidebar-item active" id="nav-employees" onclick="showView('employees')">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          All Employees
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Settings</div>
+        <div class="sidebar-item" id="nav-team" onclick="showView('team')">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Team Access
+        </div>
+        <div class="sidebar-item" id="nav-procedures" onclick="showView('procedures')">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+          GDC Procedures
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main -->
+    <main class="main">
+
+      <!-- ══ EMPLOYEES VIEW ══ -->
+      <div class="view active" id="view-employees">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+          <div>
+            <h2 class="view-title">All Employees</h2>
+            <p class="view-sub">Track onboarding progress across your team.</p>
+          </div>
+          <button class="btn-primary" onclick="openModal('newEmpModal')">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            New Employee
+          </button>
+        </div>
+
+        <div class="stats-row" id="statsRow">
+          <div class="stat-card"><div class="stat-label">Total</div><div class="stat-val" id="statTotal">—</div></div>
+          <div class="stat-card"><div class="stat-label">Active</div><div class="stat-val" id="statActive">—</div></div>
+          <div class="stat-card"><div class="stat-label">Complete</div><div class="stat-val" id="statComplete">—</div></div>
+          <div class="stat-card"><div class="stat-label">Not Started</div><div class="stat-val" id="statNew">—</div></div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-card-header">
+            <h3>Employee List</h3>
+            <div class="search-box">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input type="text" placeholder="Search…" id="empSearch" oninput="filterEmployees()" />
+            </div>
+          </div>
+          <table>
+            <thead><tr>
+              <th>Employee</th><th>Journey</th><th>Week</th><th>Status</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="empTableBody"><tr><td colspan="5" style="padding:32px;text-align:center;color:var(--light);font-size:13px;">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══ EMPLOYEE DETAIL VIEW ══ -->
+      <div class="view" id="view-detail">
+        <div class="detail-back" onclick="showView('employees')">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to All Employees
+        </div>
+        <div class="detail-header">
+          <div>
+            <div class="detail-name" id="detailName">—</div>
+            <div class="detail-role" id="detailRole"></div>
+          </div>
+          <div class="detail-actions">
+            <button class="btn-secondary" onclick="openLinkModal()">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              Copy Login
+            </button>
+          </div>
+        </div>
+
+        <!-- Full Candyland -->
+        <div class="candy-wrap">
+          <h4>Onboarding Journey</h4>
+          <div class="candyland" id="detailCandy"></div>
+        </div>
+
+        <!-- Detail Tabs -->
+        <div class="detail-tabs">
+          <div class="detail-tab active" onclick="switchDetailTab('overview')">Overview</div>
+          <div class="detail-tab" onclick="switchDetailTab('insightful')">Insightful</div>
+          <div class="detail-tab" onclick="switchDetailTab('clients')">Clients</div>
+          <div class="detail-tab" onclick="switchDetailTab('tools')">Tools</div>
+          <div class="detail-tab" onclick="switchDetailTab('checkins')">Check-ins</div>
+        </div>
+
+        <!-- Overview Panel -->
+        <div class="detail-panel active" id="panel-overview">
+          <div class="data-grid" id="overviewGrid"></div>
+        </div>
+
+        <!-- Insightful Panel -->
+        <div class="detail-panel" id="panel-insightful">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+            <div style="font-size:13px;color:var(--mid);">Select a week to enter or update the Insightful productivity score.</div>
+          </div>
+          <div class="week-selector" id="insWeekSelector"></div>
+          <div id="insightfulForm"></div>
+        </div>
+
+        <!-- Clients Panel -->
+        <div class="detail-panel" id="panel-clients">
+          <div class="client-add-row">
+            <div class="form-group"><label>Client Name</label><input type="text" id="newClientName" placeholder="Acme Corp" /></div>
+            <div class="form-group"><label>ClickUp URL</label><input type="text" id="newClientUrl" placeholder="https://app.clickup.com/..." /></div>
+            <button class="btn-primary" onclick="addClient()" style="margin-bottom:0;align-self:flex-end;">Add Client</button>
+          </div>
+          <div class="week-selector" id="clientWeekSelector"></div>
+          <div id="clientsTable"></div>
+        </div>
+
+        <!-- Tools Panel -->
+        <div class="detail-panel" id="panel-tools">
+          <div id="toolsProgress"></div>
+        </div>
+
+        <!-- Check-ins Panel -->
+        <div class="detail-panel" id="panel-checkins">
+          <div class="week-selector" id="checkinWeekSelector"></div>
+          <div id="checkinContent"></div>
+        </div>
+
+      </div>
+
+      <!-- ══ TEAM VIEW ══ -->
+      <div class="view" id="view-team">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+          <div>
+            <h2 class="view-title">Team Access</h2>
+            <p class="view-sub">Manage who can log into this dashboard.</p>
+          </div>
+          <button class="btn-primary" onclick="openModal('newTeamModal')">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            Add Team Member
+          </button>
+        </div>
+        <div class="section-card">
+          <table>
+            <thead><tr><th>Name</th><th>Email</th><th>Password</th><th>Created</th></tr></thead>
+            <tbody id="teamTableBody"><tr><td colspan="4" style="padding:32px;text-align:center;color:var(--light);font-size:13px;">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══ PROCEDURES VIEW ══ -->
+      <div class="view" id="view-procedures">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+          <div>
+            <h2 class="view-title">GDC Procedures</h2>
+            <p class="view-sub">These appear as a checklist in every employee's portal.</p>
+          </div>
+        </div>
+        <div class="section-card" style="padding:20px;">
+          <div style="display:flex;gap:10px;margin-bottom:16px;">
+            <input type="text" id="newProcText" placeholder="Add a new procedure…" style="flex:1;padding:10px 14px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;outline:none;" onkeydown="if(event.key==='Enter')addProcedure()" />
+            <button class="btn-primary" onclick="addProcedure()">Add</button>
+          </div>
+          <div id="proceduresList"></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- ══ MODALS ══ -->
+
+<!-- New Employee -->
+<div class="modal-overlay" id="newEmpModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('newEmpModal')">×</button>
+    <h3>Add New Employee</h3>
+    <div id="newEmpForm">
+      <div class="form-row-2">
+        <div class="form-group"><label>First Name *</label><input type="text" id="ne_first" placeholder="Jane" /></div>
+        <div class="form-group"><label>Last Name *</label><input type="text" id="ne_last" placeholder="Smith" /></div>
+      </div>
+      <div class="form-group"><label>Phone</label><input type="text" id="ne_phone" placeholder="415.555.0000" /></div>
+      <div class="form-group"><label>Role / Title</label><input type="text" id="ne_role" placeholder="Bookkeeper" /></div>
+      <div class="form-group"><label>Start Date *</label><input type="date" id="ne_start" /></div>
+      <div class="form-group">
+        <label>Assign Onboarding Team Member</label>
+        <select id="ne_team"><option value="">— None —</option></select>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('newEmpModal')">Cancel</button>
+        <button class="btn-primary" onclick="createEmployee()">Create Employee</button>
+      </div>
+    </div>
+    <div id="newEmpSuccess" style="display:none;">
+      <p style="font-size:13px;color:var(--mid);margin-bottom:16px;">Employee created! Share these credentials:</p>
+      <div class="cred-box">
+        <div class="cred-row"><span class="cred-label">Portal Link</span><span class="cred-val" id="ne_link">—</span><button class="btn-copy" onclick="copyVal('ne_link','Link copied!')">Copy</button></div>
+        <div class="cred-row"><span class="cred-label">Employee ID</span><span class="cred-val" id="ne_id">—</span><button class="btn-copy" onclick="copyVal('ne_id','ID copied!')">Copy</button></div>
+        <div class="cred-row"><span class="cred-label">Password</span><span class="cred-val" id="ne_pw">—</span><button class="btn-copy" onclick="copyVal('ne_pw','Password copied!')">Copy</button></div>
+      </div>
+      <button class="btn-primary" style="width:100%;" onclick="closeModal('newEmpModal');loadEmployees();">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- New Team Member -->
+<div class="modal-overlay" id="newTeamModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('newTeamModal')">×</button>
+    <h3>Add Team Member</h3>
+    <div id="newTeamForm">
+      <div class="form-group"><label>Full Name *</label><input type="text" id="nt_name" placeholder="Alex Johnson" /></div>
+      <div class="form-group"><label>Email</label><input type="email" id="nt_email" placeholder="alex@gracedouganconsulting.com" /></div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('newTeamModal')">Cancel</button>
+        <button class="btn-primary" onclick="createTeamMember()">Create Account</button>
+      </div>
+    </div>
+    <div id="newTeamSuccess" style="display:none;">
+      <p style="font-size:13px;color:var(--mid);margin-bottom:16px;">Account created! Share these login credentials:</p>
+      <div class="cred-box">
+        <div class="cred-row"><span class="cred-label">Dashboard</span><span class="cred-val">www.gracedouganconsulting.com/employee-dashboard</span></div>
+        <div class="cred-row"><span class="cred-label">Username ID</span><span class="cred-val" id="nt_id">—</span><button class="btn-copy" onclick="copyVal('nt_id','ID copied!')">Copy</button></div>
+        <div class="cred-row"><span class="cred-label">Password</span><span class="cred-val" id="nt_pw">—</span><button class="btn-copy" onclick="copyVal('nt_pw','Password copied!')">Copy</button></div>
+      </div>
+      <button class="btn-primary" style="width:100%;" onclick="closeModal('newTeamModal');loadTeam();">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- Copy Login Modal -->
+<div class="modal-overlay" id="linkModal">
+  <div class="modal" style="max-width:460px;">
+    <button class="modal-close" onclick="closeModal('linkModal')">×</button>
+    <h3>Employee Login Credentials</h3>
+    <div class="cred-box">
+      <div class="cred-row"><span class="cred-label">Portal</span><span class="cred-val" id="lm_link">—</span><button class="btn-copy" onclick="copyVal('lm_link','Link copied!')">Copy</button></div>
+      <div class="cred-row"><span class="cred-label">Employee ID</span><span class="cred-val" id="lm_id">—</span><button class="btn-copy" onclick="copyVal('lm_id','ID copied!')">Copy</button></div>
+      <div class="cred-row"><span class="cred-label">Password</span><span class="cred-val" id="lm_pw">—</span><button class="btn-copy" onclick="copyVal('lm_pw','Password copied!')">Copy</button></div>
+    </div>
+    <div class="modal-actions"><button class="btn-primary" onclick="closeModal('linkModal')">Done</button></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const APPS_SCRIPT_URL = 'PASTE_YOUR_EMPLOYEE_APPS_SCRIPT_URL_HERE';
+const BASE_URL = 'https://www.gracedouganconsulting.com';
+
+let userId = '', userPw = '', userName = '';
+let allEmployees = [], allProcedures = [];
+let currentEmpDetail = null, detailActiveTab = 'overview', detailActiveWeek = 1;
+let clientWeekSelected = 1;
+
+// ── LOGIN ─────────────────────────────────────────────────────────────────────
+document.getElementById('loginPw').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('loginId').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
+async function doLogin() {
+  const id = document.getElementById('loginId').value.trim();
+  const pw = document.getElementById('loginPw').value.trim();
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('loginError');
+  if (!id || !pw) return;
+  btn.disabled = true; btn.textContent = 'Signing in…'; err.style.display = 'none';
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=verify_dashboard&id=${encodeURIComponent(id)}&pw=${encodeURIComponent(pw)}`);
+    const data = await res.json();
+    if (data.ok) {
+      userId = id; userPw = pw; userName = data.name || id;
+      sessionStorage.setItem('gdcDashId', id); sessionStorage.setItem('gdcDashPw', pw);
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('appScreen').style.display = 'block';
+      document.getElementById('userBadge').textContent = userName;
+      loadEmployees(); loadTeam(); loadProcedures();
+    } else {
+      err.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Sign In';
+    }
+  } catch(e) {
+    err.textContent = 'Unable to connect.';
+    err.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'Sign In';
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem('gdcDashId'); sessionStorage.removeItem('gdcDashPw');
+  document.getElementById('appScreen').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+
+(async () => {
+  const sid = sessionStorage.getItem('gdcDashId'), spw = sessionStorage.getItem('gdcDashPw');
+  if (sid && spw) { document.getElementById('loginId').value = sid; document.getElementById('loginPw').value = spw; doLogin(); }
+})();
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('view-' + id)?.classList.add('active');
+  document.getElementById('nav-' + id)?.classList.add('active');
+}
+
+// ── LOAD EMPLOYEES ────────────────────────────────────────────────────────────
+async function loadEmployees() {
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=get_employees&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}`);
+    const data = await res.json();
+    if (data.ok) { allEmployees = data.employees || []; renderEmployeeTable(allEmployees); renderStats(allEmployees); }
+  } catch(e) { document.getElementById('empTableBody').innerHTML = '<tr><td colspan="5" style="padding:32px;text-align:center;color:var(--light);">Could not load employees.</td></tr>'; }
+}
+
+function renderStats(emps) {
+  const calcWeek = e => { if(!e.startDate) return 1; const d=Math.floor((new Date()-new Date(e.startDate))/(86400000)); return Math.min(Math.max(Math.floor(d/7)+1,1),12); };
+  document.getElementById('statTotal').textContent   = emps.length;
+  document.getElementById('statActive').textContent  = emps.filter(e => e.status==='Active' || (e.completedSections||[]).length > 0).length;
+  document.getElementById('statComplete').textContent= emps.filter(e => e.status==='Complete').length;
+  document.getElementById('statNew').textContent     = emps.filter(e => !e.completedSections?.length).length;
+}
+
+function renderEmployeeTable(emps) {
+  const tbody = document.getElementById('empTableBody');
+  if (!emps.length) {
+    tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><p>No employees yet. Click <strong>New Employee</strong> to add one.</p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = emps.map(emp => {
+    const week = calcCurrentWeek(emp.startDate);
+    const status = emp.status === 'Complete' ? 'badge-complete' : (emp.completedSections?.length||0) > 0 ? 'badge-active' : 'badge-new';
+    const statusLabel = emp.status === 'Complete' ? 'Complete' : (emp.completedSections?.length||0) > 0 ? 'Active' : 'Not Started';
+    return `<tr>
+      <td><div class="emp-name">${escHtml(emp.firstName)} ${escHtml(emp.lastName)}</div><div class="emp-role">${escHtml(emp.role||'')}</div></td>
+      <td>${renderMiniCandy(week, emp.completedSections||[])}</td>
+      <td style="color:var(--mid);font-size:12px;">Week ${week}</td>
+      <td><span class="badge ${status}">${statusLabel}</span></td>
+      <td><div class="action-btns">
+        <button class="btn-sm" onclick="openDetail('${escHtml(emp.id)}')">View</button>
+        <button class="btn-sm gold" onclick="quickCopyLogin('${escHtml(emp.id)}','${escHtml(emp.firstName+' '+emp.lastName)}','${escHtml(emp.password||'')}')">Login</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function calcCurrentWeek(startDateStr) {
+  if (!startDateStr) return 1;
+  const d = Math.floor((new Date() - new Date(startDateStr)) / 86400000);
+  return Math.min(Math.max(Math.floor(d/7)+1,1),12);
+}
+
+function renderMiniCandy(currentWeek, completedSections) {
+  let html = '<div class="mini-candy">';
+  [1,2,3,4,5,6,7,8,9,10,11,12].forEach((w,i) => {
+    if (i > 0) {
+      const dividers = [4,8]; // month breaks
+      if (dividers.includes(w-1)) html += '<div class="mini-divider"></div>';
+      else html += `<div class="mini-line ${w <= currentWeek ? 'done' : ''}"></div>`;
+    }
+    const cls = completedSections.includes('checkin_'+w) ? 'done' : w === currentWeek ? 'current' : '';
+    html += `<div class="mini-dot ${cls}">${cls==='done'?'✓':w}</div>`;
+  });
+  return html + '</div>';
+}
+
+function filterEmployees() {
+  const q = document.getElementById('empSearch').value.toLowerCase();
+  renderEmployeeTable(allEmployees.filter(e =>
+    (e.firstName+' '+e.lastName).toLowerCase().includes(q) ||
+    (e.role||'').toLowerCase().includes(q) ||
+    (e.id||'').toLowerCase().includes(q)
+  ));
+}
+
+// ── EMPLOYEE DETAIL ───────────────────────────────────────────────────────────
+async function openDetail(empId) {
+  showView('detail');
+  document.getElementById('detailName').textContent = 'Loading…';
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=get_employee_detail&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&empId=${encodeURIComponent(empId)}`);
+    const data = await res.json();
+    if (!data.ok) { showToast('Could not load employee data.'); return; }
+    currentEmpDetail = data;
+    renderDetailView(data);
+    switchDetailTab('overview');
+  } catch(e) { showToast('Connection error.'); }
+}
+
+function renderDetailView(data) {
+  const emp  = data.employee;
+  const week = calcCurrentWeek(emp.startDate);
+  document.getElementById('detailName').textContent = emp.firstName + ' ' + emp.lastName;
+  document.getElementById('detailRole').textContent = [emp.role, emp.startDate ? 'Started ' + new Date(emp.startDate).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : ''].filter(Boolean).join(' · ');
+  renderDetailCandy(week, data.progress || {});
+  detailActiveWeek = week;
+}
+
+function renderDetailCandy(currentWeek, progress) {
+  const months = [{label:'Month 1',weeks:[1,2,3,4]},{label:'Month 2',weeks:[5,6,7,8]},{label:'Month 3',weeks:[9,10,11,12]}];
+  let html = '';
+  months.forEach((m,mi) => {
+    if (mi > 0) html += '<div class="candy-divider"></div>';
+    html += `<div class="candy-month"><div class="candy-month-label">${m.label}</div><div class="candy-stops">`;
+    m.weeks.forEach((w,wi) => {
+      const done    = !!progress['checkin_'+w];
+      const current = w === currentWeek;
+      const cls     = done ? 'done' : current ? 'current' : '';
+      if (wi > 0) html += `<div class="candy-line ${done?'done':''}"></div>`;
+      html += `<div class="candy-stop"><div class="candy-dot ${cls}">${done?'✓':w}</div><span class="candy-stop-label">W${w}</span></div>`;
+    });
+    html += '</div></div>';
+  });
+  document.getElementById('detailCandy').innerHTML = html;
+}
+
+function switchDetailTab(tab) {
+  detailActiveTab = tab;
+  document.querySelectorAll('.detail-tab').forEach((t,i) => {
+    const tabs = ['overview','insightful','clients','tools','checkins'];
+    t.classList.toggle('active', tabs[i] === tab);
+  });
+  document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-'+tab)?.classList.add('active');
+
+  if (!currentEmpDetail) return;
+  if (tab === 'overview')    renderOverview();
+  if (tab === 'insightful')  renderInsightfulPanel();
+  if (tab === 'clients')     renderClientsPanel();
+  if (tab === 'tools')       renderToolsPanel();
+  if (tab === 'checkins')    renderCheckinsPanel();
+}
+
+function renderOverview() {
+  const emp  = currentEmpDetail.employee;
+  const week = calcCurrentWeek(emp.startDate);
+  const prog = currentEmpDetail.progress || {};
+  const completed = Object.keys(prog).filter(k => k.startsWith('checkin_')).length;
+  document.getElementById('overviewGrid').innerHTML = `
+    <div class="data-cell"><div class="dc-label">Employee ID</div><div class="dc-val">${escHtml(emp.id)}</div></div>
+    <div class="data-cell"><div class="dc-label">Phone</div><div class="dc-val">${escHtml(emp.phone||'—')}</div></div>
+    <div class="data-cell"><div class="dc-label">Start Date</div><div class="dc-val">${emp.startDate ? new Date(emp.startDate).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '—'}</div></div>
+    <div class="data-cell"><div class="dc-label">Current Week</div><div class="dc-val">Week ${week} of 12</div></div>
+    <div class="data-cell"><div class="dc-label">Weeks Completed</div><div class="dc-val">${completed} of 12</div></div>
+    <div class="data-cell"><div class="dc-label">Status</div><div class="dc-val">${escHtml(emp.status||'Active')}</div></div>`;
+}
+
+function renderInsightfulPanel() {
+  const emp  = currentEmpDetail.employee;
+  const week = calcCurrentWeek(emp.startDate);
+  const ins  = currentEmpDetail.insightful || {};
+
+  // Week selector
+  let sel = '';
+  for (let w = 1; w <= 12; w++) {
+    const has = !!ins[String(w)];
+    sel += `<button class="week-btn ${w===detailActiveWeek?'active':''} ${has?'':''}\" onclick="selectInsWeek(${w})">W${w}${has?' ✓':''}</button>`;
+  }
+  document.getElementById('insWeekSelector').innerHTML = sel;
+  renderInsightfulForm(detailActiveWeek);
+}
+
+function selectInsWeek(w) {
+  detailActiveWeek = w;
+  renderInsightfulPanel();
+}
+
+function renderInsightfulForm(w) {
+  const ins  = (currentEmpDetail.insightful || {})[String(w)] || {};
+  document.getElementById('insightfulForm').innerHTML = `
+    <div class="ins-form">
+      <h4>Week ${w} — Insightful Entry</h4>
+      <div class="ins-form-row">
+        <div class="form-group"><label>Productivity Score</label><input type="text" id="ins_score_${w}" value="${escHtml(ins.score||'')}" placeholder="e.g. 85%" /></div>
+        <div class="form-group"><label>Goal for Next Week</label><input type="text" id="ins_goal_${w}" value="${escHtml(ins.goal||'')}" placeholder="e.g. 90%" /></div>
+      </div>
+      <div class="form-group"><label>Notes</label><textarea id="ins_notes_${w}" placeholder="Observations, areas to improve...">${escHtml(ins.notes||'')}</textarea></div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:12px;">
+        <span id="ins_status_${w}" style="font-size:11px;color:var(--light);"></span>
+        <button class="btn-primary" onclick="saveInsightful(${w})">Save Week ${w}</button>
+      </div>
+    </div>`;
+}
+
+async function saveInsightful(w) {
+  const score = document.getElementById('ins_score_'+w)?.value || '';
+  const goal  = document.getElementById('ins_goal_'+w)?.value  || '';
+  const notes = document.getElementById('ins_notes_'+w)?.value || '';
+  const st    = document.getElementById('ins_status_'+w);
+  if (st) { st.textContent = 'Saving…'; }
+  try {
+    await fetch(APPS_SCRIPT_URL, { method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ action:'save_insightful', userId, userPw, empId: currentEmpDetail.employee.id, week:w, score, goal, notes })
+    });
+    if (!currentEmpDetail.insightful) currentEmpDetail.insightful = {};
+    currentEmpDetail.insightful[String(w)] = { score, goal, notes };
+    if (st) { st.textContent = '✓ Saved'; st.style.color = 'var(--green)'; }
+    renderDetailCandy(calcCurrentWeek(currentEmpDetail.employee.startDate), currentEmpDetail.progress||{});
+  } catch(e) { if (st) st.textContent = 'Error saving'; }
+}
+
+function renderClientsPanel() {
+  const emp     = currentEmpDetail.employee;
+  const clients = currentEmpDetail.clients || [];
+  const week    = calcCurrentWeek(emp.startDate);
+  clientWeekSelected = clientWeekSelected || week;
+
+  // Week selector
+  let sel = '';
+  for (let w = 1; w <= 12; w++) {
+    sel += `<button class="week-btn ${w===clientWeekSelected?'active':''}" onclick="selectClientWeek(${w})">W${w}</button>`;
+  }
+  document.getElementById('clientWeekSelector').innerHTML = sel;
+
+  if (!clients.length) {
+    document.getElementById('clientsTable').innerHTML = '<p style="font-size:13px;color:var(--light);padding:12px 0;">No clients added yet. Add one above.</p>';
+    return;
+  }
+
+  const rows = clients.map(c => {
+    const prof = (c.proficiency || {})[String(clientWeekSelected)] || 'Not started';
+    return `<tr>
+      <td><div class="emp-name">${escHtml(c.name)}</div>${c.clickupUrl?`<a href="${escHtml(c.clickupUrl)}" target="_blank" style="font-size:11px;color:var(--gold);text-decoration:none;">ClickUp →</a>`:''}</td>
+      <td>
+        <select style="padding:6px 28px 6px 10px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:12px;outline:none;background:#fff;appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23B8975A' stroke-width='1.5' fill='none'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 10px center;cursor:pointer;"
+          id="cp_${c.clientId}_${clientWeekSelected}" onchange="saveClientProf('${c.clientId}',${clientWeekSelected})">
+          ${['Not started','In training','Needs support','Independent','Fully proficient'].map(o=>`<option ${prof===o?'selected':''}>${o}</option>`).join('')}
+        </select>
+      </td>
+      <td><button class="btn-sm" onclick="removeClient('${escHtml(c.clientId)}')">Remove</button></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('clientsTable').innerHTML = `
+    <table><thead><tr><th>Client</th><th>Week ${clientWeekSelected} Proficiency</th><th></th></tr></thead>
+    <tbody>${rows}</tbody></table>`;
+}
+
+function selectClientWeek(w) { clientWeekSelected = w; renderClientsPanel(); }
+
+async function addClient() {
+  const name = document.getElementById('newClientName').value.trim();
+  const url  = document.getElementById('newClientUrl').value.trim();
+  if (!name) { showToast('Please enter a client name.'); return; }
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=add_client&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&empId=${encodeURIComponent(currentEmpDetail.employee.id)}&clientName=${encodeURIComponent(name)}&clickupUrl=${encodeURIComponent(url)}`);
+    const data = await res.json();
+    if (data.ok) {
+      currentEmpDetail.clients.push({ clientId: data.clientId, name, clickupUrl: url, proficiency: {} });
+      document.getElementById('newClientName').value = '';
+      document.getElementById('newClientUrl').value  = '';
+      renderClientsPanel();
+      showToast('Client added!');
+    }
+  } catch(e) { showToast('Error adding client.'); }
+}
+
+async function removeClient(clientId) {
+  if (!confirm('Remove this client?')) return;
+  try {
+    await fetch(`${APPS_SCRIPT_URL}?action=remove_client&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&clientId=${encodeURIComponent(clientId)}`);
+    currentEmpDetail.clients = currentEmpDetail.clients.filter(c => c.clientId !== clientId);
+    renderClientsPanel();
+    showToast('Client removed.');
+  } catch(e) {}
+}
+
+async function saveClientProf(clientId, week) {
+  const sel  = document.getElementById('cp_' + clientId + '_' + week);
+  const prof = sel ? sel.value : '';
+  try {
+    await fetch(APPS_SCRIPT_URL, { method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ action:'save_client_proficiency', userId, userPw, clientId, week, proficiency: prof })
+    });
+    const c = currentEmpDetail.clients.find(c => c.clientId === clientId);
+    if (c) { if (!c.proficiency) c.proficiency = {}; c.proficiency[String(week)] = prof; }
+    showToast('Saved!');
+  } catch(e) {}
+}
+
+function renderToolsPanel() {
+  const prog   = currentEmpDetail.progress || {};
+  const tools  = prog['tools'] || {};
+  const TOOL_NAMES = { gmail:'Gmail', onepassword:'1Password', clickup:'ClickUp', qbo:'QuickBooks Online', qbt:'QuickBooks Time', slack:'Slack', insightful:'Insightful', ramp:'Ramp' };
+  const TOOL_COUNTS = { gmail:4, onepassword:3, clickup:6, qbo:1, qbt:1, slack:4, insightful:3, ramp:4 };
+
+  if (!Object.keys(tools).length) {
+    document.getElementById('toolsProgress').innerHTML = '<p style="font-size:13px;color:var(--light);padding:12px 0;">Employee has not started tool setup yet.</p>';
+    return;
+  }
+
+  let html = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">';
+  Object.keys(TOOL_NAMES).forEach(tid => {
+    const td     = tools[tid] || {};
+    const total  = TOOL_COUNTS[tid];
+    const done   = Object.keys(td).filter(k => k !== 'notes' && td[k] === true).length;
+    const pct    = Math.round((done/total)*100);
+    const color  = pct === 100 ? 'var(--green)' : pct > 0 ? 'var(--gold)' : 'var(--border)';
+    html += `<div style="background:#fff;border:1px solid var(--border);border-radius:4px;padding:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="font-size:13px;font-weight:600;">${TOOL_NAMES[tid]}</div>
+        <div style="font-size:11px;color:var(--light);">${done}/${total}</div>
+      </div>
+      <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden;">
+        <div style="width:${pct}%;height:100%;background:${color};border-radius:3px;"></div>
+      </div>
+      ${td.notes ? `<div style="font-size:11px;color:var(--mid);margin-top:8px;font-style:italic;">${escHtml(td.notes)}</div>` : ''}
+    </div>`;
+  });
+  document.getElementById('toolsProgress').innerHTML = html + '</div>';
+}
+
+function renderCheckinsPanel() {
+  const prog = currentEmpDetail.progress || {};
+  const week = calcCurrentWeek(currentEmpDetail.employee.startDate);
+  detailActiveWeek = detailActiveWeek || week;
+
+  let sel = '';
+  for (let w = 1; w <= 12; w++) {
+    const has = !!prog['checkin_'+w];
+    sel += `<button class="week-btn ${w===detailActiveWeek?'active':''}" onclick="selectCheckinWeek(${w})">${has?'✓ ':''}W${w}</button>`;
+  }
+  document.getElementById('checkinWeekSelector').innerHTML = sel;
+  renderCheckinContent(detailActiveWeek);
+}
+
+function selectCheckinWeek(w) { detailActiveWeek = w; renderCheckinsPanel(); }
+
+function renderCheckinContent(w) {
+  const prog    = currentEmpDetail.progress || {};
+  const checkin = prog['checkin_'+w];
+  const monthly = prog['monthly_'+w];
+  const ins     = (currentEmpDetail.insightful || {})[String(w)];
+
+  let html = '';
+
+  if (ins) {
+    html += `<div style="background:#FAFAF8;border:1px solid var(--border);border-radius:4px;padding:16px 18px;margin-bottom:14px;">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--light);margin-bottom:6px;">Insightful — Week ${w}</div>
+      <div style="font-size:28px;font-family:'Cormorant Garamond',serif;font-weight:500;">${escHtml(ins.score||'—')}</div>
+      ${ins.goal ? `<div style="font-size:12px;color:var(--mid);margin-top:4px;">Goal: ${escHtml(ins.goal)}</div>` : ''}
+    </div>`;
+  }
+
+  if (checkin) {
+    html += `<div style="background:#fff;border:1px solid var(--border);border-radius:4px;padding:20px;margin-bottom:14px;">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--light);margin-bottom:12px;">Weekly Check-in — Week ${w}</div>
+      ${checkin.rating ? `<div style="font-size:11px;color:var(--light);margin-bottom:8px;">Rating: ${'⭐'.repeat(parseInt(checkin.rating))}</div>` : ''}
+      ${checkin.exciting ? `<div style="margin-bottom:10px;"><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--light);margin-bottom:3px;">What's Exciting</div><div style="font-size:13px;color:var(--charcoal);">${escHtml(checkin.exciting)}</div></div>` : ''}
+      ${checkin.working  ? `<div style="margin-bottom:10px;"><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--light);margin-bottom:3px;">What's Working</div><div style="font-size:13px;color:var(--charcoal);">${escHtml(checkin.working)}</div></div>` : ''}
+      ${checkin.hard     ? `<div><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--light);margin-bottom:3px;">What's Hard</div><div style="font-size:13px;color:var(--charcoal);">${escHtml(checkin.hard)}</div></div>` : ''}
+    </div>`;
+  } else {
+    html += `<p style="font-size:13px;color:var(--light);padding:8px 0;">No weekly check-in submitted for Week ${w} yet.</p>`;
+  }
+
+  if (monthly) {
+    html += `<div style="background:#fff;border:1px solid var(--border);border-radius:4px;padding:20px;">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--light);margin-bottom:12px;">Monthly Check-in — Week ${w}</div>
+      ${monthly.rating ? `<div style="font-size:11px;color:var(--light);margin-bottom:8px;">Rating: ${'⭐'.repeat(parseInt(monthly.rating))}</div>` : ''}
+      ${monthly.working ? `<div style="margin-bottom:10px;"><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--light);margin-bottom:3px;">Working Well</div><div style="font-size:13px;">${escHtml(monthly.working)}</div></div>` : ''}
+      ${monthly.hard    ? `<div style="margin-bottom:10px;"><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--light);margin-bottom:3px;">Challenges</div><div style="font-size:13px;">${escHtml(monthly.hard)}</div></div>` : ''}
+      ${monthly.goals   ? `<div><div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--light);margin-bottom:3px;">Goals Next Month</div><div style="font-size:13px;">${escHtml(monthly.goals)}</div></div>` : ''}
+    </div>`;
+  }
+
+  document.getElementById('checkinContent').innerHTML = html;
+}
+
+// ── CREATE EMPLOYEE ───────────────────────────────────────────────────────────
+async function createEmployee() {
+  const first  = document.getElementById('ne_first').value.trim();
+  const last   = document.getElementById('ne_last').value.trim();
+  const phone  = document.getElementById('ne_phone').value.trim();
+  const role   = document.getElementById('ne_role').value.trim();
+  const start  = document.getElementById('ne_start').value;
+  const tmId   = document.getElementById('ne_team').value;
+  if (!first || !last || !start) { showToast('Please fill in First Name, Last Name, and Start Date.'); return; }
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=create_employee&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&firstName=${encodeURIComponent(first)}&lastName=${encodeURIComponent(last)}&phone=${encodeURIComponent(phone)}&role=${encodeURIComponent(role)}&startDate=${encodeURIComponent(start)}&teamMemberId=${encodeURIComponent(tmId)}`);
+    const data = await res.json();
+    if (data.ok) {
+      document.getElementById('ne_link').textContent = data.link;
+      document.getElementById('ne_id').textContent   = data.empId;
+      document.getElementById('ne_pw').textContent   = data.password;
+      document.getElementById('newEmpForm').style.display    = 'none';
+      document.getElementById('newEmpSuccess').style.display = 'block';
+    } else { showToast('Error: ' + (data.error||'unknown')); }
+  } catch(e) { showToast('Connection error.'); }
+}
+
+// ── TEAM MEMBERS ──────────────────────────────────────────────────────────────
+async function loadTeam() {
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=get_team_members&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}`);
+    const data = await res.json();
+    if (data.ok) renderTeamTable(data.members || []);
+
+    // Populate team dropdown in new employee modal
+    const sel = document.getElementById('ne_team');
+    if (sel && data.ok) {
+      (data.members||[]).forEach(m => {
+        const opt = document.createElement('option');
+        opt.value = m.id; opt.textContent = m.name;
+        sel.appendChild(opt);
+      });
+    }
+  } catch(e) {}
+}
+
+function renderTeamTable(members) {
+  const tbody = document.getElementById('teamTableBody');
+  if (!members.length) {
+    tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><p>No team members added yet.</p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = members.map(m => `<tr>
+    <td><div class="emp-name">${escHtml(m.name)}</div></td>
+    <td style="color:var(--mid);">${escHtml(m.email||'—')}</td>
+    <td><span style="font-family:monospace;font-size:12px;color:var(--mid);">${escHtml(m.password||'—')}</span></td>
+    <td style="color:var(--light);font-size:12px;">${escHtml(m.created||'—')}</td>
+  </tr>`).join('');
+}
+
+async function createTeamMember() {
+  const name  = document.getElementById('nt_name').value.trim();
+  const email = document.getElementById('nt_email').value.trim();
+  if (!name) { showToast('Please enter a name.'); return; }
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=create_team_member&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`);
+    const data = await res.json();
+    if (data.ok) {
+      document.getElementById('nt_id').textContent = data.tmId;
+      document.getElementById('nt_pw').textContent = data.password;
+      document.getElementById('newTeamForm').style.display    = 'none';
+      document.getElementById('newTeamSuccess').style.display = 'block';
+    } else { showToast('Error: ' + (data.error||'unknown')); }
+  } catch(e) { showToast('Connection error.'); }
+}
+
+// ── PROCEDURES ────────────────────────────────────────────────────────────────
+async function loadProcedures() {
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=get_procedures&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}`);
+    const data = await res.json();
+    if (data.ok) { allProcedures = data.procedures || []; renderProcedures(); }
+  } catch(e) {}
+}
+
+function renderProcedures() {
+  const list = document.getElementById('proceduresList');
+  if (!allProcedures.length) { list.innerHTML = '<p style="font-size:13px;color:var(--light);">No procedures yet.</p>'; return; }
+  list.innerHTML = allProcedures.map(p => `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);">
+      <div style="font-size:13px;color:var(--charcoal);">${escHtml(p.text)}</div>
+    </div>`).join('');
+}
+
+async function addProcedure() {
+  const text = document.getElementById('newProcText').value.trim();
+  if (!text) return;
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=add_procedure&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&text=${encodeURIComponent(text)}`);
+    const data = await res.json();
+    if (data.ok) {
+      allProcedures.push({ id: data.procId, text });
+      document.getElementById('newProcText').value = '';
+      renderProcedures();
+      showToast('Procedure added!');
+    }
+  } catch(e) {}
+}
+
+// ── COPY LOGIN ────────────────────────────────────────────────────────────────
+function openLinkModal() {
+  if (!currentEmpDetail) return;
+  const emp = currentEmpDetail.employee;
+  document.getElementById('lm_link').textContent = emp.link || (BASE_URL + '/employeeonboarding?id=' + emp.id);
+  document.getElementById('lm_id').textContent   = emp.id;
+  document.getElementById('lm_pw').textContent   = emp.password || '—';
+  openModal('linkModal');
+}
+
+function quickCopyLogin(empId, name, password) {
+  document.getElementById('lm_link').textContent = BASE_URL + '/employeeonboarding?id=' + empId;
+  document.getElementById('lm_id').textContent   = empId;
+  document.getElementById('lm_pw').textContent   = password;
+  openModal('linkModal');
+}
+
+// ── UTILITIES ─────────────────────────────────────────────────────────────────
+function openModal(id) {
+  document.getElementById(id)?.classList.add('open');
+}
+function closeModal(id) {
+  const m = document.getElementById(id);
+  if (m) {
+    m.classList.remove('open');
+    // Reset forms
+    const form = m.querySelector('[id$="Form"]');
+    const succ = m.querySelector('[id$="Success"]');
+    if (form) form.style.display = 'block';
+    if (succ) succ.style.display = 'none';
+  }
+}
+
+function copyVal(elId, msg) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  navigator.clipboard.writeText(el.textContent).then(() => showToast(msg || 'Copied!'));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function escHtml(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+</script>
+</body>
+</html>

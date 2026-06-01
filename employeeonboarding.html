@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Onboarding — Grace Dougan Consulting</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #B8975A; --gold-light: #D4AF72; --cream: #FAF8F4;
+      --charcoal: #1C1C1C; --mid: #555; --light: #888; --border: #E5E0D8;
+      --green: #2E7D32; --green-bg: #E8F5E9;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--cream); color: var(--charcoal); min-height: 100vh; }
+
+    /* LOGIN */
+    #loginScreen { min-height:100vh; display:flex; align-items:center; justify-content:center; background: var(--charcoal); padding: 24px; }
+    .login-card { background:#fff; border-radius:4px; padding:52px 48px; width:100%; max-width:420px; box-shadow:0 8px 40px rgba(0,0,0,0.25); }
+    .login-logo { display:flex; align-items:center; gap:12px; margin-bottom:32px; }
+    .login-logo-text { font-family:'Cormorant Garamond',serif; font-size:16px; font-weight:500; color:var(--charcoal); }
+    .login-logo-text em { font-style:italic; }
+    .login-eyebrow { font-size:10px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+    .login-title { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:500; margin-bottom:6px; }
+    .login-title em { font-style:italic; }
+    .login-sub { font-size:12px; color:var(--light); line-height:1.6; margin-bottom:28px; }
+    .login-group { margin-bottom:14px; }
+    .login-group label { display:block; font-size:10px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--mid); margin-bottom:5px; }
+    .login-group input { width:100%; padding:11px 14px; border:1px solid var(--border); background:var(--cream); font-family:'Inter',sans-serif; font-size:13px; outline:none; transition:border-color 0.2s; }
+    .login-group input:focus { border-color:var(--gold); }
+    .login-error { font-size:11px; color:#c0392b; margin-bottom:12px; display:none; }
+    .btn-login { width:100%; padding:13px; background:var(--charcoal); color:#fff; border:none; font-family:'Inter',sans-serif; font-size:13px; font-weight:600; letter-spacing:0.05em; cursor:pointer; transition:background 0.2s; margin-top:4px; }
+    .btn-login:hover { background:var(--gold); }
+    .btn-login:disabled { opacity:0.5; cursor:not-allowed; }
+
+    /* APP */
+    #appScreen { display:none; }
+    .app-header { background:var(--charcoal); color:#fff; height:56px; display:flex; align-items:center; justify-content:space-between; padding:0 28px; position:sticky; top:0; z-index:100; }
+    .app-header-brand { display:flex; align-items:center; gap:12px; }
+    .app-header-brand span { font-family:'Cormorant Garamond',serif; font-size:16px; color:var(--gold-light); }
+    .app-header-right { display:flex; align-items:center; gap:16px; }
+    .app-header-name { font-size:12px; color:#ccc; }
+    .btn-signout { background:none; border:1px solid rgba(255,255,255,0.25); color:#ccc; padding:5px 14px; border-radius:3px; font-size:11px; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.2s; }
+    .btn-signout:hover { border-color:#fff; color:#fff; }
+
+    /* CANDYLAND MAP */
+    .candyland-wrap { background:#fff; border-bottom:1px solid var(--border); padding:20px 28px 16px; overflow-x:auto; }
+    .candyland { display:flex; align-items:flex-start; gap:0; min-width:600px; }
+    .candy-month { display:flex; flex-direction:column; }
+    .candy-month-label { font-size:9px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--light); margin-bottom:10px; padding-left:2px; }
+    .candy-stops { display:flex; align-items:center; }
+    .candy-stop { display:flex; flex-direction:column; align-items:center; gap:5px; cursor:pointer; }
+    .candy-dot {
+      width:34px; height:34px; border-radius:50%; border:2px solid var(--border);
+      background:#fff; display:flex; align-items:center; justify-content:center;
+      font-size:11px; font-weight:600; color:#bbb; transition:all 0.2s; flex-shrink:0;
+    }
+    .candy-stop:hover .candy-dot { border-color:var(--gold); color:var(--gold); }
+    .candy-dot.done { background:var(--gold); border-color:var(--gold); color:#fff; }
+    .candy-dot.current { background:var(--charcoal); border-color:var(--charcoal); color:#fff; box-shadow:0 0 0 3px rgba(184,151,90,0.3); }
+    .candy-dot.locked { opacity:0.4; cursor:default; }
+    .candy-stop-label { font-size:9px; color:var(--light); font-weight:500; white-space:nowrap; }
+    .candy-stop.current-stop .candy-stop-label { color:var(--gold); font-weight:600; }
+    .candy-line { width:20px; height:2px; background:var(--border); flex-shrink:0; margin-bottom:19px; }
+    .candy-line.done { background:var(--gold); }
+    .candy-divider { width:1px; background:var(--border); height:34px; margin:0 16px; margin-bottom:19px; flex-shrink:0; }
+    .candy-finish { display:flex; flex-direction:column; align-items:center; gap:5px; margin-bottom:19px; }
+    .candy-finish-dot { width:34px; height:34px; border-radius:50%; background:#fff; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:18px; }
+    .candy-finish-dot.done { background:var(--green-bg); border-color:var(--green); }
+
+    /* MAIN CONTENT */
+    .main { max-width:820px; margin:0 auto; padding:36px 28px 80px; }
+
+    /* WEEK HEADER */
+    .week-header { margin-bottom:28px; }
+    .week-eyebrow { font-size:10px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+    .week-title { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:500; line-height:1.1; margin-bottom:6px; }
+    .week-title em { font-style:italic; }
+    .week-sub { font-size:13px; color:var(--light); line-height:1.6; }
+
+    /* TABS */
+    .tabs { display:flex; gap:0; border-bottom:1px solid var(--border); margin-bottom:28px; overflow-x:auto; }
+    .tab { padding:10px 20px; font-size:12px; font-weight:500; color:var(--light); cursor:pointer; border-bottom:2px solid transparent; white-space:nowrap; transition:all 0.2s; }
+    .tab:hover { color:var(--charcoal); }
+    .tab.active { color:var(--charcoal); border-bottom-color:var(--gold); font-weight:600; }
+    .tab.done-tab::after { content:'✓'; margin-left:6px; color:var(--gold); font-size:10px; }
+
+    /* SECTION CARDS */
+    .card { background:#fff; border:1px solid var(--border); border-radius:4px; margin-bottom:16px; overflow:hidden; }
+    .card-header { padding:16px 20px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; border-bottom:1px solid transparent; transition:background 0.15s; }
+    .card-header:hover { background:#FAFAF8; }
+    .card-header.open { border-bottom-color:var(--border); }
+    .card-title { font-size:14px; font-weight:600; color:var(--charcoal); display:flex; align-items:center; gap:10px; }
+    .card-title .card-icon { font-size:18px; }
+    .card-completion { font-size:11px; color:var(--light); display:flex; align-items:center; gap:8px; }
+    .mini-bar { width:60px; height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
+    .mini-bar-fill { height:100%; background:var(--gold); border-radius:2px; }
+    .card-body { padding:20px; display:none; }
+    .card-body.open { display:block; }
+
+    /* TOOL CHECKLIST */
+    .sub-items { display:flex; flex-direction:column; gap:0; }
+    .sub-item { display:flex; align-items:flex-start; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
+    .sub-item:last-of-type { border-bottom:none; }
+    .sub-item input[type=checkbox] { width:16px; height:16px; accent-color:var(--gold); flex-shrink:0; margin-top:2px; }
+    .sub-item-text { font-size:13px; color:var(--charcoal); }
+    .sub-item-desc { font-size:11px; color:var(--light); margin-top:1px; }
+    .tool-notes { margin-top:12px; }
+    .tool-notes textarea { width:100%; padding:10px 12px; border:1px solid var(--border); font-family:'Inter',sans-serif; font-size:12px; resize:vertical; min-height:72px; outline:none; transition:border-color 0.2s; }
+    .tool-notes textarea:focus { border-color:var(--gold); }
+    .tool-notes label { font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--light); display:block; margin-bottom:5px; }
+
+    /* PROFICIENCY SELECT */
+    .proficiency-row { display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border); flex-wrap:wrap; gap:10px; }
+    .proficiency-row:last-child { border-bottom:none; }
+    .proficiency-client-name { font-size:13px; font-weight:500; color:var(--charcoal); }
+    .proficiency-client-link { font-size:11px; color:var(--gold); text-decoration:none; }
+    .proficiency-select { padding:6px 28px 6px 10px; border:1px solid var(--border); font-family:'Inter',sans-serif; font-size:12px; outline:none; background:#fff; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23B8975A' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; cursor:pointer; min-width:180px; }
+    .proficiency-select:focus { border-color:var(--gold); }
+    .no-clients-note { font-size:13px; color:var(--light); padding:16px 0; }
+
+    /* PROCEDURE CHECKLIST */
+    .proc-item { display:flex; align-items:flex-start; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
+    .proc-item:last-child { border-bottom:none; }
+    .proc-item input[type=checkbox] { width:16px; height:16px; accent-color:var(--gold); flex-shrink:0; margin-top:2px; }
+    .proc-item label { font-size:13px; color:var(--charcoal); cursor:pointer; }
+
+    /* CHECKIN FORM */
+    .form-group { margin-bottom:16px; }
+    .form-group label { display:block; font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--mid); margin-bottom:6px; }
+    .form-group input, .form-group textarea, .form-group select { width:100%; padding:10px 14px; border:1px solid var(--border); font-family:'Inter',sans-serif; font-size:13px; outline:none; transition:border-color 0.2s; background:#fff; }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color:var(--gold); }
+    .form-group textarea { resize:vertical; min-height:90px; }
+    .form-row-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+
+    /* STAR RATING */
+    .star-row { display:flex; flex-direction:row-reverse; justify-content:flex-end; gap:4px; }
+    .star-row input { display:none; }
+    .star-row label { font-size:26px; color:var(--border); cursor:pointer; transition:color 0.15s; line-height:1; }
+    .star-row input:checked ~ label, .star-row label:hover, .star-row label:hover ~ label { color:var(--gold); }
+
+    /* INSIGHTFUL BOX */
+    .insightful-box { background:#FAFAF8; border:1px solid var(--border); border-radius:4px; padding:16px 18px; margin-bottom:16px; }
+    .insightful-box .ib-label { font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--light); margin-bottom:6px; }
+    .insightful-box .ib-score { font-family:'Cormorant Garamond',serif; font-size:36px; font-weight:500; color:var(--charcoal); line-height:1; }
+    .insightful-box .ib-goal { font-size:13px; color:var(--mid); margin-top:6px; font-style:italic; }
+    .insightful-box .ib-empty { font-size:13px; color:var(--light); font-style:italic; }
+
+    /* SAVE BUTTON */
+    .save-row { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:20px; padding-top:16px; border-top:1px solid var(--border); flex-wrap:wrap; }
+    .save-status { font-size:11px; color:var(--light); }
+    .save-status.saved { color:var(--green); }
+    .btn-save { padding:11px 28px; background:var(--charcoal); color:#fff; border:none; font-family:'Inter',sans-serif; font-size:12px; font-weight:600; letter-spacing:0.05em; cursor:pointer; transition:background 0.2s; }
+    .btn-save:hover { background:var(--gold); }
+    .btn-save:disabled { opacity:0.5; cursor:not-allowed; }
+
+    /* WEEK LOCKED */
+    .week-locked { text-align:center; padding:60px 24px; }
+    .week-locked h3 { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:500; margin-bottom:8px; }
+    .week-locked p { font-size:13px; color:var(--light); }
+
+    /* SUCCESS */
+    #successScreen { display:none; min-height:100vh; display:none; align-items:center; justify-content:center; background:var(--cream); padding:40px; }
+    .success-card { background:#fff; border:1px solid var(--border); border-radius:4px; padding:60px 52px; max-width:520px; text-align:center; }
+    .success-card h2 { font-family:'Cormorant Garamond',serif; font-size:34px; font-weight:500; margin-bottom:10px; }
+    .success-card h2 em { font-style:italic; }
+    .success-card p { font-size:13px; color:var(--mid); line-height:1.7; }
+
+    @media(max-width:600px) {
+      .login-card { padding:36px 28px; }
+      .main { padding:24px 16px 60px; }
+      .form-row-2 { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">
+      <svg width="32" height="32" viewBox="0 0 120 120" fill="none">
+        <rect x="6" y="6" width="108" height="108" stroke="#B8975A" stroke-width="2"/>
+        <rect x="14" y="14" width="92" height="92" stroke="#B8975A" stroke-width="0.7" stroke-dasharray="3 3"/>
+        <text x="60" y="70" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="28" fill="#B8975A" letter-spacing="4">GDC</text>
+      </svg>
+      <span class="login-logo-text">Grace Dougan<em> Consulting</em></span>
+    </div>
+    <p class="login-eyebrow">New Employee Onboarding</p>
+    <h1 class="login-title">Welcome to<br /><em>the team.</em></h1>
+    <p class="login-sub">Enter your Employee ID and password. These were sent to you by Grace — email <a href="mailto:grace@gracedouganconsulting.com" style="color:var(--gold);text-decoration:none;">grace@gracedouganconsulting.com</a> if you need help.</p>
+    <div class="login-group">
+      <label>Employee ID</label>
+      <input type="text" id="loginId" placeholder="e.g. abc12345" autocomplete="username" />
+    </div>
+    <div class="login-group">
+      <label>Password</label>
+      <input type="password" id="loginPw" placeholder="your-password-here" autocomplete="current-password" />
+    </div>
+    <p class="login-error" id="loginError">Invalid ID or password. Please try again.</p>
+    <button class="btn-login" id="loginBtn" onclick="doLogin()">Sign In</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appScreen">
+  <!-- Header -->
+  <header class="app-header">
+    <div class="app-header-brand">
+      <svg width="24" height="24" viewBox="0 0 120 120" fill="none">
+        <rect x="6" y="6" width="108" height="108" stroke="#B8975A" stroke-width="2.5"/>
+        <text x="60" y="70" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="32" fill="#B8975A" letter-spacing="4">GDC</text>
+      </svg>
+      <span>Employee Onboarding</span>
+    </div>
+    <div class="app-header-right">
+      <span class="app-header-name" id="headerName"></span>
+      <button class="btn-signout" onclick="doLogout()">Sign Out</button>
+    </div>
+  </header>
+
+  <!-- Candyland Map -->
+  <div class="candyland-wrap">
+    <div class="candyland" id="candyMap"></div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <div id="weekContent"></div>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div id="successScreen" style="display:none; min-height:100vh; align-items:center; justify-content:center; background:var(--cream); padding:40px;">
+  <div class="success-card">
+    <svg width="52" height="52" fill="none" stroke="#B8975A" stroke-width="1.2" viewBox="0 0 24 24" style="margin:0 auto 20px;display:block;">
+      <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
+    <h2>Onboarding<br /><em>complete!</em></h2>
+    <p style="margin-top:12px;">Thank you for completing your 90-day onboarding. Grace has been notified and will follow up with you shortly.</p>
+  </div>
+</div>
+
+<script>
+const APPS_SCRIPT_URL = 'PASTE_YOUR_EMPLOYEE_APPS_SCRIPT_URL_HERE';
+
+const TOOLS = [
+  { id:'gmail', label:'Gmail', icon:'✉️', items:[
+    {id:'login', label:'Login confirmed'},
+    {id:'zeroinbox', label:'Zero inbox policy reviewed'},
+    {id:'signature', label:'Email signature set up'},
+    {id:'calendar', label:'Calendar added and synced'}
+  ]},
+  { id:'onepassword', label:'1Password', icon:'🔐', items:[
+    {id:'login', label:'Login confirmed'},
+    {id:'vault', label:'Vault access confirmed'},
+    {id:'training', label:'Training: adding new logins completed'}
+  ]},
+  { id:'clickup', label:'ClickUp', icon:'✅', items:[
+    {id:'login', label:'Login confirmed'},
+    {id:'folders', label:'Folders shared and accessible'},
+    {id:'tasks', label:'Tasks assigned and visible'},
+    {id:'video', label:'Navigation training video watched'},
+    {id:'dashboard', label:'Personal dashboard set up'},
+    {id:'expectations', label:'Task completion expectations reviewed'}
+  ]},
+  { id:'qbo', label:'QuickBooks Online', icon:'📊', items:[
+    {id:'login', label:'Login confirmed'}
+  ]},
+  { id:'qbt', label:'QuickBooks Time', icon:'⏱️', items:[
+    {id:'login', label:'Login confirmed'}
+  ]},
+  { id:'slack', label:'Slack', icon:'💬', items:[
+    {id:'login', label:'Login confirmed'},
+    {id:'channels', label:'Added to relevant channels'},
+    {id:'policies', label:'Slack vs. email policies reviewed'},
+    {id:'calendar', label:'Calendar notes set up'}
+  ]},
+  { id:'insightful', label:'Insightful', icon:'📈', items:[
+    {id:'login', label:'Login confirmed'},
+    {id:'access', label:'Access confirmed'},
+    {id:'expectations', label:'Productivity expectations reviewed'}
+  ]},
+  { id:'ramp', label:'Ramp', icon:'💳', items:[
+    {id:'login', label:'Login confirmed'},
+    {id:'access', label:'Access confirmed'},
+    {id:'training', label:'Overall usage training completed'},
+    {id:'clienttraining', label:'Client-specific training completed'}
+  ]}
+];
+
+const PROFICIENCY_OPTIONS = ['Not started','In training','Needs support','Independent','Fully proficient'];
+
+let empId = '', empPw = '', empFirstName = '', empStartDate = '';
+let currentWeek = 1, activeWeek = 1, activeTab = '';
+let progressData = {}, clientData = [], insightfulData = {}, procedureData = [];
+
+// ── LOGIN ─────────────────────────────────────────────────────────────────────
+document.getElementById('loginPw').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('loginId').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
+async function doLogin() {
+  const id = document.getElementById('loginId').value.trim();
+  const pw = document.getElementById('loginPw').value.trim();
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('loginError');
+  if (!id || !pw) return;
+  btn.disabled = true; btn.textContent = 'Signing in…'; err.style.display = 'none';
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=verify_employee&id=${encodeURIComponent(id)}&pw=${encodeURIComponent(pw)}`);
+    const data = await res.json();
+    if (data.ok) {
+      empId = id; empPw = pw;
+      empFirstName = data.firstName || '';
+      empStartDate = data.startDate || '';
+      sessionStorage.setItem('gdcEmpId', id);
+      sessionStorage.setItem('gdcEmpPw', pw);
+      initApp(data);
+    } else {
+      err.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Sign In';
+    }
+  } catch(e) {
+    err.textContent = 'Unable to connect. Please try again.';
+    err.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'Sign In';
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem('gdcEmpId'); sessionStorage.removeItem('gdcEmpPw');
+  document.getElementById('appScreen').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+
+(async () => {
+  const sid = sessionStorage.getItem('gdcEmpId');
+  const spw = sessionStorage.getItem('gdcEmpPw');
+  if (sid && spw) {
+    document.getElementById('loginId').value = sid;
+    document.getElementById('loginPw').value = spw;
+    doLogin();
+  }
+})();
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+async function initApp(empData) {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('appScreen').style.display = 'block';
+  document.getElementById('headerName').textContent = empData.firstName + ' ' + empData.lastName;
+
+  currentWeek = calcCurrentWeek(empData.startDate);
+  activeWeek  = currentWeek;
+
+  // Load progress
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=get_progress&id=${encodeURIComponent(empId)}&pw=${encodeURIComponent(empPw)}`);
+    const data = await res.json();
+    if (data.ok) {
+      progressData   = data.progress   || {};
+      clientData     = data.clients    || [];
+      insightfulData = data.insightful || {};
+      procedureData  = data.procedures || [];
+    }
+  } catch(e) {}
+
+  renderCandyMap();
+  showWeek(activeWeek);
+}
+
+function calcCurrentWeek(startDateStr) {
+  if (!startDateStr) return 1;
+  const start = new Date(startDateStr);
+  const now   = new Date();
+  const days  = Math.floor((now - start) / (1000 * 60 * 60 * 24));
+  return Math.min(Math.max(Math.floor(days / 7) + 1, 1), 12);
+}
+
+// ── CANDYLAND MAP ─────────────────────────────────────────────────────────────
+function renderCandyMap() {
+  const months = [
+    { label: 'Month 1 — Weeks 1–4', weeks: [1,2,3,4] },
+    { label: 'Month 2 — Weeks 5–8', weeks: [5,6,7,8] },
+    { label: 'Month 3 — Weeks 9–12', weeks: [9,10,11,12] }
+  ];
+
+  let html = '';
+  months.forEach((month, mi) => {
+    if (mi > 0) html += '<div class="candy-divider"></div>';
+    html += `<div class="candy-month"><div class="candy-month-label">${month.label}</div><div class="candy-stops">`;
+    month.weeks.forEach((w, wi) => {
+      const done    = isWeekComplete(w);
+      const current = w === currentWeek;
+      const locked  = w > currentWeek;
+      const cls     = done ? 'done' : current ? 'current' : locked ? 'locked' : '';
+      const stopCls = current ? 'current-stop' : '';
+      if (wi > 0) html += `<div class="candy-line ${done || (w <= currentWeek && isWeekComplete(w-1)) ? 'done' : ''}"></div>`;
+      html += `<div class="candy-stop ${stopCls}" onclick="selectWeek(${w})">
+        <div class="candy-dot ${cls}">${done ? '✓' : w}</div>
+        <span class="candy-stop-label">W${w}${current?' ←':''}</span>
+      </div>`;
+    });
+    html += '</div></div>';
+  });
+
+  // Finish flag
+  const allDone = isWeekComplete(12);
+  html += `<div class="candy-line ${allDone?'done':''}"></div>
+    <div class="candy-finish"><div class="candy-finish-dot ${allDone?'done':''}">🎉</div><span style="font-size:9px;color:var(--light);">Done!</span></div>`;
+
+  document.getElementById('candyMap').innerHTML = html;
+}
+
+function isWeekComplete(w) {
+  return !!progressData['checkin_' + w];
+}
+
+function selectWeek(w) {
+  if (w > currentWeek) return; // locked
+  activeWeek = w;
+  renderCandyMap();
+  showWeek(w);
+}
+
+// ── WEEK CONTENT ──────────────────────────────────────────────────────────────
+function showWeek(w) {
+  activeWeek = w;
+  const container = document.getElementById('weekContent');
+
+  const monthNum = w <= 4 ? 1 : w <= 8 ? 2 : 3;
+  const weekInMonth = ((w-1) % 4) + 1;
+
+  let eyebrow = `Month ${monthNum} · Week ${weekInMonth}`;
+  let title, sub;
+
+  if (w === 1)  { title = 'Getting <em>Started</em>'; sub = 'Welcome! Work through each section below at your own pace.'; }
+  else if (w <= 4)  { title = `Month 1 · <em>Week ${w}</em>`; sub = 'Keep updating your tools, clients, and procedures below.'; }
+  else if (w <= 8)  { title = `Month 2 · <em>Week ${weekInMonth}</em>`; sub = 'Building momentum — update your progress each week.'; }
+  else              { title = `Month 3 · <em>Week ${weekInMonth}</em>`; sub = 'Final stretch — keep tracking your growth.'; }
+
+  if (w === 12) { title = 'Month 3 · <em>Final Week</em>'; sub = 'Complete your final check-in when ready. Great work making it here!'; }
+
+  const tabs = [];
+  if (w === 1) tabs.push({ id:'getstarted', label:'Getting Started' });
+  tabs.push({ id:'tools', label:'Tools' });
+  if (clientData.length > 0) tabs.push({ id:'clients', label:'Clients' });
+  tabs.push({ id:'procedures', label:'Procedures' });
+  tabs.push({ id:'checkin', label:'Weekly Check-in' });
+  if (w === 4 || w === 8) tabs.push({ id:'monthly', label:'Monthly Check-in' });
+  if (w === 12) tabs.push({ id:'final', label:'90-Day Check-in' });
+
+  if (!activeTab || !tabs.find(t => t.id === activeTab)) activeTab = tabs[0].id;
+
+  const tabsHtml = tabs.map(t => {
+    const done = isTabDone(t.id, w);
+    return `<div class="tab ${activeTab===t.id?'active':''} ${done?'done-tab':''}" onclick="switchTab('${t.id}',${w})">${t.label}</div>`;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="week-header">
+      <p class="week-eyebrow">${eyebrow}</p>
+      <h2 class="week-title">${title}</h2>
+      <p class="week-sub">${sub}</p>
+    </div>
+    <div class="tabs">${tabsHtml}</div>
+    <div id="tabContent"></div>`;
+
+  renderTab(activeTab, w);
+}
+
+function switchTab(tabId, w) {
+  activeTab = tabId;
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(t => {
+    t.classList.toggle('active', t.textContent.includes(tabIdToLabel(tabId)));
+    t.onclick = function() { switchTab(t.getAttribute('onclick').match(/switchTab\('(\w+)'/)[1], w); };
+  });
+  // Re-render tabs
+  showWeek(w);
+}
+
+function tabIdToLabel(id) {
+  return {getstarted:'Getting Started',tools:'Tools',clients:'Clients',procedures:'Procedures',checkin:'Weekly',monthly:'Monthly',final:'90-Day'}[id]||id;
+}
+
+function isTabDone(tabId, w) {
+  if (tabId === 'getstarted') return !!(progressData['personal']);
+  if (tabId === 'tools') return !!(progressData['tools']);
+  if (tabId === 'procedures') return !!(progressData['procedures']);
+  if (tabId === 'checkin') return !!(progressData['checkin_'+w]);
+  if (tabId === 'monthly') return !!(progressData['monthly_'+w]);
+  if (tabId === 'final') return !!(progressData['final']);
+  return false;
+}
+
+function renderTab(tabId, w) {
+  const container = document.getElementById('tabContent');
+  if (!container) return;
+
+  if (tabId === 'getstarted') container.innerHTML = renderGetStarted();
+  else if (tabId === 'tools') container.innerHTML = renderTools();
+  else if (tabId === 'clients') container.innerHTML = renderClients(w);
+  else if (tabId === 'procedures') container.innerHTML = renderProcedures();
+  else if (tabId === 'checkin') container.innerHTML = renderCheckin(w);
+  else if (tabId === 'monthly') container.innerHTML = renderMonthly(w);
+  else if (tabId === 'final') container.innerHTML = renderFinal();
+
+  // Restore saved values
+  restoreTabValues(tabId, w);
+}
+
+// ── TAB: GETTING STARTED ──────────────────────────────────────────────────────
+function renderGetStarted() {
+  return `
+    <div class="card">
+      <div class="card-header open"><div class="card-title">👋 Personal Info</div></div>
+      <div class="card-body open">
+        <div class="form-row-2">
+          <div class="form-group"><label>First Name</label><input type="text" id="p_first" placeholder="Jane" /></div>
+          <div class="form-group"><label>Last Name</label><input type="text" id="p_last" placeholder="Smith" /></div>
+        </div>
+        <div class="form-group"><label>Mobile Phone</label><input type="tel" id="p_phone" placeholder="415.555.0000" /></div>
+        <div class="save-row">
+          <span class="save-status" id="save_personal"></span>
+          <button class="btn-save" onclick="saveGetStarted()">Save</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header open"><div class="card-title">🤝 Onboarding Meeting</div></div>
+      <div class="card-body open">
+        <div class="proc-item">
+          <input type="checkbox" id="meeting_done" onchange="saveMeeting()" />
+          <label for="meeting_done">I have had my initial onboarding meeting with my GDC team member.</label>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── TAB: TOOLS ────────────────────────────────────────────────────────────────
+function renderTools() {
+  const saved = progressData['tools'] || {};
+  return TOOLS.map(tool => {
+    const toolData  = saved[tool.id] || {};
+    const doneCount = tool.items.filter(it => toolData[it.id]).length;
+    const pct       = Math.round((doneCount / tool.items.length) * 100);
+    return `
+      <div class="card">
+        <div class="card-header" onclick="toggleCard(this)" id="card_${tool.id}">
+          <div class="card-title"><span class="card-icon">${tool.icon}</span>${tool.label}</div>
+          <div class="card-completion">
+            <div class="mini-bar"><div class="mini-bar-fill" style="width:${pct}%"></div></div>
+            ${doneCount}/${tool.items.length}
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="sub-items">
+            ${tool.items.map(it => `
+              <div class="sub-item">
+                <input type="checkbox" id="t_${tool.id}_${it.id}" onchange="saveTools()" ${toolData[it.id]?'checked':''} />
+                <div><div class="sub-item-text">${it.label}</div></div>
+              </div>`).join('')}
+          </div>
+          <div class="tool-notes">
+            <label>Notes</label>
+            <textarea id="tn_${tool.id}" onblur="saveTools()" placeholder="Questions, issues, or status notes...">${toolData.notes||''}</textarea>
+          </div>
+        </div>
+      </div>`;
+  }).join('') + `<div class="save-row"><span class="save-status" id="save_tools"></span><button class="btn-save" onclick="saveTools(true)">Save All Tools</button></div>`;
+}
+
+// ── TAB: CLIENTS ──────────────────────────────────────────────────────────────
+function renderClients(w) {
+  if (!clientData.length) {
+    return '<p class="no-clients-note">No clients have been assigned yet. Grace will add your clients here soon.</p>';
+  }
+  const saved = progressData['clients_' + w] || {};
+  const rows = clientData.map(c => {
+    const val = (c.proficiency && c.proficiency[String(w)]) || saved[c.clientId] || 'Not started';
+    return `
+      <div class="proficiency-row">
+        <div>
+          <div class="proficiency-client-name">${escHtml(c.name)}</div>
+          ${c.clickupUrl ? `<a href="${escHtml(c.clickupUrl)}" target="_blank" class="proficiency-client-link">View in ClickUp →</a>` : ''}
+        </div>
+        <select class="proficiency-select" id="cp_${c.clientId}" onchange="saveClients(${w})">
+          ${PROFICIENCY_OPTIONS.map(o => `<option ${val===o?'selected':''}>${o}</option>`).join('')}
+        </select>
+      </div>`;
+  }).join('');
+  return `
+    <div class="card">
+      <div class="card-header open"><div class="card-title">👥 Client Proficiency — Week ${w}</div></div>
+      <div class="card-body open">${rows}
+        <div class="save-row"><span class="save-status" id="save_clients_${w}"></span><button class="btn-save" onclick="saveClients(${w})">Save</button></div>
+      </div>
+    </div>`;
+}
+
+// ── TAB: PROCEDURES ───────────────────────────────────────────────────────────
+function renderProcedures() {
+  const saved = progressData['procedures'] || {};
+  if (!procedureData.length) return '<p class="no-clients-note">Procedures will be added here by Grace.</p>';
+  const items = procedureData.map(p => `
+    <div class="proc-item">
+      <input type="checkbox" id="proc_${p.id}" onchange="saveProcedures()" ${saved[p.id]?'checked':''} />
+      <label for="proc_${p.id}">${escHtml(p.text)}</label>
+    </div>`).join('');
+  return `
+    <div class="card">
+      <div class="card-header open"><div class="card-title">📋 GDC Procedures</div></div>
+      <div class="card-body open">
+        ${items}
+        <div class="save-row"><span class="save-status" id="save_procedures"></span><button class="btn-save" onclick="saveProcedures()">Save</button></div>
+      </div>
+    </div>`;
+}
+
+// ── TAB: WEEKLY CHECK-IN ──────────────────────────────────────────────────────
+function renderCheckin(w) {
+  const ins = insightfulData[String(w)] || {};
+  const insBox = ins.score
+    ? `<div class="insightful-box"><div class="ib-label">Insightful — Week ${w} Score</div><div class="ib-score">${ins.score}</div>${ins.goal?`<div class="ib-goal">Goal: ${escHtml(ins.goal)}</div>`:''}</div>`
+    : `<div class="insightful-box"><div class="ib-label">Insightful — Week ${w}</div><div class="ib-empty">Your productivity score will appear here once entered by your team member.</div></div>`;
+  return `
+    ${insBox}
+    <div class="card">
+      <div class="card-header open"><div class="card-title">💬 Weekly Check-in — Week ${w}</div></div>
+      <div class="card-body open">
+        <div class="form-group">
+          <label>Overall, how is this week going?</label>
+          <div class="star-row" id="stars_${w}">
+            ${[5,4,3,2,1].map(n=>`<input type="radio" name="rating_${w}" id="s${w}_${n}" value="${n}"><label for="s${w}_${n}">★</label>`).join('')}
+          </div>
+        </div>
+        <div class="form-group"><label>What's exciting right now?</label><textarea id="ci_exciting_${w}" placeholder="Share a win, something you're enjoying..."></textarea></div>
+        <div class="form-group"><label>What's working well?</label><textarea id="ci_working_${w}" placeholder="Processes, tools, or relationships going smoothly..."></textarea></div>
+        <div class="form-group"><label>What's been challenging?</label><textarea id="ci_hard_${w}" placeholder="Things that are unclear, difficult, or need support..."></textarea></div>
+        <div class="save-row">
+          <span class="save-status" id="save_checkin_${w}"></span>
+          <button class="btn-save" onclick="saveCheckin(${w})">Save Check-in</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── TAB: MONTHLY CHECK-IN (weeks 4, 8) ───────────────────────────────────────
+function renderMonthly(w) {
+  const month = w === 4 ? 1 : 2;
+  return `
+    <div class="card">
+      <div class="card-header open"><div class="card-title">📅 Month ${month} Check-in</div></div>
+      <div class="card-body open">
+        <div class="form-group">
+          <label>Overall, how has this month been?</label>
+          <div class="star-row" id="mstars_${w}">
+            ${[5,4,3,2,1].map(n=>`<input type="radio" name="mrating_${w}" id="ms${w}_${n}" value="${n}"><label for="ms${w}_${n}">★</label>`).join('')}
+          </div>
+        </div>
+        <div class="form-group"><label>What's working well this month?</label><textarea id="mo_working_${w}" placeholder="Highlights and wins..."></textarea></div>
+        <div class="form-group"><label>What's been challenging?</label><textarea id="mo_hard_${w}" placeholder="Things you'd like more support on..."></textarea></div>
+        <div class="form-group"><label>Your goals for next month</label><textarea id="mo_goals_${w}" placeholder="What do you want to accomplish or get more comfortable with?"></textarea></div>
+        <div class="save-row">
+          <span class="save-status" id="save_monthly_${w}"></span>
+          <button class="btn-save" onclick="saveMonthly(${w})">Save Month ${month} Check-in</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── TAB: FINAL CHECK-IN (week 12) ─────────────────────────────────────────────
+function renderFinal() {
+  return `
+    <div class="card">
+      <div class="card-header open"><div class="card-title">🎉 90-Day Final Check-in</div></div>
+      <div class="card-body open">
+        <div class="form-group">
+          <label>Overall, how have your first 90 days been?</label>
+          <div class="star-row" id="fstars">
+            ${[5,4,3,2,1].map(n=>`<input type="radio" name="frating" id="fs${n}" value="${n}"><label for="fs${n}">★</label>`).join('')}
+          </div>
+        </div>
+        <div class="form-group"><label>What worked really well?</label><textarea id="f_worked" placeholder="Highlights from your first 90 days..."></textarea></div>
+        <div class="form-group"><label>What could be improved about the onboarding experience?</label><textarea id="f_improve" placeholder="Feedback to help future team members..."></textarea></div>
+        <div class="form-group"><label>Your goals for the next 6 months</label><textarea id="f_goals" placeholder="Professional growth, skills, responsibilities you'd like to take on..."></textarea></div>
+        <div class="form-group"><label>Anything else you'd like Grace to know?</label><textarea id="f_other" placeholder="Questions, ideas, concerns..."></textarea></div>
+        <div class="save-row">
+          <span class="save-status" id="save_final"></span>
+          <div style="display:flex;gap:10px;">
+            <button class="btn-save" style="background:var(--charcoal)" onclick="saveFinal(false)">Save Draft</button>
+            <button class="btn-save" style="background:var(--gold)" onclick="saveFinal(true)">Submit &amp; Complete Onboarding</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── SAVE FUNCTIONS ────────────────────────────────────────────────────────────
+async function postSave(section, data) {
+  progressData[section] = data;
+  localStorage.setItem('gdc_emp_' + empId + '_' + section, JSON.stringify(data));
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ action:'save_progress', empId, empPw, section, sectionData:data })
+    });
+  } catch(e) {}
+}
+
+function setStatus(id, msg, cls) {
+  const el = document.getElementById(id);
+  if (el) { el.textContent = msg; el.className = 'save-status ' + (cls||''); }
+}
+
+async function saveGetStarted() {
+  const first = document.getElementById('p_first')?.value?.trim() || '';
+  const last  = document.getElementById('p_last')?.value?.trim() || '';
+  const phone = document.getElementById('p_phone')?.value?.trim() || '';
+  setStatus('save_personal', 'Saving…');
+  await postSave('personal', { first, last, phone });
+  setStatus('save_personal', '✓ Saved', 'saved');
+  renderCandyMap();
+}
+
+async function saveMeeting() {
+  const done = document.getElementById('meeting_done')?.checked || false;
+  await postSave('meeting', { done });
+}
+
+async function saveTools(showStatus) {
+  const data = {};
+  TOOLS.forEach(tool => {
+    data[tool.id] = {};
+    tool.items.forEach(it => {
+      data[tool.id][it.id] = !!(document.getElementById('t_' + tool.id + '_' + it.id)?.checked);
+    });
+    data[tool.id].notes = document.getElementById('tn_' + tool.id)?.value || '';
+  });
+  if (showStatus) setStatus('save_tools', 'Saving…');
+  await postSave('tools', data);
+  if (showStatus) { setStatus('save_tools', '✓ Saved', 'saved'); renderCandyMap(); }
+  // Update mini bars
+  TOOLS.forEach(tool => {
+    const done = tool.items.filter(it => data[tool.id]?.[it.id]).length;
+    const pct  = Math.round((done / tool.items.length) * 100);
+    const bar  = document.querySelector(`#card_${tool.id} .mini-bar-fill`);
+    if (bar) bar.style.width = pct + '%';
+    const count = document.querySelector(`#card_${tool.id} + .card-completion`);
+  });
+}
+
+async function saveClients(w) {
+  const data = {};
+  clientData.forEach(c => {
+    const sel = document.getElementById('cp_' + c.clientId);
+    if (sel) data[c.clientId] = sel.value;
+  });
+  setStatus('save_clients_' + w, 'Saving…');
+  await postSave('clients_' + w, data);
+  setStatus('save_clients_' + w, '✓ Saved', 'saved');
+}
+
+async function saveProcedures() {
+  const data = {};
+  procedureData.forEach(p => {
+    data[p.id] = !!(document.getElementById('proc_' + p.id)?.checked);
+  });
+  setStatus('save_procedures', 'Saving…');
+  await postSave('procedures', data);
+  setStatus('save_procedures', '✓ Saved', 'saved');
+  renderCandyMap();
+}
+
+async function saveCheckin(w) {
+  const rating   = document.querySelector(`input[name="rating_${w}"]:checked`)?.value || '';
+  const exciting = document.getElementById('ci_exciting_' + w)?.value || '';
+  const working  = document.getElementById('ci_working_' + w)?.value || '';
+  const hard     = document.getElementById('ci_hard_' + w)?.value || '';
+  setStatus('save_checkin_' + w, 'Saving…');
+  await postSave('checkin_' + w, { rating, exciting, working, hard });
+  setStatus('save_checkin_' + w, '✓ Saved', 'saved');
+  renderCandyMap();
+}
+
+async function saveMonthly(w) {
+  const rating  = document.querySelector(`input[name="mrating_${w}"]:checked`)?.value || '';
+  const working = document.getElementById('mo_working_' + w)?.value || '';
+  const hard    = document.getElementById('mo_hard_' + w)?.value || '';
+  const goals   = document.getElementById('mo_goals_' + w)?.value || '';
+  setStatus('save_monthly_' + w, 'Saving…');
+  await postSave('monthly_' + w, { rating, working, hard, goals });
+  setStatus('save_monthly_' + w, '✓ Saved', 'saved');
+}
+
+async function saveFinal(submit) {
+  const rating  = document.querySelector('input[name="frating"]:checked')?.value || '';
+  const worked  = document.getElementById('f_worked')?.value || '';
+  const improve = document.getElementById('f_improve')?.value || '';
+  const goals   = document.getElementById('f_goals')?.value || '';
+  const other   = document.getElementById('f_other')?.value || '';
+  setStatus('save_final', 'Saving…');
+  await postSave('final', { rating, worked, improve, goals, other });
+  if (submit) {
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method:'POST', mode:'no-cors',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ action:'final_submit', empId, empPw })
+      });
+    } catch(e) {}
+    document.getElementById('appScreen').style.display = 'none';
+    document.getElementById('successScreen').style.display = 'flex';
+  } else {
+    setStatus('save_final', '✓ Draft saved', 'saved');
+  }
+}
+
+// ── RESTORE VALUES ────────────────────────────────────────────────────────────
+function restoreTabValues(tabId, w) {
+  if (tabId === 'getstarted') {
+    const d = progressData['personal'] || {};
+    if (document.getElementById('p_first')) document.getElementById('p_first').value = d.first || '';
+    if (document.getElementById('p_last'))  document.getElementById('p_last').value  = d.last  || '';
+    if (document.getElementById('p_phone')) document.getElementById('p_phone').value = d.phone || '';
+    const mt = progressData['meeting'] || {};
+    if (document.getElementById('meeting_done')) document.getElementById('meeting_done').checked = !!mt.done;
+  }
+  if (tabId === 'checkin') {
+    const d = progressData['checkin_' + w] || {};
+    if (d.rating) { const r = document.getElementById('s' + w + '_' + d.rating); if (r) r.checked = true; }
+    ['exciting','working','hard'].forEach(k => {
+      const el = document.getElementById('ci_' + k + '_' + w);
+      if (el && d[k]) el.value = d[k];
+    });
+  }
+  if (tabId === 'monthly') {
+    const d = progressData['monthly_' + w] || {};
+    if (d.rating) { const r = document.getElementById('ms' + w + '_' + d.rating); if (r) r.checked = true; }
+    ['working','hard','goals'].forEach(k => {
+      const el = document.getElementById('mo_' + k + '_' + w);
+      if (el && d[k]) el.value = d[k];
+    });
+  }
+  if (tabId === 'final') {
+    const d = progressData['final'] || {};
+    if (d.rating) { const r = document.getElementById('fs' + d.rating); if (r) r.checked = true; }
+    ['worked','improve','goals','other'].forEach(k => {
+      const el = document.getElementById('f_' + k);
+      if (el && d[k]) el.value = d[k];
+    });
+  }
+}
+
+// ── UI HELPERS ────────────────────────────────────────────────────────────────
+function toggleCard(header) {
+  header.classList.toggle('open');
+  const body = header.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+function escHtml(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
