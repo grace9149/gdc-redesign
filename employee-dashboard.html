@@ -265,9 +265,9 @@
           <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           Team Access
         </div>
-        <div class="sidebar-item" id="nav-procedures" onclick="showView('procedures')">
+        <div class="sidebar-item" id="nav-content" onclick="showView('content')">
           <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
-          GDC Procedures
+          Onboarding Content
         </div>
       </div>
     </nav>
@@ -404,20 +404,62 @@
         </div>
       </div>
 
-      <!-- ══ PROCEDURES VIEW ══ -->
-      <div class="view" id="view-procedures">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
-          <div>
-            <h2 class="view-title">GDC Procedures</h2>
-            <p class="view-sub">These appear as a checklist in every employee's portal.</p>
-          </div>
+      <!-- ══ ONBOARDING CONTENT VIEW ══ -->
+      <div class="view" id="view-content">
+        <h2 class="view-title">Onboarding Content</h2>
+        <p class="view-sub">Everything you add here appears live in the employee portal.</p>
+
+        <div class="detail-tabs" style="margin-bottom:24px;">
+          <div class="detail-tab active" onclick="switchContentTab('procedures')">Procedures</div>
+          <div class="detail-tab" onclick="switchContentTab('items')">Section Items</div>
         </div>
-        <div class="section-card" style="padding:20px;">
-          <div style="display:flex;gap:10px;margin-bottom:16px;">
-            <input type="text" id="newProcText" placeholder="Add a new procedure…" style="flex:1;padding:10px 14px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;outline:none;" onkeydown="if(event.key==='Enter')addProcedure()" />
-            <button class="btn-primary" onclick="addProcedure()">Add</button>
+
+        <!-- Procedures Panel -->
+        <div id="content-panel-procedures">
+          <div style="display:flex;gap:10px;margin-bottom:20px;">
+            <input type="text" id="newProcText" placeholder="Add a new procedure title…" style="flex:1;padding:10px 14px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;outline:none;" onkeydown="if(event.key==='Enter')addProcedure()" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" />
+            <button class="btn-primary" onclick="addProcedure()">Add Procedure</button>
           </div>
           <div id="proceduresList"></div>
+        </div>
+
+        <!-- Section Items Panel -->
+        <div id="content-panel-items" style="display:none;">
+          <p style="font-size:13px;color:var(--mid);margin-bottom:20px;">Add custom checklist items to any section of the employee portal. Employees will see them as checkboxes they can tick off.</p>
+
+          <div class="section-card" style="padding:20px;margin-bottom:20px;">
+            <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--light);margin-bottom:14px;">Add New Item</div>
+            <div class="form-row-2" style="margin-bottom:12px;">
+              <div class="form-group" style="margin:0;">
+                <label>Title *</label>
+                <input type="text" id="si_title" placeholder="e.g. Review expense policy" style="width:100%;padding:10px 14px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" />
+              </div>
+              <div class="form-group" style="margin:0;">
+                <label>Section</label>
+                <select id="si_section" style="width:100%;padding:10px 14px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;outline:none;background:#fff;appearance:none;">
+                  <option value="getstarted">Week 1 — Getting Started</option>
+                  <option value="tools">Tools Setup</option>
+                  <option value="clients">Client Training</option>
+                  <option value="procedures">GDC Procedures</option>
+                  <option value="checkin">Weekly Check-in</option>
+                  <option value="monthly">Monthly Check-in (Weeks 4 &amp; 8)</option>
+                  <option value="final">90-Day Final Check-in (Week 12)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom:12px;">
+              <label>Description (optional)</label>
+              <textarea id="si_description" placeholder="Add details or instructions for this item…" style="width:100%;padding:10px 14px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;resize:vertical;min-height:80px;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+            </div>
+            <div class="form-group" style="margin-bottom:14px;">
+              <label>Google Drive Video URL (optional)</label>
+              <input type="text" id="si_video" placeholder="https://drive.google.com/file/d/…/view" style="width:100%;padding:10px 14px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" />
+              <div style="font-size:11px;color:var(--light);margin-top:4px;">Upload video to Google Drive → Share → "Anyone with link" → paste URL here</div>
+            </div>
+            <button class="btn-primary" onclick="addSectionItem()">Add to Portal</button>
+          </div>
+
+          <div id="sectionItemsList"></div>
         </div>
       </div>
 
@@ -531,7 +573,7 @@ async function doLogin() {
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('appScreen').style.display = 'block';
       document.getElementById('userBadge').textContent = userName;
-      loadEmployees(); loadTeam(); loadProcedures();
+      loadEmployees(); loadTeam(); loadProcedures(); loadSectionItems();
     } else {
       err.style.display = 'block';
       btn.disabled = false; btn.textContent = 'Sign In';
@@ -560,6 +602,7 @@ function showView(id) {
   document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
   document.getElementById('view-' + id)?.classList.add('active');
   document.getElementById('nav-' + id)?.classList.add('active');
+  if (id === 'content') { renderProcedures(); renderSectionItems(); }
 }
 
 // ── LOAD EMPLOYEES ────────────────────────────────────────────────────────────
@@ -1035,6 +1078,16 @@ async function removeTeamMember(tmId, name) {
 }
 
 // ── PROCEDURES ────────────────────────────────────────────────────────────────
+// ── CONTENT TAB SWITCH ────────────────────────────────────────────────────────
+function switchContentTab(tab) {
+  document.querySelectorAll('#view-content .detail-tab').forEach((t,i) => {
+    t.classList.toggle('active', ['procedures','items'][i] === tab);
+  });
+  document.getElementById('content-panel-procedures').style.display = tab === 'procedures' ? 'block' : 'none';
+  document.getElementById('content-panel-items').style.display      = tab === 'items'      ? 'block' : 'none';
+}
+
+// ── PROCEDURES ────────────────────────────────────────────────────────────────
 async function loadProcedures() {
   try {
     const res  = await fetch(`${APPS_SCRIPT_URL}?action=get_procedures&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}`);
@@ -1045,12 +1098,58 @@ async function loadProcedures() {
 
 function renderProcedures() {
   const list = document.getElementById('proceduresList');
-  if (!allProcedures.length) { list.innerHTML = '<p style="font-size:13px;color:var(--light);">No procedures yet.</p>'; return; }
+  if (!allProcedures.length) { list.innerHTML = '<p style="font-size:13px;color:var(--light);">No procedures yet. Add one above.</p>'; return; }
   list.innerHTML = allProcedures.map(p => `
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);">
-      <div style="font-size:13px;color:var(--charcoal);">${escHtml(p.text)}</div>
-      <button class="btn-sm" style="color:#c0392b;border-color:#f5c6cb;flex-shrink:0;" onclick="removeProcedure('${escHtml(p.id)}','${escHtml(p.text)}')">Remove</button>
+    <div style="border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;cursor:pointer;" onclick="toggleProcedure('${escHtml(p.id)}')">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:12px;color:var(--light);" id="proc-arrow-${escHtml(p.id)}">▶</span>
+          <div style="font-size:13px;font-weight:500;color:var(--charcoal);">${escHtml(p.text)}</div>
+          ${p.description||p.videoUrl ? '<span style="font-size:11px;color:var(--gold);margin-left:4px;">✓ Has content</span>' : ''}
+        </div>
+        <button class="btn-sm" style="color:#c0392b;border-color:#f5c6cb;flex-shrink:0;" onclick="event.stopPropagation();removeProcedure('${escHtml(p.id)}','${escHtml(p.text)}')">Remove</button>
+      </div>
+      <div id="proc-detail-${escHtml(p.id)}" style="display:none;padding:0 0 20px 22px;">
+        <div class="form-group" style="margin-bottom:12px;">
+          <label>Details / Instructions</label>
+          <textarea id="proc-desc-${escHtml(p.id)}" style="width:100%;padding:10px 12px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;resize:vertical;min-height:100px;outline:none;" placeholder="Describe this procedure — what it involves, steps to follow, resources..." onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">${escHtml(p.description||'')}</textarea>
+        </div>
+        <div class="form-group" style="margin-bottom:12px;">
+          <label>Google Drive Video URL</label>
+          <input type="text" id="proc-video-${escHtml(p.id)}" value="${escHtml(p.videoUrl||'')}" placeholder="https://drive.google.com/file/d/…/view" style="width:100%;padding:10px 12px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" />
+          <div style="font-size:11px;color:var(--light);margin-top:4px;">Upload to Google Drive → Share → "Anyone with link" → paste URL</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <button class="btn-primary" style="padding:8px 18px;font-size:11px;" onclick="saveProcedureDetail('${escHtml(p.id)}')">Save</button>
+          <span id="proc-save-status-${escHtml(p.id)}" style="font-size:11px;color:var(--light);"></span>
+        </div>
+      </div>
     </div>`).join('');
+}
+
+function toggleProcedure(procId) {
+  const detail = document.getElementById('proc-detail-' + procId);
+  const arrow  = document.getElementById('proc-arrow-' + procId);
+  const isOpen = detail.style.display !== 'none';
+  detail.style.display = isOpen ? 'none' : 'block';
+  arrow.textContent = isOpen ? '▶' : '▼';
+}
+
+async function saveProcedureDetail(procId) {
+  const desc   = document.getElementById('proc-desc-' + procId)?.value  || '';
+  const video  = document.getElementById('proc-video-' + procId)?.value || '';
+  const status = document.getElementById('proc-save-status-' + procId);
+  if (status) status.textContent = 'Saving…';
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=update_procedure&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&procId=${encodeURIComponent(procId)}&description=${encodeURIComponent(desc)}&videoUrl=${encodeURIComponent(video)}`);
+    const data = await res.json();
+    if (data.ok) {
+      const p = allProcedures.find(p => p.id === procId);
+      if (p) { p.description = desc; p.videoUrl = video; }
+      if (status) { status.textContent = '✓ Saved — live in employee portal'; status.style.color = 'var(--green)'; }
+      renderProcedures();
+    } else { if (status) status.textContent = 'Error: ' + (data.error||'unknown'); }
+  } catch(e) { if (status) status.textContent = 'Connection error'; }
 }
 
 async function addProcedure() {
@@ -1060,12 +1159,130 @@ async function addProcedure() {
     const res  = await fetch(`${APPS_SCRIPT_URL}?action=add_procedure&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&text=${encodeURIComponent(text)}`);
     const data = await res.json();
     if (data.ok) {
-      allProcedures.push({ id: data.procId, text });
+      allProcedures.push({ id: data.procId, text, description: '', videoUrl: '' });
       document.getElementById('newProcText').value = '';
       renderProcedures();
       showToast('Procedure added!');
-    }
+    } else { showToast('Error: ' + (data.error||'unknown')); }
+  } catch(e) { showToast('Connection error.'); }
+}
+
+// ── SECTION ITEMS ─────────────────────────────────────────────────────────────
+let allSectionItems = [];
+
+const SECTION_LABELS = {
+  getstarted: 'Week 1 — Getting Started', tools: 'Tools Setup',
+  clients: 'Client Training', procedures: 'GDC Procedures',
+  checkin: 'Weekly Check-in', monthly: 'Monthly Check-in',
+  final: '90-Day Final Check-in'
+};
+
+async function loadSectionItems() {
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=get_section_items&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}`);
+    const data = await res.json();
+    if (data.ok) { allSectionItems = data.items || []; renderSectionItems(); }
   } catch(e) {}
+}
+
+function renderSectionItems() {
+  const list = document.getElementById('sectionItemsList');
+  if (!list) return;
+  if (!allSectionItems.length) {
+    list.innerHTML = '<p style="font-size:13px;color:var(--light);">No custom items yet. Add one above.</p>';
+    return;
+  }
+  // Group by section
+  const grouped = {};
+  allSectionItems.forEach(item => {
+    if (!grouped[item.section]) grouped[item.section] = [];
+    grouped[item.section].push(item);
+  });
+
+  list.innerHTML = Object.keys(grouped).map(section => `
+    <div class="section-card" style="margin-bottom:16px;overflow:hidden;">
+      <div style="padding:12px 20px;background:#FAFAF8;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--light);">
+        ${escHtml(SECTION_LABELS[section]||section)}
+      </div>
+      ${grouped[section].map(item => `
+        <div style="border-bottom:1px solid var(--border);">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;cursor:pointer;" onclick="toggleSectionItem('${escHtml(item.id)}')">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:11px;color:var(--light);" id="si-arrow-${escHtml(item.id)}">▶</span>
+              <div style="font-size:13px;font-weight:500;">${escHtml(item.title)}</div>
+              ${item.description||item.videoUrl ? '<span style="font-size:11px;color:var(--gold);">✓ Has content</span>' : ''}
+            </div>
+            <button class="btn-sm" style="color:#c0392b;border-color:#f5c6cb;" onclick="event.stopPropagation();removeSectionItem('${escHtml(item.id)}','${escHtml(item.title)}')">Remove</button>
+          </div>
+          <div id="si-detail-${escHtml(item.id)}" style="display:none;padding:0 20px 16px;">
+            <div class="form-group" style="margin-bottom:10px;">
+              <label>Description</label>
+              <textarea id="si-desc-${escHtml(item.id)}" style="width:100%;padding:10px 12px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;resize:vertical;min-height:80px;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">${escHtml(item.description||'')}</textarea>
+            </div>
+            <div class="form-group" style="margin-bottom:10px;">
+              <label>Google Drive Video URL</label>
+              <input type="text" id="si-video-${escHtml(item.id)}" value="${escHtml(item.videoUrl||'')}" placeholder="https://drive.google.com/file/d/…/view" style="width:100%;padding:10px 12px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" />
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <button class="btn-primary" style="padding:7px 16px;font-size:11px;" onclick="saveSectionItem('${escHtml(item.id)}')">Save</button>
+              <span id="si-status-${escHtml(item.id)}" style="font-size:11px;color:var(--light);"></span>
+            </div>
+          </div>
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+function toggleSectionItem(itemId) {
+  const d = document.getElementById('si-detail-' + itemId);
+  const a = document.getElementById('si-arrow-'  + itemId);
+  const isOpen = d.style.display !== 'none';
+  d.style.display = isOpen ? 'none' : 'block';
+  a.textContent   = isOpen ? '▶' : '▼';
+}
+
+async function addSectionItem() {
+  const title   = document.getElementById('si_title').value.trim();
+  const section = document.getElementById('si_section').value;
+  const desc    = document.getElementById('si_description').value.trim();
+  const video   = document.getElementById('si_video').value.trim();
+  if (!title) { showToast('Please enter a title.'); return; }
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=add_section_item&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&section=${encodeURIComponent(section)}&title=${encodeURIComponent(title)}&description=${encodeURIComponent(desc)}&videoUrl=${encodeURIComponent(video)}`);
+    const data = await res.json();
+    if (data.ok) {
+      allSectionItems.push({ id: data.itemId, section, title, description: desc, videoUrl: video });
+      document.getElementById('si_title').value       = '';
+      document.getElementById('si_description').value = '';
+      document.getElementById('si_video').value       = '';
+      renderSectionItems();
+      showToast('Item added to employee portal!');
+    } else { showToast('Error: ' + (data.error||'unknown')); }
+  } catch(e) { showToast('Connection error.'); }
+}
+
+async function saveSectionItem(itemId) {
+  const desc   = document.getElementById('si-desc-'  + itemId)?.value || '';
+  const video  = document.getElementById('si-video-' + itemId)?.value || '';
+  const status = document.getElementById('si-status-' + itemId);
+  if (status) status.textContent = 'Saving…';
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=update_section_item&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&itemId=${encodeURIComponent(itemId)}&description=${encodeURIComponent(desc)}&videoUrl=${encodeURIComponent(video)}`);
+    const data = await res.json();
+    if (data.ok) {
+      const item = allSectionItems.find(i => i.id === itemId);
+      if (item) { item.description = desc; item.videoUrl = video; }
+      if (status) { status.textContent = '✓ Live in portal'; status.style.color = 'var(--green)'; }
+    } else if (status) { status.textContent = 'Error saving'; }
+  } catch(e) { if (status) status.textContent = 'Connection error'; }
+}
+
+async function removeSectionItem(itemId, title) {
+  if (!confirm(`Remove "${title}"?`)) return;
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=remove_section_item&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&itemId=${encodeURIComponent(itemId)}`);
+    const data = await res.json();
+    if (data.ok) { allSectionItems = allSectionItems.filter(i => i.id !== itemId); renderSectionItems(); showToast('Item removed.'); }
+  } catch(e) { showToast('Connection error.'); }
 }
 
 // ── COPY LOGIN ────────────────────────────────────────────────────────────────

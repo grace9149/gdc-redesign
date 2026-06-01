@@ -19,12 +19,13 @@ var GRACE_ID      = 'grace';
 var GRACE_PW      = 'GDCteam2026';
 
 var TABS = {
-  EMPLOYEES:  'Employees',
-  PROGRESS:   'Progress',
-  CLIENTS:    'Clients',
-  INSIGHTFUL: 'Insightful',
-  TEAM:       'Team_Members',
-  PROCEDURES: 'Procedures'
+  EMPLOYEES:     'Employees',
+  PROGRESS:      'Progress',
+  CLIENTS:       'Clients',
+  INSIGHTFUL:    'Insightful',
+  TEAM:          'Team_Members',
+  PROCEDURES:    'Procedures',
+  SECTION_ITEMS: 'Section_Items'
 };
 
 var DEFAULT_PROCEDURES = [
@@ -52,6 +53,11 @@ function doGet(e) {
     if (p.action === 'remove_employee')    return respond(removeEmployee(p));
     if (p.action === 'remove_team_member') return respond(removeTeamMember(p));
     if (p.action === 'remove_procedure')   return respond(removeProcedure(p));
+    if (p.action === 'update_procedure')   return respond(updateProcedure(p));
+    if (p.action === 'get_section_items')  return respond(getSectionItems(p.id, p.pw));
+    if (p.action === 'add_section_item')   return respond(addSectionItem(p));
+    if (p.action === 'remove_section_item') return respond(removeSectionItem(p));
+    if (p.action === 'update_section_item') return respond(updateSectionItem(p));
     return respond({ ok: false, error: 'Unknown action' });
   } catch(err) {
     return respond({ ok: false, error: err.toString() });
@@ -309,15 +315,15 @@ function getProcedures(id, pw) {
   if (!isDashboardUser(id, pw)) return { ok: false, error: 'Unauthorized' };
   var sheet = getSheet(TABS.PROCEDURES);
   if (sheet.getLastRow() < 2) {
-    ensureHeaders(sheet, ['ID','Text','Created By','Created Date']);
+    ensureHeaders(sheet, ['ID','Text','Created By','Created Date','Description','Video URL']);
     DEFAULT_PROCEDURES.forEach(function(text) {
-      sheet.appendRow([generateId(), text, 'grace', now()]);
+      sheet.appendRow([generateId(), text, 'grace', now(), '', '']);
     });
   }
   var rows = sheet.getDataRange().getValues();
   var procs = [];
   for (var i = 1; i < rows.length; i++) {
-    procs.push({ id: rows[i][0], text: rows[i][1] });
+    procs.push({ id: rows[i][0], text: rows[i][1], description: rows[i][4]||'', videoUrl: rows[i][5]||'' });
   }
   return { ok: true, procedures: procs };
 }
@@ -326,9 +332,73 @@ function addProcedure(p) {
   if (!isDashboardUser(p.id, p.pw)) return { ok: false, error: 'Unauthorized' };
   var pId   = generateId();
   var sheet = getSheet(TABS.PROCEDURES);
-  ensureHeaders(sheet, ['ID','Text','Created By','Created Date']);
-  sheet.appendRow([pId, p.text, p.id, now()]);
+  ensureHeaders(sheet, ['ID','Text','Created By','Created Date','Description','Video URL']);
+  sheet.appendRow([pId, p.text, p.id, now(), '', '']);
   return { ok: true, procId: pId };
+}
+
+function updateProcedure(p) {
+  if (!isDashboardUser(p.id, p.pw)) return { ok: false, error: 'Unauthorized' };
+  var sheet = getSheet(TABS.PROCEDURES);
+  var rows  = sheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]) === String(p.procId)) {
+      sheet.getRange(i+1, 5).setValue(p.description || '');
+      sheet.getRange(i+1, 6).setValue(p.videoUrl    || '');
+      return { ok: true };
+    }
+  }
+  return { ok: false, error: 'Procedure not found' };
+}
+
+// -- SECTION ITEMS -------------------------------------------------------------
+function getSectionItems(id, pw) {
+  if (!isDashboardUser(id, pw)) return { ok: false, error: 'Unauthorized' };
+  var sheet = getSheet(TABS.SECTION_ITEMS);
+  if (sheet.getLastRow() < 2) return { ok: true, items: [] };
+  var rows  = sheet.getDataRange().getValues();
+  var items = [];
+  for (var i = 1; i < rows.length; i++) {
+    items.push({ id: rows[i][0], section: rows[i][1], title: rows[i][2],
+      description: rows[i][3]||'', videoUrl: rows[i][4]||'' });
+  }
+  return { ok: true, items: items };
+}
+
+function addSectionItem(p) {
+  if (!isDashboardUser(p.id, p.pw)) return { ok: false, error: 'Unauthorized' };
+  var iId   = generateId();
+  var sheet = getSheet(TABS.SECTION_ITEMS);
+  ensureHeaders(sheet, ['ID','Section','Title','Description','Video URL','Created By','Created Date']);
+  sheet.appendRow([iId, p.section||'', p.title||'', p.description||'', p.videoUrl||'', p.id, now()]);
+  return { ok: true, itemId: iId };
+}
+
+function removeSectionItem(p) {
+  if (!isDashboardUser(p.id, p.pw)) return { ok: false, error: 'Unauthorized' };
+  var sheet = getSheet(TABS.SECTION_ITEMS);
+  var rows  = sheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]) === String(p.itemId)) {
+      sheet.deleteRow(i + 1);
+      return { ok: true };
+    }
+  }
+  return { ok: false, error: 'Item not found' };
+}
+
+function updateSectionItem(p) {
+  if (!isDashboardUser(p.id, p.pw)) return { ok: false, error: 'Unauthorized' };
+  var sheet = getSheet(TABS.SECTION_ITEMS);
+  var rows  = sheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]) === String(p.itemId)) {
+      sheet.getRange(i+1, 4).setValue(p.description || '');
+      sheet.getRange(i+1, 5).setValue(p.videoUrl    || '');
+      return { ok: true };
+    }
+  }
+  return { ok: false, error: 'Item not found' };
 }
 
 // -- SAVE PROGRESS (Employee) --------------------------------------------------
@@ -446,16 +516,27 @@ function getEmployeeProgress(id, pw) {
     }
   }
 
-  // Procedures
+  // Procedures (with description + video)
   var procedures = [];
   if (procSheet.getLastRow() > 1) {
     var pr = procSheet.getDataRange().getValues();
     for (var m = 1; m < pr.length; m++) {
-      procedures.push({ id: pr[m][0], text: pr[m][1] });
+      procedures.push({ id: pr[m][0], text: pr[m][1], description: pr[m][4]||'', videoUrl: pr[m][5]||'' });
     }
   }
 
-  return { ok: true, progress: progress, clients: clients, insightful: insightful, procedures: procedures };
+  // Section Items (custom checklist items from dashboard)
+  var sectionItems = [];
+  var siSheet = getSheet(TABS.SECTION_ITEMS);
+  if (siSheet.getLastRow() > 1) {
+    var si = siSheet.getDataRange().getValues();
+    for (var n = 1; n < si.length; n++) {
+      sectionItems.push({ id: si[n][0], section: si[n][1], title: si[n][2],
+        description: si[n][3]||'', videoUrl: si[n][4]||'' });
+    }
+  }
+
+  return { ok: true, progress: progress, clients: clients, insightful: insightful, procedures: procedures, sectionItems: sectionItems };
 }
 
 // -- FINAL SUBMIT --------------------------------------------------------------
