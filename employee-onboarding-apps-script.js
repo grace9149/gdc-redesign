@@ -244,6 +244,27 @@ function createTeamMember(p) {
     }
   }
   sheet.appendRow([tmId, fullName, p.email||'', password, now(), '']);
+
+  // Send invitation email if email provided
+  if (p.email) {
+    var subject = 'You now have access to the GDC Employee Dashboard';
+    var body =
+      'Hi ' + firstName + ',\n\n' +
+      'Grace has given you access to the GDC Employee Onboarding Dashboard.\n\n' +
+      'Log in here:\n' +
+      'https://www.gracedouganconsulting.com/employee-dashboard\n\n' +
+      'Your login credentials:\n' +
+      '  Username: ' + tmId + '\n' +
+      '  Password: ' + password + '\n\n' +
+      'You can use this dashboard to track employee onboarding progress, ' +
+      'enter weekly Insightful scores, and add feedback for your team members.\n\n' +
+      'Questions? Reply to this email or reach out to Grace directly.\n\n' +
+      'Warm regards,\n' +
+      'Grace Dougan Consulting\n' +
+      'gracedouganconsulting.com';
+    MailApp.sendEmail(p.email, subject, body, { name: 'Grace Dougan Consulting' });
+  }
+
   return { ok: true, tmId: tmId, password: password, name: fullName };
 }
 
