@@ -557,14 +557,23 @@ function renderTools() {
       completedTools++;
       return null;
     }
-    // In past/current weeks: show completed tool as a done card
+    // In past/current weeks: show completed tool as expandable done card
     if (pendingItems.length === 0 && isPast) {
       completedTools++;
       return `
-      <div class="card" style="opacity:0.6;">
-        <div class="card-header" style="cursor:default;">
+      <div class="card" style="opacity:0.7;">
+        <div class="card-header" onclick="toggleCard(this)">
           <div class="card-title"><span class="card-icon">${tool.icon}</span>${tool.label}</div>
           <div class="card-completion" style="color:var(--gold);">✓ Complete</div>
+        </div>
+        <div class="card-body">
+          <div class="sub-items">
+            ${doneItems.map(it => `
+              <div class="sub-item" style="opacity:0.7;">
+                <span style="color:var(--gold);font-size:14px;flex-shrink:0;width:16px;text-align:center;">✓</span>
+                <div><div class="sub-item-text" style="text-decoration:line-through;color:var(--text-light);">${it.label}</div></div>
+              </div>`).join('')}
+          </div>
         </div>
       </div>`;
     }
