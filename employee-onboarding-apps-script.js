@@ -30,7 +30,7 @@ var TABS = {
 
 var DEFAULT_PROCEDURES = [
   'Email formatting',
-  'Client communication',
+  'Communications',
   'Team overlap'
 ];
 
