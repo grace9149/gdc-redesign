@@ -343,6 +343,7 @@
           <div class="detail-tab" onclick="switchDetailTab('insightful')">Insightful</div>
           <div class="detail-tab" onclick="switchDetailTab('clients')">Clients</div>
           <div class="detail-tab" onclick="switchDetailTab('tools')">Tools</div>
+          <div class="detail-tab" onclick="switchDetailTab('procedures')">Procedures</div>
           <div class="detail-tab" onclick="switchDetailTab('checkins')">Check-ins</div>
         </div>
 
@@ -374,6 +375,11 @@
         <!-- Tools Panel -->
         <div class="detail-panel" id="panel-tools">
           <div id="toolsProgress"></div>
+        </div>
+
+        <!-- Procedures Panel -->
+        <div class="detail-panel" id="panel-procedures">
+          <div id="proceduresProgress"></div>
         </div>
 
         <!-- Check-ins Panel -->
@@ -723,7 +729,7 @@ function renderDetailCandy(currentWeek, progress) {
 function switchDetailTab(tab) {
   detailActiveTab = tab;
   document.querySelectorAll('.detail-tab').forEach((t,i) => {
-    const tabs = ['overview','insightful','clients','tools','checkins'];
+    const tabs = ['overview','insightful','clients','tools','procedures','checkins'];
     t.classList.toggle('active', tabs[i] === tab);
   });
   document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('active'));
@@ -734,6 +740,7 @@ function switchDetailTab(tab) {
   if (tab === 'insightful')  renderInsightfulPanel();
   if (tab === 'clients')     renderClientsPanel();
   if (tab === 'tools')       renderToolsPanel();
+  if (tab === 'procedures')  renderProceduresPanel();
   if (tab === 'checkins')    renderCheckinsPanel();
 }
 
@@ -976,6 +983,82 @@ async function toggleToolItem(empId, toolId, itemId, row) {
     if (status) { status.textContent = '✓ Saved'; setTimeout(() => { if(status) status.textContent=''; }, 2000); }
     // Refresh the panel to update progress bars
     renderToolsPanel();
+  } catch(e) {
+    if (status) status.textContent = 'Error saving';
+  }
+}
+
+function renderProceduresPanel() {
+  const prog      = currentEmpDetail.progress || {};
+  const saved     = prog['procedures'] || {};
+  const empId     = currentEmpDetail.employee.id;
+  const container = document.getElementById('proceduresProgress');
+
+  if (!allProcedures.length) {
+    container.innerHTML = '<p style="font-size:13px;color:var(--light);padding:12px 0;">No procedures set up yet. Add them in Onboarding Content → Procedures.</p>';
+    return;
+  }
+
+  const sorted = [...allProcedures].sort((a, b) => a.text.localeCompare(b.text));
+  const done   = sorted.filter(p => saved[p.id]).length;
+  const pct    = Math.round((done / sorted.length) * 100);
+
+  let html = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div style="font-size:13px;color:var(--mid);">${done} of ${sorted.length} completed</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:120px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;">
+          <div style="width:${pct}%;height:100%;background:${pct===100?'var(--green)':'var(--gold)'};border-radius:3px;"></div>
+        </div>
+        <span style="font-size:11px;color:var(--light);">${pct}%</span>
+      </div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:4px;overflow:hidden;">`;
+
+  sorted.forEach(p => {
+    const checked = !!saved[p.id];
+    html += `
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border);cursor:pointer;" onclick="toggleProcedureItem('${escHtml(empId)}','${escHtml(p.id)}',this)">
+        <input type="checkbox" ${checked?'checked':''} style="width:15px;height:15px;accent-color:var(--green);flex-shrink:0;cursor:pointer;" onclick="event.stopPropagation();toggleProcedureItem('${escHtml(empId)}','${escHtml(p.id)}',this.parentElement)" />
+        <span style="font-size:13px;color:${checked?'var(--mid)':'var(--charcoal)'};${checked?'text-decoration:line-through;':''}">${escHtml(p.text)}</span>
+        ${p.description||p.videoUrl ? `<span style="font-size:10px;color:var(--gold);margin-left:auto;">Has content</span>` : ''}
+      </div>`;
+  });
+
+  html += `</div><div style="margin-top:8px;font-size:11px;color:var(--light);" id="procSaveStatus"></div>`;
+  container.innerHTML = html;
+}
+
+async function toggleProcedureItem(empId, procId, row) {
+  const cb      = row.querySelector('input[type=checkbox]');
+  const checked = cb ? cb.checked : false;
+  const status  = document.getElementById('procSaveStatus');
+
+  const prog = currentEmpDetail.progress || {};
+  if (!prog['procedures']) prog['procedures'] = {};
+  prog['procedures'][procId] = checked;
+
+  const label = row.querySelector('span');
+  if (label) {
+    label.style.textDecoration = checked ? 'line-through' : 'none';
+    label.style.color          = checked ? 'var(--mid)' : 'var(--charcoal)';
+  }
+  if (cb) cb.checked = checked;
+
+  if (status) status.textContent = 'Saving…';
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'save_progress_admin',
+        userId, userPw, empId,
+        section: 'procedures',
+        sectionData: prog['procedures']
+      })
+    });
+    if (status) { status.textContent = '✓ Saved'; setTimeout(() => { if(status) status.textContent=''; }, 2000); }
+    renderProceduresPanel();
   } catch(e) {
     if (status) status.textContent = 'Error saving';
   }
