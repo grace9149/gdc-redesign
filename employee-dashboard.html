@@ -1099,7 +1099,8 @@ async function loadProcedures() {
 function renderProcedures() {
   const list = document.getElementById('proceduresList');
   if (!allProcedures.length) { list.innerHTML = '<p style="font-size:13px;color:var(--light);">No procedures yet. Add one above.</p>'; return; }
-  list.innerHTML = allProcedures.map(p => `
+  const sorted = [...allProcedures].sort((a, b) => a.text.localeCompare(b.text));
+  list.innerHTML = sorted.map(p => `
     <div style="border-bottom:1px solid var(--border);">
       <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;cursor:pointer;" onclick="toggleProcedure('${escHtml(p.id)}')">
         <div style="display:flex;align-items:center;gap:10px;">
