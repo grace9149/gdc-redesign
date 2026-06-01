@@ -69,6 +69,7 @@ function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
     if (data.action === 'save_progress')          return respond(saveProgress(data));
+    if (data.action === 'save_progress_admin')    return respond(saveProgressAdmin(data));
     if (data.action === 'save_insightful')        return respond(saveInsightful(data));
     if (data.action === 'save_client_proficiency') return respond(saveClientProficiency(data));
     if (data.action === 'final_submit')           return respond(finalSubmit(data));
@@ -411,6 +412,27 @@ function updateSectionItem(p) {
     }
   }
   return { ok: false, error: 'Item not found' };
+}
+
+// -- SAVE PROGRESS ADMIN (Dashboard) ------------------------------------------
+function saveProgressAdmin(data) {
+  if (!isDashboardUser(data.userId, data.userPw)) return { ok: false, error: 'Unauthorized' };
+  var sheet = getSheet(TABS.PROGRESS);
+  ensureHeaders(sheet, ['Timestamp','Employee ID','Section Key','Data (JSON)']);
+  var rows  = sheet.getDataRange().getValues();
+  var found = false;
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][1]) === String(data.empId) && rows[i][2] === data.section) {
+      sheet.getRange(i+1, 1).setValue(now());
+      sheet.getRange(i+1, 4).setValue(JSON.stringify(data.sectionData));
+      found = true; break;
+    }
+  }
+  if (!found) {
+    sheet.appendRow([now(), data.empId, data.section, JSON.stringify(data.sectionData)]);
+  }
+  updateEmployeeActivity(data.empId);
+  return { ok: true };
 }
 
 // -- SAVE PROGRESS (Employee) --------------------------------------------------
