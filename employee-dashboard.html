@@ -444,13 +444,13 @@
               <div class="form-group" style="margin:0;">
                 <label>Section</label>
                 <select id="si_section" style="width:100%;padding:10px 14px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;outline:none;background:#fff;appearance:none;">
-                  <option value="getstarted">Week 1 — Getting Started</option>
-                  <option value="tools">Tools Setup</option>
-                  <option value="clients">Client Training</option>
-                  <option value="procedures">GDC Procedures</option>
-                  <option value="checkin">Weekly Check-in</option>
-                  <option value="monthly">Monthly Check-in (Weeks 4 &amp; 8)</option>
-                  <option value="final">90-Day Final Check-in (Week 12)</option>
+                  <option value="getstarted">Getting Started</option>
+                  <option value="tools">Tools</option>
+                  <option value="clients">Clients</option>
+                  <option value="procedures">Procedures</option>
+                  <option value="checkin">GDC Feedback</option>
+                  <option value="monthly">Monthly Check-in</option>
+                  <option value="final">90-Day Check-in</option>
                 </select>
               </div>
             </div>
@@ -1265,6 +1265,16 @@ function switchContentTab(tab) {
   document.getElementById('content-panel-items').style.display      = tab === 'items'      ? 'block' : 'none';
   document.getElementById('content-panel-sections').style.display   = tab === 'sections'   ? 'block' : 'none';
   if (tab === 'sections') renderSectionsList();
+  if (tab === 'items')    populateSectionDropdown();
+}
+
+function populateSectionDropdown() {
+  const sel = document.getElementById('si_section');
+  if (!sel || !allSections.length) return;
+  const current = sel.value;
+  sel.innerHTML = allSections.map(s =>
+    `<option value="${escHtml(s.key)}" ${s.key === current ? 'selected' : ''}>${escHtml(s.name)}</option>`
+  ).join('');
 }
 
 // ── PROCEDURES ────────────────────────────────────────────────────────────────
@@ -1356,12 +1366,14 @@ async function addProcedure() {
 // ── SECTION ITEMS ─────────────────────────────────────────────────────────────
 let allSectionItems = [];
 
-const SECTION_LABELS = {
-  getstarted: 'Week 1 — Getting Started', tools: 'Tools Setup',
-  clients: 'Client Training', procedures: 'GDC Procedures',
-  checkin: 'Weekly Check-in', monthly: 'Monthly Check-in',
-  final: '90-Day Final Check-in'
-};
+// Section labels — resolved dynamically from allSections when available
+function getSectionLabel(key) {
+  const fromSections = allSections.find(s => s.key === key);
+  if (fromSections) return fromSections.name;
+  const fallback = { getstarted:'Getting Started', tools:'Tools', clients:'Clients',
+    procedures:'Procedures', checkin:'GDC Feedback', monthly:'Monthly Check-in', final:'90-Day Check-in' };
+  return fallback[key] || key;
+}
 
 async function loadSectionItems() {
   try {
@@ -1497,7 +1509,7 @@ function renderSectionItems() {
   list.innerHTML = Object.keys(grouped).map(section => `
     <div class="section-card" style="margin-bottom:16px;overflow:hidden;">
       <div style="padding:12px 20px;background:#FAFAF8;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--light);">
-        ${escHtml(SECTION_LABELS[section]||section)}
+        ${escHtml(getSectionLabel(section))}
       </div>
       ${grouped[section].map(item => `
         <div style="border-bottom:1px solid var(--border);">
