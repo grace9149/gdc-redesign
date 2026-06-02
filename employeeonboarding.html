@@ -295,7 +295,7 @@ const PROFICIENCY_OPTIONS = ['Not started','In training','Needs support','Indepe
 
 let empId = '', empPw = '', empFirstName = '', empStartDate = '';
 let currentWeek = 1, activeWeek = 1, activeTab = '';
-let progressData = {}, clientData = [], insightfulData = {}, procedureData = [], sectionItemsData = [];
+let progressData = {}, clientData = [], insightfulData = {}, procedureData = [], sectionItemsData = [], sectionsData = [];
 
 // ── LOGIN ─────────────────────────────────────────────────────────────────────
 document.getElementById('loginPw').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
@@ -364,6 +364,7 @@ async function initApp(empData) {
       insightfulData = data.insightful || {};
       procedureData   = data.procedures   || [];
       sectionItemsData = data.sectionItems || [];
+      sectionsData     = data.sections     || [];
     }
   } catch(e) {}
 
@@ -442,14 +443,22 @@ function showWeek(w) {
 
   if (w === 12) { title = 'Month 3 · <em>Final Week</em>'; sub = 'Complete your final check-in when ready. Great work making it here!'; }
 
+  // Build tabs from sections data (dynamic) with week-specific rules
   const tabs = [];
-  if (w === 1) tabs.push({ id:'getstarted', label:'Getting Started' });
-  tabs.push({ id:'tools', label:'Tools' });
-  if (clientData.length > 0) tabs.push({ id:'clients', label:'Clients' });
-  tabs.push({ id:'procedures', label:'Procedures' });
-  tabs.push({ id:'checkin', label:'Weekly Check-in' });
-  if (w === 4 || w === 8) tabs.push({ id:'monthly', label:'Monthly Check-in' });
-  if (w === 12) tabs.push({ id:'final', label:'90-Day Check-in' });
+  const srcSections = sectionsData.length ? sectionsData : [
+    {key:'getstarted',name:'Getting Started',enabled:true},{key:'tools',name:'Tools',enabled:true},
+    {key:'clients',name:'Clients',enabled:true},{key:'procedures',name:'Procedures',enabled:true},
+    {key:'checkin',name:'GDC Feedback',enabled:true},{key:'monthly',name:'Monthly Check-in',enabled:true},
+    {key:'final',name:'90-Day Check-in',enabled:true}
+  ];
+  srcSections.forEach(s => {
+    if (!s.enabled) return;
+    if (s.key === 'getstarted' && w !== 1) return;
+    if (s.key === 'clients' && clientData.length === 0) return;
+    if (s.key === 'monthly' && w !== 4 && w !== 8) return;
+    if (s.key === 'final' && w !== 12) return;
+    tabs.push({ id: s.key, label: s.name });
+  });
 
   if (!activeTab || !tabs.find(t => t.id === activeTab)) activeTab = tabs[0].id;
 
@@ -492,6 +501,12 @@ function isTabDone(tabId, w) {
   if (tabId === 'checkin') return !!(progressData['checkin_'+w]);
   if (tabId === 'monthly') return !!(progressData['monthly_'+w]);
   if (tabId === 'final') return !!(progressData['final']);
+  // Custom sections: done if all items checked
+  const customItems = sectionItemsData.filter(i => i.section === tabId);
+  if (customItems.length > 0) {
+    const saved = progressData['custom_' + tabId] || {};
+    return customItems.every(i => saved[i.id]);
+  }
   return false;
 }
 
@@ -499,13 +514,14 @@ function renderTab(tabId, w) {
   const container = document.getElementById('tabContent');
   if (!container) return;
 
-  if (tabId === 'getstarted') container.innerHTML = renderGetStarted();
-  else if (tabId === 'tools') container.innerHTML = renderTools();
-  else if (tabId === 'clients') container.innerHTML = renderClients(w);
+  if (tabId === 'getstarted')      container.innerHTML = renderGetStarted();
+  else if (tabId === 'tools')      container.innerHTML = renderTools();
+  else if (tabId === 'clients')    container.innerHTML = renderClients(w);
   else if (tabId === 'procedures') container.innerHTML = renderProcedures();
-  else if (tabId === 'checkin') container.innerHTML = renderCheckin(w);
-  else if (tabId === 'monthly') container.innerHTML = renderMonthly(w);
-  else if (tabId === 'final') container.innerHTML = renderFinal();
+  else if (tabId === 'checkin')    container.innerHTML = renderCheckin(w);
+  else if (tabId === 'monthly')    container.innerHTML = renderMonthly(w);
+  else if (tabId === 'final')      container.innerHTML = renderFinal();
+  else container.innerHTML = renderCustomSection(tabId, w); // custom sections
 
   // Restore saved values
   restoreTabValues(tabId, w);
@@ -709,6 +725,60 @@ function getDriveEmbedUrl(url) {
   if (!url) return null;
   const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
   return match ? 'https://drive.google.com/file/d/' + match[1] + '/preview' : null;
+}
+
+// ── CUSTOM SECTION (full tab for sections added in dashboard) ─────────────────
+function renderCustomSection(sectionKey, w) {
+  const sec      = sectionsData.find(s => s.key === sectionKey) || { name: sectionKey };
+  const items    = sectionItemsData.filter(i => i.section === sectionKey);
+  const saved    = progressData['custom_' + sectionKey] || {};
+  const isPast   = activeWeek <= currentWeek;
+  const pending  = items.filter(i => !saved[i.id]);
+  const completed = items.filter(i => saved[i.id]);
+
+  if (!items.length) {
+    return `<div class="card"><div class="card-header open"><div class="card-title">📝 ${escHtml(sec.name)}</div></div>
+      <div class="card-body open"><p style="font-size:13px;color:var(--text-light);font-style:italic;">No items added yet. Ask Grace to add items to this section from the dashboard.</p></div></div>`;
+  }
+
+  const pendingHtml = pending.map(item => {
+    const hasContent = item.description || item.videoUrl;
+    const embedUrl   = getDriveEmbedUrl(item.videoUrl);
+    return `<div style="border-bottom:1px solid var(--border);padding:10px 0;">
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <input type="checkbox" id="ci_${sectionKey}_${item.id}" onchange="saveCustomItems('${sectionKey}')" style="width:16px;height:16px;accent-color:var(--gold);flex-shrink:0;margin-top:3px;" />
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+            <label for="ci_${sectionKey}_${item.id}" style="font-size:13px;color:var(--text-dark);cursor:pointer;">${escHtml(item.title)}</label>
+            ${hasContent ? `<button style="background:none;border:none;font-size:11px;color:var(--gold);cursor:pointer;white-space:nowrap;" onclick="toggleProcDetail('ci_detail_${sectionKey}_${item.id}',this)">Details ▶</button>` : ''}
+          </div>
+          <div id="ci_detail_${sectionKey}_${item.id}" style="display:none;margin-top:12px;">
+            ${item.description ? `<div style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:${embedUrl?'14px':'0'};">${escHtml(item.description).replace(/\n/g,'<br>')}</div>` : ''}
+            ${embedUrl ? `<div style="margin-top:8px;"><iframe src="${embedUrl}" width="100%" height="320" allow="autoplay" style="border:none;border-radius:3px;background:#000;"></iframe></div>` : ''}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const completedHtml = isPast && completed.length ? completed.map(item => `
+    <div style="border-bottom:1px solid var(--border);padding:10px 0;opacity:0.55;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="color:var(--gold);font-size:14px;flex-shrink:0;">✓</span>
+        <span style="font-size:13px;color:var(--text-mid);text-decoration:line-through;">${escHtml(item.title)}</span>
+      </div>
+    </div>`).join('') : '';
+
+  return `<div class="card">
+    <div class="card-header open"><div class="card-title">📝 ${escHtml(sec.name)}</div></div>
+    <div class="card-body open">
+      ${pendingHtml}${completedHtml}
+      <div class="save-row">
+        <span class="save-status" id="save_custom_${sectionKey}"></span>
+        <button class="btn-save" onclick="saveCustomItems('${sectionKey}')">Save</button>
+      </div>
+    </div>
+  </div>`;
 }
 
 // ── CUSTOM SECTION ITEMS (from dashboard) ─────────────────────────────────────

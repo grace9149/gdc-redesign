@@ -25,8 +25,19 @@ var TABS = {
   INSIGHTFUL:    'Insightful',
   TEAM:          'Team_Members',
   PROCEDURES:    'Procedures',
-  SECTION_ITEMS: 'Section_Items'
+  SECTION_ITEMS: 'Section_Items',
+  SECTIONS:      'Sections'
 };
+
+var DEFAULT_SECTIONS = [
+  { key:'getstarted', name:'Getting Started',  enabled:true,  order:1 },
+  { key:'tools',      name:'Tools',            enabled:true,  order:2 },
+  { key:'clients',    name:'Clients',          enabled:true,  order:3 },
+  { key:'procedures', name:'Procedures',       enabled:true,  order:4 },
+  { key:'checkin',    name:'GDC Feedback',     enabled:true,  order:5 },
+  { key:'monthly',    name:'Monthly Check-in', enabled:true,  order:6 },
+  { key:'final',      name:'90-Day Check-in',  enabled:true,  order:7 }
+];
 
 var DEFAULT_PROCEDURES = [
   'Email formatting',
@@ -58,6 +69,11 @@ function doGet(e) {
     if (p.action === 'add_section_item')   return respond(addSectionItem(p));
     if (p.action === 'remove_section_item') return respond(removeSectionItem(p));
     if (p.action === 'update_section_item') return respond(updateSectionItem(p));
+    if (p.action === 'get_sections')        return respond(getSections(p.id, p.pw));
+    if (p.action === 'add_section')         return respond(addSection(p));
+    if (p.action === 'update_section')      return respond(updateSection(p));
+    if (p.action === 'remove_section')      return respond(removeSection(p));
+    if (p.action === 'reorder_section')     return respond(reorderSection(p));
     return respond({ ok: false, error: 'Unknown action' });
   } catch(err) {
     return respond({ ok: false, error: err.toString() });
@@ -638,7 +654,20 @@ function getEmployeeProgress(id, pw) {
     }
   }
 
-  return { ok: true, progress: progress, clients: clients, insightful: insightful, procedures: procedures, sectionItems: sectionItems };
+  // Sections
+  var sections = [];
+  var secSheet = getSheet(TABS.SECTIONS);
+  if (secSheet.getLastRow() > 1) {
+    var sr = secSheet.getDataRange().getValues();
+    for (var q = 1; q < sr.length; q++) {
+      sections.push({ key: sr[q][0], name: sr[q][1], enabled: sr[q][2]===true||sr[q][2]==='TRUE', isCustom: sr[q][3]===true||sr[q][3]==='TRUE', order: Number(sr[q][4])||q });
+    }
+    sections.sort(function(a,b){ return a.order - b.order; });
+  } else {
+    sections = DEFAULT_SECTIONS;
+  }
+
+  return { ok: true, progress: progress, clients: clients, insightful: insightful, procedures: procedures, sectionItems: sectionItems, sections: sections };
 }
 
 // -- FINAL SUBMIT --------------------------------------------------------------
@@ -657,6 +686,85 @@ function finalSubmit(data) {
     { name: 'GDC Onboarding System' });
 
   return { ok: true };
+}
+
+// -- SECTIONS ------------------------------------------------------------------
+function getSections(id, pw) {
+  if (!isDashboardUser(id, pw)) return { ok: false, error: 'Unauthorized' };
+  var sheet = getSheet(TABS.SECTIONS);
+  if (sheet.getLastRow() < 2) {
+    ensureHeaders(sheet, ['Key','Name','Enabled','Is Custom','Order']);
+    DEFAULT_SECTIONS.forEach(function(s) {
+      sheet.appendRow([s.key, s.name, s.enabled, false, s.order]);
+    });
+  }
+  var rows = sheet.getDataRange().getValues();
+  var sections = [];
+  for (var i = 1; i < rows.length; i++) {
+    sections.push({ key: rows[i][0], name: rows[i][1], enabled: rows[i][2]===true||rows[i][2]==='TRUE', isCustom: rows[i][3]===true||rows[i][3]==='TRUE', order: Number(rows[i][4])||i });
+  }
+  sections.sort(function(a,b){ return a.order - b.order; });
+  return { ok: true, sections: sections };
+}
+
+function addSection(p) {
+  if (!isDashboardUser(p.id, p.pw)) return { ok: false, error: 'Unauthorized' };
+  var key   = 'custom_' + generateId();
+  var sheet = getSheet(TABS.SECTIONS);
+  ensureHeaders(sheet, ['Key','Name','Enabled','Is Custom','Order']);
+  var lastOrder = sheet.getLastRow() > 1 ? sheet.getLastRow() : 1;
+  sheet.appendRow([key, p.name||'New Section', true, true, lastOrder]);
+  return { ok: true, key: key };
+}
+
+function updateSection(p) {
+  if (!isDashboardUser(p.id, p.pw)) return { ok: false, error: 'Unauthorized' };
+  var sheet = getSheet(TABS.SECTIONS);
+  var rows  = sheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]) === String(p.key)) {
+      if (p.name    !== undefined) sheet.getRange(i+1, 2).setValue(p.name);
+      if (p.enabled !== undefined) sheet.getRange(i+1, 3).setValue(p.enabled === 'true' || p.enabled === true);
+      return { ok: true };
+    }
+  }
+  return { ok: false, error: 'Section not found' };
+}
+
+function removeSection(p) {
+  if (!isDashboardUser(p.id, p.pw)) return { ok: false, error: 'Unauthorized' };
+  var sheet = getSheet(TABS.SECTIONS);
+  var rows  = sheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]) === String(p.key)) {
+      if (rows[i][3] !== true && rows[i][3] !== 'TRUE') return { ok: false, error: 'Cannot remove built-in sections' };
+      sheet.deleteRow(i + 1);
+      return { ok: true };
+    }
+  }
+  return { ok: false, error: 'Section not found' };
+}
+
+function reorderSection(p) {
+  if (!isDashboardUser(p.id, p.pw)) return { ok: false, error: 'Unauthorized' };
+  var sheet = getSheet(TABS.SECTIONS);
+  var rows  = sheet.getDataRange().getValues();
+  var idx   = -1;
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]) === String(p.key)) { idx = i; break; }
+  }
+  if (idx < 0) return { ok: false, error: 'Not found' };
+  var currentOrder = Number(rows[idx][4]);
+  var dir = p.direction === 'up' ? -1 : 1;
+  // Swap with adjacent
+  for (var j = 1; j < rows.length; j++) {
+    if (Number(rows[j][4]) === currentOrder + dir && j !== idx) {
+      sheet.getRange(j+1, 5).setValue(currentOrder);
+      sheet.getRange(idx+1, 5).setValue(currentOrder + dir);
+      return { ok: true };
+    }
+  }
+  return { ok: true }; // already at edge
 }
 
 // -- UTILITIES -----------------------------------------------------------------
