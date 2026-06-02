@@ -344,6 +344,7 @@
           <div class="detail-tab" onclick="switchDetailTab('clients')">Clients</div>
           <div class="detail-tab" onclick="switchDetailTab('tools')">Tools</div>
           <div class="detail-tab" onclick="switchDetailTab('procedures')">Procedures</div>
+          <div id="custom-section-tabs"></div>
           <div class="detail-tab" onclick="switchDetailTab('checkins')">Check-ins</div>
         </div>
 
@@ -722,6 +723,27 @@ function renderDetailView(data) {
   document.getElementById('detailRole').textContent = [emp.role, emp.startDate ? 'Started ' + new Date(emp.startDate).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : ''].filter(Boolean).join(' · ');
   renderDetailCandy(week, data.progress || {});
   detailActiveWeek = week;
+
+  // Inject custom section tabs + panels
+  const customSections = allSections.filter(s => s.isCustom && s.enabled);
+  const tabContainer   = document.getElementById('custom-section-tabs');
+  if (tabContainer) {
+    tabContainer.innerHTML = customSections.map(s =>
+      `<div class="detail-tab" onclick="switchDetailTab('custom_${escHtml(s.key)}')">${escHtml(s.name)}</div>`
+    ).join('');
+  }
+  // Add panels for each custom section (if not already present)
+  const panelArea = document.getElementById('panel-checkins')?.parentElement;
+  customSections.forEach(s => {
+    const panelId = 'panel-custom_' + s.key;
+    if (!document.getElementById(panelId) && panelArea) {
+      const div = document.createElement('div');
+      div.className = 'detail-panel';
+      div.id = panelId;
+      div.innerHTML = `<div id="customProgress_${escHtml(s.key)}"></div>`;
+      document.getElementById('panel-procedures').after(div);
+    }
+  });
 }
 
 function renderDetailCandy(currentWeek, progress) {
@@ -744,9 +766,10 @@ function renderDetailCandy(currentWeek, progress) {
 
 function switchDetailTab(tab) {
   detailActiveTab = tab;
-  document.querySelectorAll('.detail-tab').forEach((t,i) => {
-    const tabs = ['overview','insightful','clients','tools','procedures','checkins'];
-    t.classList.toggle('active', tabs[i] === tab);
+  // Update active state on all detail tabs
+  document.querySelectorAll('.detail-tab').forEach(t => {
+    const key = t.getAttribute('onclick')?.match(/switchDetailTab\('([^']+)'\)/)?.[1];
+    t.classList.toggle('active', key === tab);
   });
   document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('active'));
   document.getElementById('panel-'+tab)?.classList.add('active');
@@ -758,6 +781,80 @@ function switchDetailTab(tab) {
   if (tab === 'tools')       renderToolsPanel();
   if (tab === 'procedures')  renderProceduresPanel();
   if (tab === 'checkins')    renderCheckinsPanel();
+  if (tab.startsWith('custom_')) renderCustomSectionPanel(tab);
+}
+
+function renderCustomSectionPanel(tabKey) {
+  const sectionKey = tabKey.replace(/^custom_/, '');
+  const container  = document.getElementById('customProgress_' + sectionKey);
+  if (!container) return;
+
+  const prog   = currentEmpDetail.progress || {};
+  const saved  = prog['custom_' + sectionKey] || {};
+  const empId  = currentEmpDetail.employee.id;
+  const items  = allSectionItems.filter(i => i.section === sectionKey);
+  const sec    = allSections.find(s => s.key === sectionKey);
+
+  if (!items.length) {
+    container.innerHTML = '<p style="font-size:13px;color:var(--light);padding:12px 0;">No items in this section yet. Add them via Onboarding Content → Section Items.</p>';
+    return;
+  }
+
+  const done  = items.filter(i => saved[i.id]).length;
+  const pct   = Math.round((done / items.length) * 100);
+
+  let html = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div style="font-size:13px;color:var(--mid);">${done} of ${items.length} completed</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:120px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;">
+          <div style="width:${pct}%;height:100%;background:${pct===100?'var(--green)':'var(--gold)'};border-radius:3px;"></div>
+        </div>
+        <span style="font-size:11px;color:var(--light);">${pct}%</span>
+      </div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:4px;overflow:hidden;">`;
+
+  items.forEach(item => {
+    const checked = !!saved[item.id];
+    html += `
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border);cursor:pointer;" onclick="toggleCustomSectionItem('${escHtml(empId)}','${escHtml(sectionKey)}','${escHtml(item.id)}',this)">
+        <input type="checkbox" ${checked?'checked':''} style="width:15px;height:15px;accent-color:var(--green);flex-shrink:0;cursor:pointer;" onclick="event.stopPropagation();toggleCustomSectionItem('${escHtml(empId)}','${escHtml(sectionKey)}','${escHtml(item.id)}',this.parentElement)" />
+        <div style="flex:1;">
+          <span style="font-size:13px;color:${checked?'var(--mid)':'var(--charcoal)'};${checked?'text-decoration:line-through;':''}">${escHtml(item.title)}</span>
+          ${item.subItems?.length ? `<div style="font-size:11px;color:var(--light);margin-top:2px;">${item.subItems.length} sub-item${item.subItems.length>1?'s':''}</div>` : ''}
+        </div>
+      </div>`;
+  });
+
+  html += `</div><div style="margin-top:8px;font-size:11px;color:var(--light);" id="customSaveStatus_${escHtml(sectionKey)}"></div>`;
+  container.innerHTML = html;
+}
+
+async function toggleCustomSectionItem(empId, sectionKey, itemId, row) {
+  const cb      = row.querySelector('input[type=checkbox]');
+  const checked = cb ? cb.checked : false;
+  const status  = document.getElementById('customSaveStatus_' + sectionKey);
+
+  const prog = currentEmpDetail.progress || {};
+  if (!prog['custom_' + sectionKey]) prog['custom_' + sectionKey] = {};
+  prog['custom_' + sectionKey][itemId] = checked;
+
+  const label = row.querySelector('span');
+  if (label) { label.style.textDecoration = checked?'line-through':'none'; label.style.color = checked?'var(--mid)':'var(--charcoal)'; }
+  if (cb) cb.checked = checked;
+
+  if (status) status.textContent = 'Saving…';
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ action:'save_progress_admin', userId, userPw, empId,
+        section: 'custom_' + sectionKey, sectionData: prog['custom_' + sectionKey] })
+    });
+    if (status) { status.textContent = '✓ Saved'; setTimeout(()=>{ if(status) status.textContent=''; },2000); }
+    renderCustomSectionPanel('custom_' + sectionKey);
+  } catch(e) { if(status) status.textContent='Error saving'; }
 }
 
 function renderOverview() {
