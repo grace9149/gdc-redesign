@@ -727,6 +727,52 @@ function getDriveEmbedUrl(url) {
   return match ? 'https://drive.google.com/file/d/' + match[1] + '/preview' : null;
 }
 
+// ── SHARED: render one section item with sub-items ────────────────────────────
+function renderSectionItemHtml(item, sectionKey, saved, prefix) {
+  const hasContent = item.description || item.videoUrl || (item.subItems && item.subItems.length);
+  const embedUrl   = getDriveEmbedUrl(item.videoUrl);
+  const subSaved   = progressData['sub_' + sectionKey + '_' + item.id] || {};
+  const subItems   = item.subItems || [];
+
+  const subHtml = subItems.map((sub, idx) => {
+    const subKey = 'sub_' + idx;
+    const subDone = !!subSaved[subKey];
+    return `<div style="display:flex;align-items:center;gap:10px;padding:6px 0 6px 8px;border-bottom:1px solid var(--border);">
+      <input type="checkbox" id="${prefix}_sub_${item.id}_${idx}" onchange="saveSubItems('${sectionKey}','${item.id}')" ${subDone?'checked':''} style="width:14px;height:14px;accent-color:var(--gold);flex-shrink:0;" />
+      <label for="${prefix}_sub_${item.id}_${idx}" style="font-size:12px;color:${subDone?'var(--text-light)':'var(--text-dark)'};${subDone?'text-decoration:line-through;':''}cursor:pointer;">${escHtml(sub)}</label>
+    </div>`;
+  }).join('');
+
+  return `<div style="border-bottom:1px solid var(--border);padding:10px 0;">
+    <div style="display:flex;align-items:flex-start;gap:12px;">
+      <input type="checkbox" id="${prefix}_${item.id}" onchange="saveCustomItems('${sectionKey}')" style="width:16px;height:16px;accent-color:var(--gold);flex-shrink:0;margin-top:3px;" />
+      <div style="flex:1;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+          <label for="${prefix}_${item.id}" style="font-size:13px;color:var(--text-dark);cursor:pointer;font-weight:500;">${escHtml(item.title)}</label>
+          ${hasContent ? `<button style="background:none;border:none;font-size:11px;color:var(--gold);cursor:pointer;white-space:nowrap;" onclick="toggleProcDetail('${prefix}_detail_${item.id}',this)">Details ▶</button>` : ''}
+        </div>
+        <div id="${prefix}_detail_${item.id}" style="display:none;margin-top:10px;">
+          ${item.description ? `<div style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:10px;">${escHtml(item.description).replace(/\n/g,'<br>')}</div>` : ''}
+          ${embedUrl ? `<div style="margin-bottom:10px;"><iframe src="${embedUrl}" width="100%" height="300" allow="autoplay" style="border:none;border-radius:3px;background:#000;"></iframe></div>` : ''}
+          ${subHtml ? `<div style="background:#FAFAF8;border:1px solid var(--border);border-radius:3px;padding:4px 8px;">${subHtml}</div>` : ''}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+async function saveSubItems(sectionKey, itemId) {
+  const item     = sectionItemsData.find(i => i.id === itemId);
+  const subItems = item?.subItems || [];
+  const data     = {};
+  subItems.forEach((_, idx) => {
+    const el = document.getElementById('ci_' + sectionKey + '_sub_' + itemId + '_' + idx) ||
+               document.getElementById('cis_' + sectionKey + '_sub_' + itemId + '_' + idx);
+    if (el) data['sub_' + idx] = el.checked;
+  });
+  await postSave('sub_' + sectionKey + '_' + itemId, data);
+}
+
 // ── CUSTOM SECTION (full tab for sections added in dashboard) ─────────────────
 function renderCustomSection(sectionKey, w) {
   const sec      = sectionsData.find(s => s.key === sectionKey) || { name: sectionKey };
@@ -741,25 +787,7 @@ function renderCustomSection(sectionKey, w) {
       <div class="card-body open"><p style="font-size:13px;color:var(--text-light);font-style:italic;">No items added yet. Ask Grace to add items to this section from the dashboard.</p></div></div>`;
   }
 
-  const pendingHtml = pending.map(item => {
-    const hasContent = item.description || item.videoUrl;
-    const embedUrl   = getDriveEmbedUrl(item.videoUrl);
-    return `<div style="border-bottom:1px solid var(--border);padding:10px 0;">
-      <div style="display:flex;align-items:flex-start;gap:12px;">
-        <input type="checkbox" id="ci_${sectionKey}_${item.id}" onchange="saveCustomItems('${sectionKey}')" style="width:16px;height:16px;accent-color:var(--gold);flex-shrink:0;margin-top:3px;" />
-        <div style="flex:1;">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-            <label for="ci_${sectionKey}_${item.id}" style="font-size:13px;color:var(--text-dark);cursor:pointer;">${escHtml(item.title)}</label>
-            ${hasContent ? `<button style="background:none;border:none;font-size:11px;color:var(--gold);cursor:pointer;white-space:nowrap;" onclick="toggleProcDetail('ci_detail_${sectionKey}_${item.id}',this)">Details ▶</button>` : ''}
-          </div>
-          <div id="ci_detail_${sectionKey}_${item.id}" style="display:none;margin-top:12px;">
-            ${item.description ? `<div style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:${embedUrl?'14px':'0'};">${escHtml(item.description).replace(/\n/g,'<br>')}</div>` : ''}
-            ${embedUrl ? `<div style="margin-top:8px;"><iframe src="${embedUrl}" width="100%" height="320" allow="autoplay" style="border:none;border-radius:3px;background:#000;"></iframe></div>` : ''}
-          </div>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
+  const pendingHtml = pending.map(item => renderSectionItemHtml(item, sectionKey, saved, 'ci_' + sectionKey)).join('');
 
   const completedHtml = isPast && completed.length ? completed.map(item => `
     <div style="border-bottom:1px solid var(--border);padding:10px 0;opacity:0.55;">
@@ -790,26 +818,7 @@ function renderCustomSectionItems(section) {
   const completed = all.filter(i =>  saved[i.id]);
   if (!all.length) return '';
   if (!items.length && !isPast) return '';
-  return items.map(item => {
-    const embedUrl   = getDriveEmbedUrl(item.videoUrl);
-    const hasContent = item.description || item.videoUrl;
-    return `
-    <div style="border-bottom:1px solid var(--border);padding:10px 0;">
-      <div style="display:flex;align-items:flex-start;gap:12px;">
-        <input type="checkbox" id="ci_${section}_${item.id}" onchange="saveCustomItems('${section}')" ${saved[item.id]?'checked':''} style="width:16px;height:16px;accent-color:var(--gold);flex-shrink:0;margin-top:3px;" />
-        <div style="flex:1;">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-            <label for="ci_${section}_${item.id}" style="font-size:13px;color:var(--text-dark);cursor:pointer;">${escHtml(item.title)}</label>
-            ${hasContent ? `<button style="background:none;border:none;font-size:11px;color:var(--gold);cursor:pointer;white-space:nowrap;" onclick="toggleProcDetail('ci_detail_${section}_${item.id}',this)">Details ▶</button>` : ''}
-          </div>
-          <div id="ci_detail_${section}_${item.id}" style="display:none;margin-top:12px;">
-            ${item.description ? `<div style="font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:${embedUrl?'14px':'0'};">${escHtml(item.description).replace(/\n/g,'<br>')}</div>` : ''}
-            ${embedUrl ? `<div style="margin-top:8px;"><iframe src="${embedUrl}" width="100%" height="320" allow="autoplay" style="border:none;border-radius:3px;background:#000;"></iframe></div>` : ''}
-          </div>
-        </div>
-      </div>
-    </div>`;
-  }).join('') + (isPast && completed.length ? completed.map(item => `
+  return items.map(item => renderSectionItemHtml(item, section, saved, 'cis_' + section)).join('') + (isPast && completed.length ? completed.map(item => `
     <div style="border-bottom:1px solid var(--border);padding:10px 0;opacity:0.55;">
       <div style="display:flex;align-items:center;gap:12px;">
         <span style="color:var(--gold);font-size:14px;flex-shrink:0;">✓</span>
@@ -822,7 +831,10 @@ async function saveCustomItems(section) {
   const items = sectionItemsData.filter(i => i.section === section);
   const data  = {};
   items.forEach(item => {
-    data[item.id] = !!(document.getElementById('ci_' + section + '_' + item.id)?.checked);
+    // Try both prefixes (ci_ for custom sections, cis_ for inline items)
+    const el = document.getElementById('ci_' + section + '_' + item.id) ||
+               document.getElementById('cis_' + section + '_' + item.id);
+    data[item.id] = !!(el?.checked);
   });
   await postSave('custom_' + section, data);
 }

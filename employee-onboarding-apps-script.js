@@ -455,8 +455,10 @@ function getSectionItems(id, pw) {
   var rows  = sheet.getDataRange().getValues();
   var items = [];
   for (var i = 1; i < rows.length; i++) {
+    var subItems = [];
+    try { subItems = JSON.parse(rows[i][7]||'[]'); } catch(e) {}
     items.push({ id: rows[i][0], section: rows[i][1], title: rows[i][2],
-      description: rows[i][3]||'', videoUrl: rows[i][4]||'' });
+      description: rows[i][3]||'', videoUrl: rows[i][4]||'', subItems: subItems });
   }
   return { ok: true, items: items };
 }
@@ -465,8 +467,8 @@ function addSectionItem(p) {
   if (!isDashboardUser(p.id, p.pw)) return { ok: false, error: 'Unauthorized' };
   var iId   = generateId();
   var sheet = getSheet(TABS.SECTION_ITEMS);
-  ensureHeaders(sheet, ['ID','Section','Title','Description','Video URL','Created By','Created Date']);
-  sheet.appendRow([iId, p.section||'', p.title||'', p.description||'', p.videoUrl||'', p.id, now()]);
+  ensureHeaders(sheet, ['ID','Section','Title','Description','Video URL','Created By','Created Date','Sub Items (JSON)']);
+  sheet.appendRow([iId, p.section||'', p.title||'', p.description||'', p.videoUrl||'', p.id, now(), '[]']);
   return { ok: true, itemId: iId };
 }
 
@@ -489,8 +491,9 @@ function updateSectionItem(p) {
   var rows  = sheet.getDataRange().getValues();
   for (var i = 1; i < rows.length; i++) {
     if (String(rows[i][0]) === String(p.itemId)) {
-      sheet.getRange(i+1, 4).setValue(p.description || '');
-      sheet.getRange(i+1, 5).setValue(p.videoUrl    || '');
+      if (p.description !== undefined) sheet.getRange(i+1, 4).setValue(p.description || '');
+      if (p.videoUrl    !== undefined) sheet.getRange(i+1, 5).setValue(p.videoUrl    || '');
+      if (p.subItems    !== undefined) sheet.getRange(i+1, 8).setValue(JSON.stringify(p.subItems));
       return { ok: true };
     }
   }
@@ -649,8 +652,10 @@ function getEmployeeProgress(id, pw) {
   if (siSheet.getLastRow() > 1) {
     var si = siSheet.getDataRange().getValues();
     for (var n = 1; n < si.length; n++) {
+      var sub = [];
+      try { sub = JSON.parse(si[n][7]||'[]'); } catch(e) {}
       sectionItems.push({ id: si[n][0], section: si[n][1], title: si[n][2],
-        description: si[n][3]||'', videoUrl: si[n][4]||'' });
+        description: si[n][3]||'', videoUrl: si[n][4]||'', subItems: sub });
     }
   }
 

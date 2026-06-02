@@ -1523,12 +1523,26 @@ function renderSectionItems() {
           </div>
           <div id="si-detail-${escHtml(item.id)}" style="display:none;padding:0 20px 16px;">
             <div class="form-group" style="margin-bottom:10px;">
-              <label>Description</label>
+              <label>Description / Instructions</label>
               <textarea id="si-desc-${escHtml(item.id)}" style="width:100%;padding:10px 12px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;resize:vertical;min-height:80px;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">${escHtml(item.description||'')}</textarea>
             </div>
-            <div class="form-group" style="margin-bottom:10px;">
+            <div class="form-group" style="margin-bottom:12px;">
               <label>Google Drive Video URL</label>
               <input type="text" id="si-video-${escHtml(item.id)}" value="${escHtml(item.videoUrl||'')}" placeholder="https://drive.google.com/file/d/…/view" style="width:100%;padding:10px 12px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" />
+            </div>
+            <div style="margin-bottom:12px;">
+              <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--mid);margin-bottom:8px;">Sub-Checklist Items</div>
+              <div id="si-subitems-${escHtml(item.id)}" style="margin-bottom:8px;">
+                ${(item.subItems||[]).map((sub, idx) => `
+                  <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);">
+                    <span style="font-size:13px;color:var(--charcoal);flex:1;">${escHtml(sub)}</span>
+                    <button style="background:none;border:none;color:#c0392b;cursor:pointer;font-size:18px;line-height:1;padding:0 4px;" onclick="removeSubItem('${escHtml(item.id)}',${idx})">×</button>
+                  </div>`).join('')}
+              </div>
+              <div style="display:flex;gap:8px;">
+                <input type="text" id="si-newsub-${escHtml(item.id)}" placeholder="Add a sub-item…" style="flex:1;padding:8px 12px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:12px;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" onkeydown="if(event.key==='Enter')addSubItem('${escHtml(item.id)}')" />
+                <button class="btn-sm" onclick="addSubItem('${escHtml(item.id)}')">Add</button>
+              </div>
             </div>
             <div style="display:flex;align-items:center;gap:10px;">
               <button class="btn-primary" style="padding:7px 16px;font-size:11px;" onclick="saveSectionItem('${escHtml(item.id)}')">Save</button>
@@ -1568,19 +1582,56 @@ async function addSectionItem() {
 }
 
 async function saveSectionItem(itemId) {
-  const desc   = document.getElementById('si-desc-'  + itemId)?.value || '';
-  const video  = document.getElementById('si-video-' + itemId)?.value || '';
-  const status = document.getElementById('si-status-' + itemId);
+  const desc     = document.getElementById('si-desc-'  + itemId)?.value || '';
+  const video    = document.getElementById('si-video-' + itemId)?.value || '';
+  const status   = document.getElementById('si-status-' + itemId);
+  const item     = allSectionItems.find(i => i.id === itemId);
+  const subItems = item?.subItems || [];
   if (status) status.textContent = 'Saving…';
   try {
-    const res  = await fetch(`${APPS_SCRIPT_URL}?action=update_section_item&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&itemId=${encodeURIComponent(itemId)}&description=${encodeURIComponent(desc)}&videoUrl=${encodeURIComponent(video)}`);
-    const data = await res.json();
-    if (data.ok) {
-      const item = allSectionItems.find(i => i.id === itemId);
-      if (item) { item.description = desc; item.videoUrl = video; }
-      if (status) { status.textContent = '✓ Live in portal'; status.style.color = 'var(--green)'; }
-    } else if (status) { status.textContent = 'Error saving'; }
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'update_section_item', id: userId, pw: userPw,
+        itemId, description: desc, videoUrl: video, subItems })
+    });
+    if (item) { item.description = desc; item.videoUrl = video; }
+    if (status) { status.textContent = '✓ Live in portal'; status.style.color = 'var(--green)'; }
   } catch(e) { if (status) status.textContent = 'Connection error'; }
+}
+
+function addSubItem(itemId) {
+  const input = document.getElementById('si-newsub-' + itemId);
+  const text  = input?.value.trim();
+  if (!text) return;
+  const item = allSectionItems.find(i => i.id === itemId);
+  if (!item) return;
+  if (!item.subItems) item.subItems = [];
+  item.subItems.push(text);
+  input.value = '';
+  // Re-render sub-items list
+  const container = document.getElementById('si-subitems-' + itemId);
+  if (container) {
+    container.innerHTML = item.subItems.map((sub, idx) => `
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);">
+        <span style="font-size:13px;color:var(--charcoal);flex:1;">${escHtml(sub)}</span>
+        <button style="background:none;border:none;color:#c0392b;cursor:pointer;font-size:18px;line-height:1;padding:0 4px;" onclick="removeSubItem('${escHtml(itemId)}',${idx})">×</button>
+      </div>`).join('');
+  }
+}
+
+function removeSubItem(itemId, idx) {
+  const item = allSectionItems.find(i => i.id === itemId);
+  if (!item || !item.subItems) return;
+  item.subItems.splice(idx, 1);
+  const container = document.getElementById('si-subitems-' + itemId);
+  if (container) {
+    container.innerHTML = item.subItems.map((sub, i) => `
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);">
+        <span style="font-size:13px;color:var(--charcoal);flex:1;">${escHtml(sub)}</span>
+        <button style="background:none;border:none;color:#c0392b;cursor:pointer;font-size:18px;line-height:1;padding:0 4px;" onclick="removeSubItem('${escHtml(itemId)}',${i})">×</button>
+      </div>`).join('');
+  }
 }
 
 async function removeSectionItem(itemId, title) {
