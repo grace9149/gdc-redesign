@@ -454,7 +454,7 @@ function showWeek(w) {
   srcSections.forEach(s => {
     if (!s.enabled) return;
     if (s.key === 'getstarted' && w !== 1) return;
-    if (s.key === 'clients' && clientData.length === 0) return;
+    // clients always shows if enabled (displays "not yet assigned" when empty)
     if (s.key === 'monthly' && w !== 4 && w !== 8) return;
     if (s.key === 'final' && w !== 12) return;
     tabs.push({ id: s.key, label: s.name });
