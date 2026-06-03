@@ -246,56 +246,39 @@
 <script>
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwgKRH3iG4xCWo65wdUeWA8QNM6xnJwSkQB_TFvJcViatsX3VoQZWJUdLmTAFQyFH1v/exec';
 
-const TOOLS = [
-  { id:'gmail', label:'Gmail', icon:'✉️', items:[
-    {id:'login', label:'Login confirmed'},
-    {id:'zeroinbox', label:'Zero inbox policy reviewed'},
-    {id:'signature', label:'Email signature set up'},
-    {id:'calendar', label:'Calendar added and synced'}
-  ]},
-  { id:'onepassword', label:'1Password', icon:'🔐', items:[
-    {id:'login', label:'Login confirmed'},
-    {id:'vault', label:'Vault access confirmed'},
-    {id:'training', label:'Training: adding new logins completed'}
-  ]},
-  { id:'clickup', label:'ClickUp', icon:'✅', items:[
-    {id:'login', label:'Login confirmed'},
-    {id:'folders', label:'Folders shared and accessible'},
-    {id:'tasks', label:'Tasks assigned and visible'},
-    {id:'video', label:'Navigation training video watched'},
-    {id:'dashboard', label:'Personal dashboard set up'},
-    {id:'expectations', label:'Task completion expectations reviewed'}
-  ]},
-  { id:'qbo', label:'QuickBooks Online', icon:'📊', items:[
-    {id:'login', label:'Login confirmed'}
-  ]},
-  { id:'qbt', label:'QuickBooks Time', icon:'⏱️', items:[
-    {id:'login', label:'Login confirmed'}
-  ]},
-  { id:'slack', label:'Slack', icon:'💬', items:[
-    {id:'login', label:'Login confirmed'},
-    {id:'channels', label:'Added to relevant channels'},
-    {id:'policies', label:'Slack vs. email policies reviewed'},
-    {id:'calendar', label:'Calendar notes set up'}
-  ]},
-  { id:'insightful', label:'Insightful', icon:'📈', items:[
-    {id:'login', label:'Login confirmed'},
-    {id:'access', label:'Access confirmed'},
-    {id:'expectations', label:'Productivity expectations reviewed'}
-  ]},
-  { id:'ramp', label:'Ramp', icon:'💳', items:[
-    {id:'login', label:'Login confirmed'},
-    {id:'access', label:'Access confirmed'},
-    {id:'training', label:'Overall usage training completed'},
-    {id:'clienttraining', label:'Client-specific training completed'}
-  ]}
-];
+// Tool icons + order (static UI config — labels/items come from Apps Script)
+const TOOL_ICONS  = { gmail:'✉️', onepassword:'🔐', clickup:'✅', qbo:'📊', qbt:'⏱️', slack:'💬', insightful:'📈', ramp:'💳' };
+const TOOL_ORDER  = ['gmail','onepassword','clickup','qbo','qbt','slack','insightful','ramp'];
+const TOOL_LABELS = { gmail:'Gmail', onepassword:'1Password', clickup:'ClickUp', qbo:'QuickBooks Online', qbt:'QuickBooks Time', slack:'Slack', insightful:'Insightful', ramp:'Ramp' };
+
+// Build dynamic tool list from Apps Script data, falling back to hardcoded defaults
+function getActiveTools() {
+  if (toolItemsData.length) {
+    return TOOL_ORDER.map(tid => ({
+      id: tid,
+      label: TOOL_LABELS[tid],
+      icon:  TOOL_ICONS[tid],
+      items: toolItemsData.filter(i => i.toolId === tid)
+    })).filter(t => t.items.length > 0);
+  }
+  // Hardcoded fallback (used before Apps Script loads)
+  return [
+    { id:'gmail',       label:'Gmail',             icon:'✉️',  items:[{id:'login',label:'Login confirmed'},{id:'zeroinbox',label:'Zero inbox policy reviewed'},{id:'signature',label:'Email signature set up'},{id:'calendar',label:'Calendar added and synced'}]},
+    { id:'onepassword', label:'1Password',          icon:'🔐', items:[{id:'login',label:'Login confirmed'},{id:'vault',label:'Vault access confirmed'},{id:'training',label:'Training: adding new logins completed'}]},
+    { id:'clickup',     label:'ClickUp',            icon:'✅', items:[{id:'login',label:'Login confirmed'},{id:'folders',label:'Folders shared and accessible'},{id:'tasks',label:'Tasks assigned and visible'},{id:'video',label:'Navigation training video watched'},{id:'dashboard',label:'Personal dashboard set up'},{id:'expectations',label:'Task completion expectations reviewed'}]},
+    { id:'qbo',         label:'QuickBooks Online',  icon:'📊', items:[{id:'login',label:'Login confirmed'}]},
+    { id:'qbt',         label:'QuickBooks Time',    icon:'⏱️', items:[{id:'login',label:'Login confirmed'}]},
+    { id:'slack',       label:'Slack',              icon:'💬', items:[{id:'login',label:'Login confirmed'},{id:'channels',label:'Added to relevant channels'},{id:'policies',label:'Slack vs. email policies reviewed'},{id:'calendar',label:'Calendar notes set up'}]},
+    { id:'insightful',  label:'Insightful',         icon:'📈', items:[{id:'login',label:'Login confirmed'},{id:'access',label:'Access confirmed'},{id:'expectations',label:'Productivity expectations reviewed'}]},
+    { id:'ramp',        label:'Ramp',               icon:'💳', items:[{id:'login',label:'Login confirmed'},{id:'access',label:'Access confirmed'},{id:'training',label:'Overall usage training completed'},{id:'clienttraining',label:'Client-specific training completed'}]}
+  ];
+}
 
 const PROFICIENCY_OPTIONS = ['Not started','In training','Needs support','Independent','Fully proficient'];
 
 let empId = '', empPw = '', empFirstName = '', empStartDate = '';
 let currentWeek = 1, activeWeek = 1, activeTab = '';
-let progressData = {}, clientData = [], insightfulData = {}, procedureData = [], sectionItemsData = [], sectionsData = [];
+let progressData = {}, clientData = [], insightfulData = {}, procedureData = [], sectionItemsData = [], sectionsData = [], toolItemsData = [];
 
 // ── LOGIN ─────────────────────────────────────────────────────────────────────
 document.getElementById('loginPw').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
@@ -365,6 +348,7 @@ async function initApp(empData) {
       procedureData   = data.procedures   || [];
       sectionItemsData = data.sectionItems || [];
       sectionsData     = data.sections     || [];
+      toolItemsData    = data.toolItems    || [];
     }
   } catch(e) {}
 
@@ -561,8 +545,9 @@ function renderTools() {
   const saved        = progressData['tools'] || {};
   const isPast       = activeWeek <= currentWeek;
   let completedTools = 0;
+  const TOOLS_ACTIVE = getActiveTools();
 
-  const cards = TOOLS.map(tool => {
+  const cards = TOOLS_ACTIVE.map(tool => {
     const toolData      = saved[tool.id] || {};
     const pendingItems  = tool.items.filter(it => !toolData[it.id]);
     const doneItems     = tool.items.filter(it =>  toolData[it.id]);
@@ -743,8 +728,11 @@ function renderSectionItemHtml(item, sectionKey, saved, prefix) {
     </div>`;
   }).join('');
 
-  const isChecked = !!saved[item.id];
-  return `<div style="border-bottom:1px solid var(--border);padding:10px 0;">
+  const isChecked   = !!saved[item.id];
+  const isReminder  = item.reminderWeek && item.reminderWeek === activeWeek && !isChecked;
+  const rowBg       = isReminder ? 'background:linear-gradient(90deg,#fdf9f3 0%,transparent 100%);border-left:3px solid var(--gold);padding-left:9px;' : '';
+  return `<div style="border-bottom:1px solid var(--border);padding:10px 0;${rowBg}">
+    ${isReminder ? `<div style="font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;">📌 This week</div>` : ''}
     <div style="display:flex;align-items:flex-start;gap:12px;">
       <input type="checkbox" id="${prefix}_${item.id}" onchange="saveCustomItems('${sectionKey}')" ${isChecked?'checked':''} style="width:16px;height:16px;accent-color:var(--gold);flex-shrink:0;margin-top:3px;" />
       <div style="flex:1;">
@@ -979,13 +967,13 @@ async function saveMeeting() {
 }
 
 async function saveTools(showStatus) {
-  // Start with existing saved data so completed items aren't erased
-  const data = JSON.parse(JSON.stringify(progressData['tools'] || {}));
-  TOOLS.forEach(tool => {
+  const data        = JSON.parse(JSON.stringify(progressData['tools'] || {}));
+  const TOOLS_ACTIVE = getActiveTools();
+  TOOLS_ACTIVE.forEach(tool => {
     if (!data[tool.id]) data[tool.id] = {};
     tool.items.forEach(it => {
       const el = document.getElementById('t_' + tool.id + '_' + it.id);
-      if (el) data[tool.id][it.id] = el.checked; // only update visible checkboxes
+      if (el) data[tool.id][it.id] = el.checked;
     });
     const notesEl = document.getElementById('tn_' + tool.id);
     if (notesEl) data[tool.id].notes = notesEl.value || '';
@@ -995,7 +983,6 @@ async function saveTools(showStatus) {
   if (showStatus) {
     setStatus('save_tools', '✓ Saved', 'saved');
     renderCandyMap();
-    // Re-render to hide newly completed tools
     renderTab('tools', activeWeek);
   }
 }

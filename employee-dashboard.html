@@ -418,6 +418,7 @@
 
         <div class="detail-tabs" style="margin-bottom:24px;">
           <div class="detail-tab active" onclick="switchContentTab('procedures')">Procedures</div>
+          <div class="detail-tab" onclick="switchContentTab('tools')">Tools</div>
           <div class="detail-tab" onclick="switchContentTab('items')">Section Items</div>
           <div class="detail-tab" onclick="switchContentTab('sections')">Sections</div>
         </div>
@@ -429,6 +430,12 @@
             <button class="btn-primary" onclick="addProcedure()">Add Procedure</button>
           </div>
           <div id="proceduresList"></div>
+        </div>
+
+        <!-- Tools Panel -->
+        <div id="content-panel-tools" style="display:none;">
+          <p style="font-size:13px;color:var(--mid);margin-bottom:20px;">Edit the checklist items for each tool. Add descriptions and video links that employees will see when they expand a tool.</p>
+          <div id="toolItemsList"></div>
         </div>
 
         <!-- Section Items Panel -->
@@ -463,6 +470,14 @@
               <label>Google Drive Video URL (optional)</label>
               <input type="text" id="si_video" placeholder="https://drive.google.com/file/d/…/view" style="width:100%;padding:10px 14px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" />
               <div style="font-size:11px;color:var(--light);margin-top:4px;">Upload video to Google Drive → Share → "Anyone with link" → paste URL here</div>
+            </div>
+            <div class="form-group" style="margin-bottom:14px;">
+              <label>Reminder Week (optional)</label>
+              <select id="si_week" style="width:100%;padding:10px 14px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;outline:none;background:#fff;appearance:none;">
+                <option value="">— Show every week —</option>
+                ${Array.from({length:12},(_,i)=>`<option value="${i+1}">Week ${i+1}</option>`).join('')}
+              </select>
+              <div style="font-size:11px;color:var(--light);margin-top:4px;">Item will be highlighted with a "📌 This week" badge when the employee reaches this week</div>
             </div>
             <button class="btn-primary" onclick="addSectionItem()">Add to Portal</button>
           </div>
@@ -600,7 +615,7 @@ async function doLogin() {
       document.getElementById('loginScreen').style.display = 'none';
       document.getElementById('appScreen').style.display = 'block';
       document.getElementById('userBadge').textContent = userName;
-      loadEmployees(); loadTeam(); loadProcedures(); loadSectionItems(); loadSections();
+      loadEmployees(); loadTeam(); loadProcedures(); loadSectionItems(); loadSections(); loadToolItems();
     } else {
       err.style.display = 'block';
       btn.disabled = false; btn.textContent = 'Sign In';
@@ -1356,12 +1371,14 @@ async function removeTeamMember(tmId, name) {
 // ── CONTENT TAB SWITCH ────────────────────────────────────────────────────────
 function switchContentTab(tab) {
   document.querySelectorAll('#view-content .detail-tab').forEach((t,i) => {
-    t.classList.toggle('active', ['procedures','items','sections'][i] === tab);
+    t.classList.toggle('active', ['procedures','tools','items','sections'][i] === tab);
   });
   document.getElementById('content-panel-procedures').style.display = tab === 'procedures' ? 'block' : 'none';
+  document.getElementById('content-panel-tools').style.display      = tab === 'tools'      ? 'block' : 'none';
   document.getElementById('content-panel-items').style.display      = tab === 'items'      ? 'block' : 'none';
   document.getElementById('content-panel-sections').style.display   = tab === 'sections'   ? 'block' : 'none';
   if (tab === 'sections') renderSectionsList();
+  if (tab === 'tools')    renderToolItemsList();
   if (tab === 'items')    populateSectionDropdown();
 }
 
@@ -1489,6 +1506,133 @@ async function loadSections() {
     const data = await res.json();
     if (data.ok) { allSections = data.sections || []; }
   } catch(e) {}
+}
+
+// ── TOOL ITEMS ────────────────────────────────────────────────────────────────
+let allToolItems = [];
+
+const TOOL_DEFS_DASH = [
+  { id:'gmail',       label:'Gmail',            icon:'✉️'  },
+  { id:'onepassword', label:'1Password',         icon:'🔐'  },
+  { id:'clickup',     label:'ClickUp',           icon:'✅'  },
+  { id:'qbo',         label:'QuickBooks Online', icon:'📊'  },
+  { id:'qbt',         label:'QuickBooks Time',   icon:'⏱️' },
+  { id:'slack',       label:'Slack',             icon:'💬'  },
+  { id:'insightful',  label:'Insightful',        icon:'📈'  },
+  { id:'ramp',        label:'Ramp',              icon:'💳'  }
+];
+
+async function loadToolItems() {
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=get_tool_items&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}`);
+    const data = await res.json();
+    if (data.ok) { allToolItems = data.items || []; }
+  } catch(e) {}
+}
+
+function renderToolItemsList() {
+  const list = document.getElementById('toolItemsList');
+  if (!list) return;
+  if (!allToolItems.length) {
+    list.innerHTML = '<p style="font-size:13px;color:var(--light);">Loading…</p>';
+    loadToolItems().then(renderToolItemsList);
+    return;
+  }
+
+  list.innerHTML = TOOL_DEFS_DASH.map(tool => {
+    const items = allToolItems.filter(i => i.toolId === tool.id);
+    const itemsHtml = items.map(item => `
+      <div style="border-bottom:1px solid var(--border);">
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 0;cursor:pointer;" onclick="toggleToolItemDetail('${escHtml(item.id)}')">
+          <span style="font-size:11px;color:var(--light);" id="tiarrow_${escHtml(item.id)}">▶</span>
+          <span style="font-size:13px;flex:1;">${escHtml(item.label)}</span>
+          ${item.description||item.videoUrl ? '<span style="font-size:11px;color:var(--gold);">✓ Has content</span>' : ''}
+          <button style="background:none;border:none;color:#c0392b;cursor:pointer;font-size:18px;line-height:1;" onclick="event.stopPropagation();removeToolItemFromDash('${escHtml(item.id)}','${escHtml(item.label)}')">×</button>
+        </div>
+        <div id="tidetail_${escHtml(item.id)}" style="display:none;padding:0 0 14px 22px;">
+          <div class="form-group" style="margin-bottom:10px;">
+            <label>Label</label>
+            <input type="text" id="tilabel_${escHtml(item.id)}" value="${escHtml(item.label)}" style="width:100%;padding:9px 12px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" />
+          </div>
+          <div class="form-group" style="margin-bottom:10px;">
+            <label>Description / Instructions</label>
+            <textarea id="tidesc_${escHtml(item.id)}" style="width:100%;padding:9px 12px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;resize:vertical;min-height:72px;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'">${escHtml(item.description||'')}</textarea>
+          </div>
+          <div class="form-group" style="margin-bottom:10px;">
+            <label>Google Drive Video URL</label>
+            <input type="text" id="tivideo_${escHtml(item.id)}" value="${escHtml(item.videoUrl||'')}" placeholder="https://drive.google.com/file/d/…/view" style="width:100%;padding:9px 12px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" />
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <button class="btn-sm" onclick="saveToolItem('${escHtml(item.id)}')">Save</button>
+            <span id="tistatus_${escHtml(item.id)}" style="font-size:11px;color:var(--light);"></span>
+          </div>
+        </div>
+      </div>`).join('');
+
+    return `
+      <div style="background:#fff;border:1px solid var(--border);border-radius:4px;margin-bottom:14px;overflow:hidden;">
+        <div style="padding:14px 18px;background:#FAFAF8;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+          <div style="font-size:14px;font-weight:600;">${tool.icon} ${tool.label}</div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <input type="text" id="newti_${tool.id}" placeholder="Add checklist item…" style="padding:6px 10px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:12px;outline:none;width:220px;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" onkeydown="if(event.key==='Enter')addToolItemFromDash('${tool.id}')" />
+            <button class="btn-sm" onclick="addToolItemFromDash('${tool.id}')">Add</button>
+          </div>
+        </div>
+        <div style="padding:0 18px;">
+          ${itemsHtml || '<p style="font-size:12px;color:var(--light);padding:12px 0;">No items yet — add one above.</p>'}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function toggleToolItemDetail(itemId) {
+  const d = document.getElementById('tidetail_' + itemId);
+  const a = document.getElementById('tiarrow_'  + itemId);
+  const open = d.style.display !== 'none';
+  d.style.display = open ? 'none' : 'block';
+  a.textContent   = open ? '▶' : '▼';
+}
+
+async function saveToolItem(itemId) {
+  const label = document.getElementById('tilabel_' + itemId)?.value.trim() || '';
+  const desc  = document.getElementById('tidesc_'  + itemId)?.value || '';
+  const video = document.getElementById('tivideo_' + itemId)?.value || '';
+  const st    = document.getElementById('tistatus_' + itemId);
+  if (st) st.textContent = 'Saving…';
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=update_tool_item&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&itemId=${encodeURIComponent(itemId)}&label=${encodeURIComponent(label)}&description=${encodeURIComponent(desc)}&videoUrl=${encodeURIComponent(video)}`);
+    const data = await res.json();
+    if (data.ok) {
+      const item = allToolItems.find(i => i.id === itemId);
+      if (item) { item.label = label; item.description = desc; item.videoUrl = video; }
+      if (st) { st.textContent = '✓ Saved'; st.style.color = 'var(--green)'; }
+    } else if (st) { st.textContent = 'Error: ' + (data.error||'unknown'); }
+  } catch(e) { if (st) st.textContent = 'Connection error'; }
+}
+
+async function addToolItemFromDash(toolId) {
+  const input = document.getElementById('newti_' + toolId);
+  const label = input?.value.trim();
+  if (!label) return;
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=add_tool_item&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&toolId=${encodeURIComponent(toolId)}&label=${encodeURIComponent(label)}`);
+    const data = await res.json();
+    if (data.ok) {
+      allToolItems.push({ id: data.itemId, toolId, label, description: '', videoUrl: '', order: allToolItems.length });
+      if (input) input.value = '';
+      renderToolItemsList();
+      showToast('Item added!');
+    } else showToast('Error: ' + (data.error||'unknown'));
+  } catch(e) { showToast('Connection error.'); }
+}
+
+async function removeToolItemFromDash(itemId, label) {
+  if (!confirm(`Remove "${label}"?`)) return;
+  try {
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=remove_tool_item&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&itemId=${encodeURIComponent(itemId)}`);
+    const data = await res.json();
+    if (data.ok) { allToolItems = allToolItems.filter(i => i.id !== itemId); renderToolItemsList(); showToast('Removed.'); }
+  } catch(e) { showToast('Connection error.'); }
 }
 
 function renderSectionsList() {
@@ -1627,6 +1771,13 @@ function renderSectionItems() {
               <label>Google Drive Video URL</label>
               <input type="text" id="si-video-${escHtml(item.id)}" value="${escHtml(item.videoUrl||'')}" placeholder="https://drive.google.com/file/d/…/view" style="width:100%;padding:10px 12px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;outline:none;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border)'" />
             </div>
+            <div class="form-group" style="margin-bottom:12px;">
+              <label>Reminder Week <span style="font-size:10px;color:var(--light);font-weight:400;text-transform:none;letter-spacing:0;">(highlights item when employee is on this week)</span></label>
+              <select id="si-week-${escHtml(item.id)}" style="width:100%;padding:10px 12px;border:1px solid var(--border);font-family:'Inter',sans-serif;font-size:13px;outline:none;background:#fff;appearance:none;">
+                <option value="">— Show every week —</option>
+                ${Array.from({length:12},(_,i)=>`<option value="${i+1}" ${item.reminderWeek===i+1?'selected':''}>Week ${i+1}</option>`).join('')}
+              </select>
+            </div>
             <div style="margin-bottom:12px;">
               <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--mid);margin-bottom:8px;">Sub-Checklist Items</div>
               <div id="si-subitems-${escHtml(item.id)}" style="margin-bottom:8px;">
@@ -1659,16 +1810,18 @@ function toggleSectionItem(itemId) {
 }
 
 async function addSectionItem() {
-  const title   = document.getElementById('si_title').value.trim();
-  const section = document.getElementById('si_section').value;
-  const desc    = document.getElementById('si_description').value.trim();
-  const video   = document.getElementById('si_video').value.trim();
+  const title        = document.getElementById('si_title').value.trim();
+  const section      = document.getElementById('si_section').value;
+  const desc         = document.getElementById('si_description').value.trim();
+  const video        = document.getElementById('si_video').value.trim();
+  const weekVal      = document.getElementById('si_week')?.value || '';
+  const reminderWeek = weekVal ? parseInt(weekVal) : null;
   if (!title) { showToast('Please enter a title.'); return; }
   try {
-    const res  = await fetch(`${APPS_SCRIPT_URL}?action=add_section_item&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&section=${encodeURIComponent(section)}&title=${encodeURIComponent(title)}&description=${encodeURIComponent(desc)}&videoUrl=${encodeURIComponent(video)}`);
+    const res  = await fetch(`${APPS_SCRIPT_URL}?action=add_section_item&id=${encodeURIComponent(userId)}&pw=${encodeURIComponent(userPw)}&section=${encodeURIComponent(section)}&title=${encodeURIComponent(title)}&description=${encodeURIComponent(desc)}&videoUrl=${encodeURIComponent(video)}&reminderWeek=${encodeURIComponent(reminderWeek||'')}`);
     const data = await res.json();
     if (data.ok) {
-      allSectionItems.push({ id: data.itemId, section, title, description: desc, videoUrl: video });
+      allSectionItems.push({ id: data.itemId, section, title, description: desc, videoUrl: video, reminderWeek });
       document.getElementById('si_title').value       = '';
       document.getElementById('si_description').value = '';
       document.getElementById('si_video').value       = '';
@@ -1679,20 +1832,22 @@ async function addSectionItem() {
 }
 
 async function saveSectionItem(itemId) {
-  const desc     = document.getElementById('si-desc-'  + itemId)?.value || '';
-  const video    = document.getElementById('si-video-' + itemId)?.value || '';
-  const status   = document.getElementById('si-status-' + itemId);
-  const item     = allSectionItems.find(i => i.id === itemId);
-  const subItems = item?.subItems || [];
+  const desc         = document.getElementById('si-desc-'  + itemId)?.value || '';
+  const video        = document.getElementById('si-video-' + itemId)?.value || '';
+  const weekVal      = document.getElementById('si-week-'  + itemId)?.value || '';
+  const reminderWeek = weekVal ? parseInt(weekVal) : null;
+  const status       = document.getElementById('si-status-' + itemId);
+  const item         = allSectionItems.find(i => i.id === itemId);
+  const subItems     = item?.subItems || [];
   if (status) status.textContent = 'Saving…';
   try {
     await fetch(APPS_SCRIPT_URL, {
       method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'update_section_item', id: userId, pw: userPw,
-        itemId, description: desc, videoUrl: video, subItems })
+        itemId, description: desc, videoUrl: video, subItems, reminderWeek })
     });
-    if (item) { item.description = desc; item.videoUrl = video; }
+    if (item) { item.description = desc; item.videoUrl = video; item.reminderWeek = reminderWeek; }
     if (status) { status.textContent = '✓ Live in portal'; status.style.color = 'var(--green)'; }
   } catch(e) { if (status) status.textContent = 'Connection error'; }
 }

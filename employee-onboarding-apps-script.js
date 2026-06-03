@@ -26,7 +26,30 @@ var TABS = {
   TEAM:          'Team_Members',
   PROCEDURES:    'Procedures',
   SECTION_ITEMS: 'Section_Items',
-  SECTIONS:      'Sections'
+  SECTIONS:      'Sections',
+  TOOL_ITEMS:    'Tool_Items'
+};
+
+var DEFAULT_TOOLS = [
+  { id:'gmail',       label:'Gmail',             icon:'envelope' },
+  { id:'onepassword', label:'1Password',          icon:'lock'     },
+  { id:'clickup',     label:'ClickUp',            icon:'check'    },
+  { id:'qbo',         label:'QuickBooks Online',  icon:'chart'    },
+  { id:'qbt',         label:'QuickBooks Time',    icon:'clock'    },
+  { id:'slack',       label:'Slack',              icon:'chat'     },
+  { id:'insightful',  label:'Insightful',         icon:'bar'      },
+  { id:'ramp',        label:'Ramp',               icon:'card'     }
+];
+
+var DEFAULT_TOOL_ITEMS = {
+  gmail:       ['Login confirmed','Zero inbox policy reviewed','Email signature set up','Calendar added and synced'],
+  onepassword: ['Login confirmed','Vault access confirmed','Training: adding new logins completed'],
+  clickup:     ['Login confirmed','Folders shared and accessible','Tasks assigned and visible','Navigation training video watched','Personal dashboard set up','Task completion expectations reviewed'],
+  qbo:         ['Login confirmed'],
+  qbt:         ['Login confirmed'],
+  slack:       ['Login confirmed','Added to relevant channels','Slack vs. email policies reviewed','Calendar notes set up'],
+  insightful:  ['Login confirmed','Access confirmed','Productivity expectations reviewed'],
+  ramp:        ['Login confirmed','Access confirmed','Overall usage training completed','Client training completed']
 };
 
 var DEFAULT_SECTIONS = [
@@ -69,6 +92,10 @@ function doGet(e) {
     if (p.action === 'add_section_item')   return respond(addSectionItem(p));
     if (p.action === 'remove_section_item') return respond(removeSectionItem(p));
     if (p.action === 'update_section_item') return respond(updateSectionItem(p));
+    if (p.action === 'get_tool_items')      return respond(getToolItems(p.id, p.pw));
+    if (p.action === 'add_tool_item')       return respond(addToolItem(p));
+    if (p.action === 'update_tool_item')    return respond(updateToolItem(p));
+    if (p.action === 'remove_tool_item')    return respond(removeToolItem(p));
     if (p.action === 'get_sections')        return respond(getSections(p.id, p.pw));
     if (p.action === 'add_section')         return respond(addSection(p));
     if (p.action === 'update_section')      return respond(updateSection(p));
@@ -458,7 +485,8 @@ function getSectionItems(id, pw) {
     var subItems = [];
     try { subItems = JSON.parse(rows[i][7]||'[]'); } catch(e) {}
     items.push({ id: rows[i][0], section: rows[i][1], title: rows[i][2],
-      description: rows[i][3]||'', videoUrl: rows[i][4]||'', subItems: subItems });
+      description: rows[i][3]||'', videoUrl: rows[i][4]||'', subItems: subItems,
+      reminderWeek: rows[i][8] ? Number(rows[i][8]) : null });
   }
   return { ok: true, items: items };
 }
@@ -467,8 +495,8 @@ function addSectionItem(p) {
   if (!isDashboardUser(p.id, p.pw)) return { ok: false, error: 'Unauthorized' };
   var iId   = generateId();
   var sheet = getSheet(TABS.SECTION_ITEMS);
-  ensureHeaders(sheet, ['ID','Section','Title','Description','Video URL','Created By','Created Date','Sub Items (JSON)']);
-  sheet.appendRow([iId, p.section||'', p.title||'', p.description||'', p.videoUrl||'', p.id, now(), '[]']);
+  ensureHeaders(sheet, ['ID','Section','Title','Description','Video URL','Created By','Created Date','Sub Items (JSON)','Reminder Week']);
+  sheet.appendRow([iId, p.section||'', p.title||'', p.description||'', p.videoUrl||'', p.id, now(), '[]', p.reminderWeek||'']);
   return { ok: true, itemId: iId };
 }
 
@@ -491,9 +519,10 @@ function updateSectionItem(p) {
   var rows  = sheet.getDataRange().getValues();
   for (var i = 1; i < rows.length; i++) {
     if (String(rows[i][0]) === String(p.itemId)) {
-      if (p.description !== undefined) sheet.getRange(i+1, 4).setValue(p.description || '');
-      if (p.videoUrl    !== undefined) sheet.getRange(i+1, 5).setValue(p.videoUrl    || '');
-      if (p.subItems    !== undefined) sheet.getRange(i+1, 8).setValue(JSON.stringify(p.subItems));
+      if (p.description  !== undefined) sheet.getRange(i+1, 4).setValue(p.description  || '');
+      if (p.videoUrl     !== undefined) sheet.getRange(i+1, 5).setValue(p.videoUrl     || '');
+      if (p.subItems     !== undefined) sheet.getRange(i+1, 8).setValue(JSON.stringify(p.subItems));
+      if (p.reminderWeek !== undefined) sheet.getRange(i+1, 9).setValue(p.reminderWeek || '');
       return { ok: true };
     }
   }
@@ -655,7 +684,8 @@ function getEmployeeProgress(id, pw) {
       var sub = [];
       try { sub = JSON.parse(si[n][7]||'[]'); } catch(e) {}
       sectionItems.push({ id: si[n][0], section: si[n][1], title: si[n][2],
-        description: si[n][3]||'', videoUrl: si[n][4]||'', subItems: sub });
+        description: si[n][3]||'', videoUrl: si[n][4]||'', subItems: sub,
+        reminderWeek: si[n][8] ? Number(si[n][8]) : null });
     }
   }
 
@@ -672,7 +702,19 @@ function getEmployeeProgress(id, pw) {
     sections = DEFAULT_SECTIONS;
   }
 
-  return { ok: true, progress: progress, clients: clients, insightful: insightful, procedures: procedures, sectionItems: sectionItems, sections: sections };
+  // Tool items (dynamic checklist from dashboard)
+  var toolItems = [];
+  var tiSheet = getSheet(TABS.TOOL_ITEMS);
+  if (tiSheet.getLastRow() > 1) {
+    var ti = tiSheet.getDataRange().getValues();
+    for (var r = 1; r < ti.length; r++) {
+      toolItems.push({ id: ti[r][0], toolId: ti[r][1], label: ti[r][2],
+        description: ti[r][3]||'', videoUrl: ti[r][4]||'', order: Number(ti[r][5])||r });
+    }
+    toolItems.sort(function(a,b){ return a.order - b.order; });
+  }
+
+  return { ok: true, progress: progress, clients: clients, insightful: insightful, procedures: procedures, sectionItems: sectionItems, sections: sections, toolItems: toolItems };
 }
 
 // -- FINAL SUBMIT --------------------------------------------------------------
@@ -691,6 +733,67 @@ function finalSubmit(data) {
     { name: 'GDC Onboarding System' });
 
   return { ok: true };
+}
+
+// -- TOOL ITEMS ----------------------------------------------------------------
+function getToolItems(id, pw) {
+  if (!isDashboardUser(id, pw)) return { ok: false, error: 'Unauthorized' };
+  var sheet = getSheet(TABS.TOOL_ITEMS);
+  if (sheet.getLastRow() < 2) {
+    ensureHeaders(sheet, ['ID','Tool ID','Label','Description','Video URL','Order','Created By']);
+    var order = 1;
+    Object.keys(DEFAULT_TOOL_ITEMS).forEach(function(toolId) {
+      DEFAULT_TOOL_ITEMS[toolId].forEach(function(label) {
+        sheet.appendRow([generateId(), toolId, label, '', '', order++, 'grace']);
+      });
+    });
+  }
+  var rows  = sheet.getDataRange().getValues();
+  var items = [];
+  for (var i = 1; i < rows.length; i++) {
+    items.push({ id: rows[i][0], toolId: rows[i][1], label: rows[i][2],
+      description: rows[i][3]||'', videoUrl: rows[i][4]||'', order: Number(rows[i][5])||i });
+  }
+  items.sort(function(a,b){ return a.order - b.order; });
+  return { ok: true, items: items };
+}
+
+function addToolItem(p) {
+  if (!isDashboardUser(p.id, p.pw)) return { ok: false, error: 'Unauthorized' };
+  var iId   = generateId();
+  var sheet = getSheet(TABS.TOOL_ITEMS);
+  ensureHeaders(sheet, ['ID','Tool ID','Label','Description','Video URL','Order','Created By']);
+  var order = sheet.getLastRow();
+  sheet.appendRow([iId, p.toolId||'', p.label||'', p.description||'', p.videoUrl||'', order, p.id]);
+  return { ok: true, itemId: iId };
+}
+
+function updateToolItem(p) {
+  if (!isDashboardUser(p.id, p.pw)) return { ok: false, error: 'Unauthorized' };
+  var sheet = getSheet(TABS.TOOL_ITEMS);
+  var rows  = sheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]) === String(p.itemId)) {
+      if (p.label       !== undefined) sheet.getRange(i+1, 3).setValue(p.label);
+      if (p.description !== undefined) sheet.getRange(i+1, 4).setValue(p.description);
+      if (p.videoUrl    !== undefined) sheet.getRange(i+1, 5).setValue(p.videoUrl);
+      return { ok: true };
+    }
+  }
+  return { ok: false, error: 'Item not found' };
+}
+
+function removeToolItem(p) {
+  if (!isDashboardUser(p.id, p.pw)) return { ok: false, error: 'Unauthorized' };
+  var sheet = getSheet(TABS.TOOL_ITEMS);
+  var rows  = sheet.getDataRange().getValues();
+  for (var i = 1; i < rows.length; i++) {
+    if (String(rows[i][0]) === String(p.itemId)) {
+      sheet.deleteRow(i + 1);
+      return { ok: true };
+    }
+  }
+  return { ok: false, error: 'Item not found' };
 }
 
 // -- SECTIONS ------------------------------------------------------------------
