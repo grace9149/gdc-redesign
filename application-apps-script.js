@@ -11,15 +11,27 @@
 //  6. Copy the Web App URL
 //  7. Paste it into application-form.html where it says:
 //     const APPS_SCRIPT_URL = 'PASTE_URL_HERE';
+//
+// PERMISSIONS REQUIRED (grant on first run):
+//  - Gmail (send email notifications)
+//  - Google Sheets (write submissions)
+//  - Google Drive (save resume PDFs)
 // =============================================================================
 
-var SHEET_ID     = '1XMGWVZyXfgzKuc1Rt5d0M_XtHO7fnMJ-0JrZ7mzOCQg';
-var NOTIFY_EMAIL = 'hr@gracedouganconsulting.com';
+var SHEET_ID      = '1XMGWVZyXfgzKuc1Rt5d0M_XtHO7fnMJ-0JrZ7mzOCQg';
+var NOTIFY_EMAIL  = 'hr@gracedouganconsulting.com';
+var RESUME_FOLDER = 'GDC Job Application Resumes'; // Drive folder name (created automatically)
 
 // ── POST handler ──────────────────────────────────────────────────────────────
 function doPost(e) {
   try {
     var p = e.parameter;
+
+    // Save resume PDF to Drive if provided
+    var resumeLink = '';
+    if (p.resume_base64 && p.resume_filename) {
+      resumeLink = saveResume(p.resume_base64, p.resume_filename, p.first_name, p.last_name);
+    }
 
     var sheet = getSheet('Applications');
     ensureHeaders(sheet, [
@@ -27,7 +39,7 @@ function doPost(e) {
       'City / State', 'LinkedIn', 'Position', 'Experience', 'Availability',
       'Hours/Week', 'Work Auth', 'Start Date', 'Desired Pay', 'Schedule',
       'Felony', 'Involuntary Term', 'Software', 'Certifications',
-      'Cover Letter', 'Resume Link', 'Referral', 'Certification'
+      'Cover Letter', 'Resume', 'Referral', 'Certification'
     ]);
 
     sheet.appendRow([
@@ -51,12 +63,12 @@ function doPost(e) {
       p.software   || '',
       p.certifications || '',
       p.cover      || '',
-      p.resume_link || '',
+      resumeLink,
       p.referral   || '',
       p.certification || ''
     ]);
 
-    sendNotification(p);
+    sendNotification(p, resumeLink);
 
     return respond({ ok: true });
   } catch(err) {
@@ -69,8 +81,19 @@ function doGet(e) {
   return respond({ ok: true, message: 'GDC Applications script is running.' });
 }
 
+// ── Save resume to Google Drive ───────────────────────────────────────────────
+function saveResume(base64, filename, firstName, lastName) {
+  var folders = DriveApp.getFoldersByName(RESUME_FOLDER);
+  var folder = folders.hasNext() ? folders.next() : DriveApp.createFolder(RESUME_FOLDER);
+  var name = (lastName || 'Unknown') + ', ' + (firstName || '') + ' — ' + filename;
+  var blob = Utilities.newBlob(Utilities.base64Decode(base64), 'application/pdf', name);
+  var file = folder.createFile(blob);
+  file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  return file.getUrl();
+}
+
 // ── Email notification ────────────────────────────────────────────────────────
-function sendNotification(p) {
+function sendNotification(p, resumeLink) {
   var name = (p.first_name || '') + ' ' + (p.last_name || '');
   var subject = 'New Application: ' + name.trim() + ' — ' + (p.position || 'Unknown Role');
   var body = [
@@ -97,7 +120,7 @@ function sendNotification(p) {
     'COVER LETTER:',
     p.cover || '',
     '',
-    'RESUME:     ' + (p.resume_link || '(none provided)'),
+    'RESUME:     ' + (resumeLink || '(none provided)'),
   ].join('\n');
 
   GmailApp.sendEmail(NOTIFY_EMAIL, subject, body, {

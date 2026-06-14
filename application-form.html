@@ -418,8 +418,8 @@
         </div>
         <div class="form-row form-row--1" style="margin-top:4px;">
           <div class="form-group">
-            <label for="resume_link">Resume / CV Link</label>
-            <input type="url" id="resume_link" name="resume_link" placeholder="Paste a link to your resume — Google Drive, Dropbox, LinkedIn, etc." />
+            <label for="resume_file">Please Upload a PDF of Your Resume Here</label>
+            <input type="file" id="resume_file" name="resume_file" accept=".pdf" />
           </div>
         </div>
         <div class="form-row form-row--1" style="margin-top:20px;">
@@ -488,14 +488,27 @@
 
       try {
         const data = new FormData(form);
-        // Convert checkboxes (multiple values) to comma-separated string
         const software = [...form.querySelectorAll('input[name="software"]:checked')]
           .map(el => el.value).join(', ');
         if (software) data.set('software', software);
 
         const params = new URLSearchParams();
         for (const [key, value] of data.entries()) {
-          params.append(key, value);
+          if (key !== 'resume_file') params.append(key, value);
+        }
+
+        // Encode PDF as base64 if provided
+        const fileInput = form.querySelector('#resume_file');
+        if (fileInput.files.length > 0) {
+          const file = fileInput.files[0];
+          const base64 = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          });
+          params.append('resume_base64', base64);
+          params.append('resume_filename', file.name);
         }
 
         const res = await fetch(APPS_SCRIPT_URL, {
