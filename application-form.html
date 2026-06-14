@@ -510,12 +510,13 @@
           payload.resume_filename = file.name;
         }
 
-        await fetch(APPS_SCRIPT_URL, {
+        // Fire and forget — Apps Script redirects make awaiting unreliable
+        fetch(APPS_SCRIPT_URL, {
           method: 'POST',
           body: JSON.stringify(payload),
           mode: 'no-cors'
-        });
-        // no-cors means we can't read the response — assume success if fetch didn't throw
+        }).catch(() => {});
+
         form.style.display = 'none';
         success.style.display = 'block';
       } catch(err) {
