@@ -497,17 +497,21 @@
           if (key !== 'resume_file') payload[key] = value;
         }
 
-        // Encode PDF as base64 if provided
-        const fileInput = form.querySelector('#resume_file');
-        if (fileInput.files.length > 0) {
-          const file = fileInput.files[0];
-          payload.resume_base64 = await new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result.split(',')[1]);
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
-          });
-          payload.resume_filename = file.name;
+        // Encode PDF as base64 if provided (non-blocking — skip if read fails)
+        try {
+          const fileInput = form.querySelector('#resume_file');
+          if (fileInput && fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            payload.resume_base64 = await new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () => resolve(reader.result.split(',')[1]);
+              reader.onerror = reject;
+              reader.readAsDataURL(file);
+            });
+            payload.resume_filename = file.name;
+          }
+        } catch(fileErr) {
+          // Resume upload failed — continue without it
         }
 
         // Fire and forget — Apps Script redirects make awaiting unreliable
