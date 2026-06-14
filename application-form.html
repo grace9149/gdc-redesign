@@ -2,8 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" href="/img/gdc-logo-512.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Join Our Team — Grace Dougan Consulting</title>
   <meta name="description" content="Apply to join the Grace Dougan Consulting team. We're always looking for skilled back-office professionals in the Bay Area and beyond." />
@@ -251,12 +249,9 @@
     <form
       class="application-form"
       id="applicationForm"
-      action="https://formspree.io/f/mrevggze"
       method="POST"
-      enctype="multipart/form-data"
     >
       <!-- Hidden fields -->
-      <input type="hidden" name="_subject" value="New Team Application — Grace Dougan Consulting" />
       <input type="hidden" name="_replyto" id="replyto_field" value="" />
 
       <!-- 1. Personal Info -->
@@ -355,10 +350,6 @@
           <div class="form-group">
             <label for="start_date">Available to Begin Work</label>
             <input type="date" id="start_date" name="start_date" />
-          </div>
-          <div class="form-group">
-            <label for="desired_pay">Desired Pay Rate</label>
-            <input type="text" id="desired_pay" name="desired_pay" placeholder="e.g. $25/hr or $50,000/yr" />
           </div>
           <div class="form-group">
             <label for="schedule">Requested Schedule <span style="font-weight:400;text-transform:none;letter-spacing:0;">(include time zone)</span></label>
@@ -487,6 +478,8 @@
     const form = document.getElementById('applicationForm');
     const success = document.getElementById('formSuccess');
 
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzZAo16zE73qd5G35dAwF67rxJB68vvop5LZUzDduSWkGqUuWLIGel5WZRmxqvqdbJLjQ/exec';
+
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
       const btn = form.querySelector('.btn--apply');
@@ -495,12 +488,22 @@
 
       try {
         const data = new FormData(form);
-        const res = await fetch(form.action, {
+        // Convert checkboxes (multiple values) to comma-separated string
+        const software = [...form.querySelectorAll('input[name="software"]:checked')]
+          .map(el => el.value).join(', ');
+        if (software) data.set('software', software);
+
+        const params = new URLSearchParams();
+        for (const [key, value] of data.entries()) {
+          params.append(key, value);
+        }
+
+        const res = await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
-          body: data,
-          headers: { 'Accept': 'application/json' }
+          body: params
         });
-        if (res.ok) {
+        const json = await res.json();
+        if (json.ok) {
           form.style.display = 'none';
           success.style.display = 'block';
         } else {
