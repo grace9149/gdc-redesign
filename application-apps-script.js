@@ -68,7 +68,7 @@ function doPost(e) {
       p.certification || ''
     ]);
 
-    sendNotification(p, resumeLink);
+    sendNotification(p, resumeLink, !!p.resume_base64 && !resumeLink);
 
     return respond({ ok: true });
   } catch(err) {
@@ -93,7 +93,7 @@ function saveResume(base64, filename, firstName, lastName) {
 }
 
 // ── Email notification ────────────────────────────────────────────────────────
-function sendNotification(p, resumeLink) {
+function sendNotification(p, resumeLink, resumeFailed) {
   var name = (p.first_name || '') + ' ' + (p.last_name || '');
   var subject = 'New Application: ' + name.trim() + ' — ' + (p.position || 'Unknown Role');
   var body = [
@@ -120,7 +120,7 @@ function sendNotification(p, resumeLink) {
     'COVER LETTER:',
     p.cover || '',
     '',
-    'RESUME:     ' + (resumeLink || '(none provided)'),
+    'RESUME:     ' + (resumeLink ? resumeLink : resumeFailed ? '⚠️ Applicant uploaded a resume but it failed to save — follow up directly.' : '(none provided)'),
   ].join('\n');
 
   var options = { replyTo: p.email || NOTIFY_EMAIL };
