@@ -25,7 +25,7 @@ var RESUME_FOLDER = 'GDC Job Application Resumes'; // Drive folder name (created
 // ── POST handler ──────────────────────────────────────────────────────────────
 function doPost(e) {
   try {
-    var p = e.parameter;
+    var p = JSON.parse(e.postData.contents);
 
     // Save resume PDF to Drive if provided
     var resumeLink = '';
@@ -123,9 +123,16 @@ function sendNotification(p, resumeLink) {
     'RESUME:     ' + (resumeLink || '(none provided)'),
   ].join('\n');
 
-  GmailApp.sendEmail(NOTIFY_EMAIL, subject, body, {
-    replyTo: p.email || NOTIFY_EMAIL
-  });
+  var options = { replyTo: p.email || NOTIFY_EMAIL };
+  if (resumeLink && p.resume_base64 && p.resume_filename) {
+    var blob = Utilities.newBlob(
+      Utilities.base64Decode(p.resume_base64),
+      'application/pdf',
+      p.resume_filename
+    );
+    options.attachments = [blob];
+  }
+  GmailApp.sendEmail(NOTIFY_EMAIL, subject, body, options);
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────

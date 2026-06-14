@@ -492,28 +492,28 @@
           .map(el => el.value).join(', ');
         if (software) data.set('software', software);
 
-        const params = new URLSearchParams();
+        const payload = {};
         for (const [key, value] of data.entries()) {
-          if (key !== 'resume_file') params.append(key, value);
+          if (key !== 'resume_file') payload[key] = value;
         }
 
         // Encode PDF as base64 if provided
         const fileInput = form.querySelector('#resume_file');
         if (fileInput.files.length > 0) {
           const file = fileInput.files[0];
-          const base64 = await new Promise((resolve, reject) => {
+          payload.resume_base64 = await new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.onload = () => resolve(reader.result.split(',')[1]);
             reader.onerror = reject;
             reader.readAsDataURL(file);
           });
-          params.append('resume_base64', base64);
-          params.append('resume_filename', file.name);
+          payload.resume_filename = file.name;
         }
 
         const res = await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
-          body: params
+          body: JSON.stringify(payload),
+          headers: { 'Content-Type': 'text/plain' }
         });
         const json = await res.json();
         if (json.ok) {
