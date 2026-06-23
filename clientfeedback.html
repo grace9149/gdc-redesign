@@ -393,11 +393,17 @@
       btn.textContent = 'Submitting…';
       btn.disabled = true;
 
+      const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyMijZXLTqsp198a6c4vShUsl0AElPfd3sOLf-ewiwZZzAh4wa_AofAIsuF-DbBU-NV/exec';
+      const fd = new FormData(form);
+      const payload = {};
+      fd.forEach((v, k) => { payload[k] = v; });
+
       try {
-        await fetch('https://formspree.io/f/xpqnbnnd', {
+        await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
-          headers: { 'Accept': 'application/json' },
-          body: new FormData(form)
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
         });
         form.style.display = 'none';
         success.style.display = 'block';
