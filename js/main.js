@@ -73,35 +73,35 @@ if (parallaxCards.length && window.innerWidth > 768) {
 // ---- LOCATIONS MAP ----
 if (document.getElementById('map') && typeof L !== 'undefined') {
   const locations = [
-    { city: "Fishkill",         state: "NY", zip: "12524", lat: 41.5362, lng: -73.8996 },
-    { city: "New Windsor",      state: "NY", zip: "12553", lat: 41.4751, lng: -74.0096 },
-    { city: "Napa",             state: "CA", zip: "94559", lat: 38.2975, lng: -122.2869 },
-    { city: "Van Nuys",         state: "CA", zip: "91405", lat: 34.1897, lng: -118.4490 },
-    { city: "Novato",           state: "CA", zip: "94945", lat: 38.1074, lng: -122.5697 },
-    { city: "Gilroy",           state: "CA", zip: "95020", lat: 37.0058, lng: -121.5683 },
-    { city: "Niverville",       state: "NY", zip: "12130", lat: 42.4398, lng: -73.6582 },
-    { city: "Rio Rancho",       state: "NM", zip: "87124", lat: 35.2328, lng: -106.6630 },
-    { city: "Sacramento",       state: "CA", zip: "95825", lat: 38.5816, lng: -121.4944 },
-    { city: "Kennesaw",         state: "GA", zip: "30152", lat: 34.0234, lng: -84.6155 },
-    { city: "Star",             state: "ID", zip: "83669", lat: 43.6924, lng: -116.4897 },
-    { city: "Beloit",           state: "WI", zip: "53511", lat: 42.5083, lng: -89.0318 },
-    { city: "Rancho Cucamonga", state: "CA", zip: "91701", lat: 34.1064, lng: -117.5931 },
-    { city: "Ft. Wright",       state: "KY", zip: "41011", lat: 39.0514, lng: -84.5313 },
-    { city: "Pine Bush",        state: "NY", zip: "12566", lat: 41.6076, lng: -74.2907 },
-    { city: "Walnut Creek",     state: "CA", zip: "94596", lat: 37.9101, lng: -122.0652 },
-    { city: "Portland",         state: "OR", zip: "97206", lat: 45.4871, lng: -122.6008 },
-    { city: "Dallas",           state: "TX", zip: "75219", lat: 32.8135, lng: -96.8120 },
-    { city: "Youngstown",       state: "OH", zip: "44515", lat: 41.0998, lng: -80.6495 },
-    { city: "Wallkill",         state: "NY", zip: "12589", lat: 41.6012, lng: -74.1657 },
-    { city: "Casa Grande",      state: "AZ", zip: "85122", lat: 32.8795, lng: -111.7574 },
-    { city: "North Liberty",    state: "IA", zip: "52317", lat: 41.7494, lng: -91.5988 },
-    { city: "Laurelville",      state: "OH", zip: "43135", lat: 39.4748, lng: -82.7374 },
-    { city: "Baltimore",        state: "MD", zip: "21229", lat: 39.2784, lng: -76.7074 },
-    { city: "Cincinnati",       state: "OH", zip: "45247", lat: 39.2128, lng: -84.6202 },
-    { city: "Asheville",        state: "NC", zip: "28803", lat: 35.5951, lng: -82.5515 },
-    { city: "Heber Springs",    state: "AR", zip: "72543", lat: 35.4912, lng: -92.0296 },
-    { city: "Naugatuck",        state: "CT", zip: "06770", lat: 41.4865, lng: -73.0507 },
-    { city: "Pewaukee",         state: "WI", zip: "53072", lat: 43.0808, lng: -88.2526 },
+    { city: "Greensboro",       state: "NC", lat: 36.0726, lng: -79.7920 },
+    { city: "New Windsor",      state: "NY", lat: 41.4751, lng: -74.0096 },
+    { city: "Napa",             state: "CA", lat: 38.2975, lng: -122.2869 },
+    { city: "Southfield",       state: "MI", lat: 42.4734, lng: -83.2219 },
+    { city: "Van Nuys",         state: "CA", lat: 34.1897, lng: -118.4490 },
+    { city: "Novato",           state: "CA", lat: 38.1074, lng: -122.5697 },
+    { city: "Gilroy",           state: "CA", lat: 37.0058, lng: -121.5683 },
+    { city: "Niverville",       state: "NY", lat: 42.4398, lng: -73.6582 },
+    { city: "Rio Rancho",       state: "NM", lat: 35.2328, lng: -106.6630 },
+    { city: "Sacramento",       state: "CA", lat: 38.5816, lng: -121.4944 },
+    { city: "Star",             state: "ID", lat: 43.6924, lng: -116.4897 },
+    { city: "Beloit",           state: "WI", lat: 42.5083, lng: -89.0318 },
+    { city: "Rancho Cucamonga", state: "CA", lat: 34.1064, lng: -117.5931 },
+    { city: "Ft. Wright",       state: "KY", lat: 39.0514, lng: -84.5313 },
+    { city: "Pine Bush",        state: "NY", lat: 41.6076, lng: -74.2907 },
+    { city: "Walnut Creek",     state: "CA", lat: 37.9101, lng: -122.0652 },
+    { city: "Portland",         state: "OR", lat: 45.4871, lng: -122.6008 },
+    { city: "Youngstown",       state: "OH", lat: 41.0998, lng: -80.6495 },
+    { city: "Wallkill",         state: "NY", lat: 41.6012, lng: -74.1657 },
+    { city: "Casa Grande",      state: "AZ", lat: 32.8795, lng: -111.7574 },
+    { city: "North Liberty",    state: "IA", lat: 41.7494, lng: -91.5988 },
+    { city: "Laurelville",      state: "OH", lat: 39.4748, lng: -82.7374 },
+    { city: "Baltimore",        state: "MD", lat: 39.2784, lng: -76.7074 },
+    { city: "Cincinnati",       state: "OH", lat: 39.2128, lng: -84.6202 },
+    { city: "Asheville",        state: "NC", lat: 35.5951, lng: -82.5515 },
+    { city: "Heber Springs",    state: "AR", lat: 35.4912, lng: -92.0296 },
+    { city: "Show Low",         state: "AZ", lat: 34.2542, lng: -110.0298 },
+    { city: "Naugatuck",        state: "CT", lat: 41.4865, lng: -73.0507 },
+    { city: "Pewaukee",         state: "WI", lat: 43.0808, lng: -88.2526 },
   ];
 
   const locMap = L.map('map', {
@@ -133,7 +133,7 @@ if (document.getElementById('map') && typeof L !== 'undefined') {
       .addTo(locMap)
       .bindPopup(`
         <div class="popup-city">${loc.city}</div>
-        <div class="popup-state">${loc.state} ${loc.zip}</div>
+        <div class="popup-state">${loc.state}</div>
       `);
   });
 }
