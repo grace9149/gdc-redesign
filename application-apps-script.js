@@ -21,11 +21,37 @@
 var SHEET_ID      = '1XMGWVZyXfgzKuc1Rt5d0M_XtHO7fnMJ-0JrZ7mzOCQg';
 var NOTIFY_EMAIL  = 'hr@gracedouganconsulting.com';
 var RESUME_FOLDER = 'GDC Job Application Resumes'; // Drive folder name (created automatically)
+var TURNSTILE_ACTION    = 'apply';
+var TURNSTILE_HOSTNAMES = ['gracedouganconsulting.com', 'www.gracedouganconsulting.com'];
+
+// ── Turnstile verification ──────────────────────────────────────────────────
+function verifyTurnstile(token) {
+  if (!token) return false;
+  var secret = PropertiesService.getScriptProperties().getProperty('TURNSTILE_SECRET');
+  if (!secret) return false;
+  try {
+    var resp = UrlFetchApp.fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'post',
+      payload: { secret: secret, response: token },
+      muteHttpExceptions: true
+    });
+    var result = JSON.parse(resp.getContentText());
+    return !!result.success &&
+      result.action === TURNSTILE_ACTION &&
+      TURNSTILE_HOSTNAMES.indexOf(result.hostname) !== -1;
+  } catch (err) {
+    return false;
+  }
+}
 
 // ── POST handler ──────────────────────────────────────────────────────────────
 function doPost(e) {
   try {
     var p = JSON.parse(e.postData.contents);
+
+    if (!verifyTurnstile(p['cf-turnstile-response'])) {
+      return respond({ ok: false, error: 'verification_failed' });
+    }
 
     // Save resume PDF to Drive if provided
     var resumeLink = '';
