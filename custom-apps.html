@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/img/gdc-logo-512.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Custom Apps — Grace Dougan Consulting</title>
+  <meta name="description" content="Grace Dougan Consulting builds custom software for small businesses and nonprofits that have outgrown their spreadsheets — see RCD Hub and Vantage Tracker." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #111111;
+      --muted: #444444;
+      --faint: #888888;
+      --line: #E2DDD6;
+      --paper: #FAF8F4;
+      --gold: #B8975A;
+      --gold-light: #D4AF72;
+    }
+
+    html { font-size: 16px; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+
+    /* ── NAV ── */
+    .nav {
+      border-bottom: 1px solid var(--line);
+    }
+    .nav__inner {
+      max-width: 760px; margin: 0 auto; padding: 0 24px;
+      height: 68px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav__logo {
+      font-size: 14px; font-weight: 500; letter-spacing: 0.02em;
+      color: var(--ink); text-decoration: none;
+    }
+    .nav__right {
+      display: flex; align-items: center; gap: 28px;
+    }
+    .nav__home {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+    }
+    .nav__home:hover { color: var(--ink); }
+    .nav__apply {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink); text-decoration: none;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 2px;
+    }
+    .nav__apply:hover { color: var(--gold); }
+
+    /* ── LAYOUT ── */
+    .page { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── INTRO ── */
+    .intro { padding: 88px 0 48px; text-align: center; }
+    .intro__eyebrow {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 18px;
+    }
+    .intro__title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(32px, 5vw, 44px); font-weight: 500; line-height: 1.2;
+      color: var(--ink); margin-bottom: 20px;
+    }
+    .intro__title em { font-style: italic; font-weight: 400; }
+    .intro__sub {
+      font-size: 16px; line-height: 1.8; color: var(--muted); max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* ── SECTIONS ── */
+    .section { padding: 44px 0; border-top: 1px solid var(--line); }
+    .section__label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--faint); margin-bottom: 20px;
+    }
+    .section p { color: var(--muted); margin-bottom: 14px; max-width: 560px; }
+    .section p:last-child { margin-bottom: 0; }
+
+    /* Process */
+    .steps { list-style: none; counter-reset: step; }
+    .steps li {
+      counter-increment: step;
+      display: flex; gap: 20px;
+      padding: 18px 0; border-top: 1px solid var(--line);
+    }
+    .steps li:first-child { border-top: none; padding-top: 0; }
+    .steps li::before {
+      content: counter(step);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 22px; color: var(--gold); flex-shrink: 0; width: 24px;
+    }
+    .steps strong { display: block; color: var(--ink); font-size: 14.5px; font-weight: 600; margin-bottom: 4px; }
+    .steps span { color: var(--muted); font-size: 14px; }
+
+    /* Work / case studies */
+    .work-list { list-style: none; }
+    .work-item {
+      padding: 24px 0; border-top: 1px solid var(--line);
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .work-item:first-child { border-top: none; padding-top: 0; }
+    .work-item__name {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 22px; font-weight: 500; color: var(--ink);
+    }
+    .work-item__desc { color: var(--muted); font-size: 14px; max-width: 560px; }
+    .work-item__link {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold-light);
+      padding-bottom: 2px; align-self: flex-start;
+    }
+    .work-item__link:hover { color: var(--ink); border-color: var(--ink); }
+
+    /* Good fit / not a fit */
+    .fit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .fit-grid h3 {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink); margin-bottom: 12px;
+    }
+    .fit-grid ul { list-style: none; }
+    .fit-grid li {
+      font-size: 14px; color: var(--muted); padding-left: 16px; position: relative;
+      margin-bottom: 8px; line-height: 1.6;
+    }
+    .fit-grid li::before {
+      content: '—'; position: absolute; left: 0; color: var(--gold);
+    }
+
+    /* CTA */
+    .cta { padding: 56px 0 88px; border-top: 1px solid var(--line); }
+    .cta__title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 30px; font-weight: 500; margin-bottom: 14px; color: var(--ink);
+    }
+    .cta p { color: var(--muted); margin-bottom: 28px; max-width: 480px; }
+    .btn-apply {
+      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #fff; background: var(--ink);
+      padding: 15px 32px; text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-apply:hover { background: var(--gold); }
+
+    /* ── FOOTER ── */
+    .footer {
+      border-top: 1px solid var(--line);
+      padding: 28px 24px;
+    }
+    .footer__inner {
+      max-width: 680px; margin: 0 auto;
+      display: flex; flex-wrap: wrap; gap: 12px 28px;
+      align-items: center; justify-content: space-between;
+      font-size: 12px; color: var(--faint);
+    }
+    .footer__links { display: flex; gap: 24px; }
+    .footer__links a { text-decoration: none; color: var(--faint); }
+    .footer__links a:hover { color: var(--ink); }
+
+    @media (max-width: 560px) {
+      .intro { padding: 56px 0 40px; }
+      .nav__inner { padding: 0 20px; }
+      .page { padding: 0 20px; }
+      .fit-grid { grid-template-columns: 1fr; gap: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo">Grace Dougan Consulting</a>
+      <div class="nav__right">
+        <a href="/" class="nav__home">Home</a>
+        <a href="/start-a-project.html" class="nav__apply">Start a Project</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="page">
+
+    <!-- INTRO -->
+    <div class="intro">
+      <p class="intro__eyebrow">Custom Apps</p>
+      <h1 class="intro__title">From Spreadsheet<br /><em>to Software.</em></h1>
+      <p class="intro__sub">Most businesses run their most important work out of a spreadsheet that's outgrown itself — broken formulas, version confusion, no way for the right people to see the right thing at the right time. We build the lightweight custom app that replaces it.</p>
+    </div>
+
+    <!-- WHAT WE DO -->
+    <div class="section">
+      <p class="section__label">What We Build</p>
+      <p>If your team's tracker, tool, or process lives in a spreadsheet — budgets, memberships, grants, project pipelines, client records — we can turn it into a real web app: one place to enter data, one source of truth, built around how your team actually works instead of forcing your workflow into rows and columns.</p>
+      <p>Every app is customized for you — we start with a strong base and make it work best for your organization.</p>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="section">
+      <p class="section__label">How It Works</p>
+      <ol class="steps">
+        <li>
+          <div>
+            <strong>Audit</strong>
+            <span>We look at the spreadsheet (or spreadsheets) you're running on today and map what it's actually being used for.</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>Design</strong>
+            <span>We design a simple, purpose-built app around that workflow — the fields, views, and roles your team needs, nothing more.</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>Build &amp; Launch</strong>
+            <span>We build and deploy the app on secure, modern infrastructure, and migrate your existing data over.</span>
+          </div>
+        </li>
+        <li>
+          <div>
+            <strong>Train &amp; Support</strong>
+            <span>We train your team, then stay on to support the app and add features as your business changes.</span>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <!-- RECENT BUILDS -->
+    <div class="section">
+      <p class="section__label">Recent Builds</p>
+      <ul class="work-list">
+        <li class="work-item">
+          <span class="work-item__name">RCD Hub</span>
+          <p class="work-item__desc">A shared hub built for Resource Conservation Districts to manage grants, memberships, and organization data in one place — replacing a patchwork of shared spreadsheets with a single dashboard everyone can trust.</p>
+          <a class="work-item__link" href="https://rcdhub.net" target="_blank" rel="noopener">Visit rcdhub.net &rarr;</a>
+        </li>
+        <li class="work-item">
+          <span class="work-item__name">Vantage Tracker</span>
+          <p class="work-item__desc">A project, budget, and time tracker built to replace the spreadsheets teams use to track hours, budgets, and project progress — with each client getting their own dedicated, secure deployment.</p>
+          <a class="work-item__link" href="https://vantagetracker.net" target="_blank" rel="noopener">Visit vantagetracker.net &rarr;</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- IS THIS A FIT -->
+    <div class="section">
+      <p class="section__label">Is This a Fit?</p>
+      <div class="fit-grid">
+        <div>
+          <h3>Good Signs</h3>
+          <ul>
+            <li>A spreadsheet that multiple people edit and it keeps breaking</li>
+            <li>You've outgrown "just add another tab"</li>
+            <li>You want clients or staff to see a version without editing the source</li>
+            <li>You're paying for software that's mostly overkill for what you need</li>
+            <li>You want to combine multiple softwares into one app</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta">
+      <h2 class="cta__title">Ready to leave the spreadsheet behind?</h2>
+      <p>Tell us what you're tracking today and we'll tell you honestly whether a custom app makes sense.</p>
+      <a href="/start-a-project.html" class="btn-apply">Start the Conversation</a>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <span>© 2026 Grace Dougan Consulting</span>
+      <div class="footer__links">
+        <a href="tel:4158279648">415-827-9648</a>
+        <a href="mailto:contact@gracedouganconsulting.com">contact@gracedouganconsulting.com</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
