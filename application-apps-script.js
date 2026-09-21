@@ -16,6 +16,15 @@
 //  - Gmail (send email notifications)
 //  - Google Sheets (write submissions)
 //  - Google Drive (save resume PDFs)
+//  - External requests (Turnstile verification + forwarding to gdc-app)
+//
+// SCRIPT PROPERTIES (File > Project Settings > Script Properties):
+//  - TURNSTILE_SECRET          -- Cloudflare Turnstile secret key
+//  - APPLICATIONS_SYNC_SECRET  -- shared secret, must match the
+//    APPLICATIONS_SYNC_SECRET env var set in Cloudflare Pages -> gdc-app ->
+//    Settings -> Environment variables. Forwards every submission into the
+//    "Potential Employees" tab of app.gracedouganconsulting.com (HR section)
+//    -- see functions/api/applications/index.js in the gdc-app repo.
 // =============================================================================
 
 var SHEET_ID      = '1XMGWVZyXfgzKuc1Rt5d0M_XtHO7fnMJ-0JrZ7mzOCQg';
@@ -23,6 +32,7 @@ var NOTIFY_EMAIL  = 'hr@gracedouganconsulting.com';
 var RESUME_FOLDER = 'GDC Job Application Resumes'; // Drive folder name (created automatically)
 var TURNSTILE_ACTION    = 'apply';
 var TURNSTILE_HOSTNAMES = ['gracedouganconsulting.com', 'www.gracedouganconsulting.com'];
+var GDC_APP_APPLICATIONS_URL = 'https://app.gracedouganconsulting.com/api/applications';
 
 // ── Turnstile verification ──────────────────────────────────────────────────
 function verifyTurnstile(token) {
@@ -96,6 +106,11 @@ function doPost(e) {
 
     sendNotification(p, resumeLink, !!p.resume_base64 && !resumeLink);
 
+    // Best-effort -- the Sheet row and email above are already the durable
+    // record, so a gdc-app outage or a missing script property here should
+    // never fail the applicant's submission.
+    try { forwardToGdcApp(p, resumeLink); } catch (fwdErr) { /* swallow */ }
+
     return respond({ ok: true });
   } catch(err) {
     return respond({ ok: false, error: err.toString() });
@@ -159,6 +174,27 @@ function sendNotification(p, resumeLink, resumeFailed) {
     options.attachments = [blob];
   }
   GmailApp.sendEmail(NOTIFY_EMAIL, subject, body, options);
+}
+
+// ── Forward to gdc-app's "Potential Employees" tab ────────────────────────────
+function forwardToGdcApp(p, resumeLink) {
+  var secret = PropertiesService.getScriptProperties().getProperty('APPLICATIONS_SYNC_SECRET');
+  if (!secret) return; // not configured yet -- skip quietly
+
+  var payload = {};
+  for (var key in p) {
+    if (key === 'resume_base64' || key === 'cf-turnstile-response') continue;
+    payload[key] = p[key];
+  }
+  payload.resume_url = resumeLink || '';
+
+  UrlFetchApp.fetch(GDC_APP_APPLICATIONS_URL, {
+    method: 'post',
+    contentType: 'application/json',
+    headers: { 'X-Apps-Script-Secret': secret },
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true
+  });
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
