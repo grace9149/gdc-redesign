@@ -28,17 +28,27 @@
 // =============================================================================
 
 var SHEET_ID      = '1XMGWVZyXfgzKuc1Rt5d0M_XtHO7fnMJ-0JrZ7mzOCQg';
-var NOTIFY_EMAIL  = 'hr@gracedouganconsulting.com';
+// hr@ is a Google Group (Grace + Grant) -- Groups commonly don't deliver a
+// copy back to the sender's own inbox, and since this script sends FROM
+// grace@gracedouganconsulting.com, that's exactly the one address that
+// silently never saw it (confirmed: every notification since June sent
+// successfully but landed in All Mail with no Inbox label, not Spam).
+// Sending directly to both real addresses sidesteps the group entirely.
+var NOTIFY_EMAIL  = 'grace@gracedouganconsulting.com,grantm@gracedouganconsulting.com';
 var RESUME_FOLDER = 'GDC Job Application Resumes'; // Drive folder name (created automatically)
 var TURNSTILE_ACTION    = 'apply';
 var TURNSTILE_HOSTNAMES = ['gracedouganconsulting.com', 'www.gracedouganconsulting.com'];
 var GDC_APP_APPLICATIONS_URL = 'https://app.gracedouganconsulting.com/api/applications';
 
 // ── Turnstile verification ──────────────────────────────────────────────────
-function verifyTurnstile(token) {
-  if (!token) return false;
+// Returns a diagnostic object instead of a bare boolean -- the client's
+// fetch uses mode:'no-cors' so it can never read our response anyway, and
+// TEMPORARILY (see doPost) we log the raw Cloudflare verdict into the Sheet
+// on failure so we can actually see WHY, instead of guessing.
+function checkTurnstile(token) {
+  if (!token) return { pass: false, reason: 'no_token', raw: null };
   var secret = PropertiesService.getScriptProperties().getProperty('TURNSTILE_SECRET');
-  if (!secret) return false;
+  if (!secret) return { pass: false, reason: 'no_secret_configured', raw: null };
   try {
     var resp = UrlFetchApp.fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'post',
@@ -46,11 +56,12 @@ function verifyTurnstile(token) {
       muteHttpExceptions: true
     });
     var result = JSON.parse(resp.getContentText());
-    return !!result.success &&
+    var pass = !!result.success &&
       result.action === TURNSTILE_ACTION &&
       TURNSTILE_HOSTNAMES.indexOf(result.hostname) !== -1;
+    return { pass: pass, reason: pass ? 'ok' : 'verdict_mismatch', raw: result };
   } catch (err) {
-    return false;
+    return { pass: false, reason: 'exception: ' + err, raw: null };
   }
 }
 
@@ -59,7 +70,21 @@ function doPost(e) {
   try {
     var p = JSON.parse(e.postData.contents);
 
-    if (!verifyTurnstile(p['cf-turnstile-response'])) {
+    var ts = checkTurnstile(p['cf-turnstile-response']);
+    if (!ts.pass) {
+      // TEMPORARY: log why, into the same Sheet everyone's already looking
+      // at, since the client can never read our response (no-cors) and the
+      // Executions log doesn't show return values without a linked Cloud
+      // project. Remove this block once Turnstile is confirmed working.
+      try {
+        var diagSheet = getSheet('Applications');
+        diagSheet.appendRow([
+          now(), '[TURNSTILE FAIL] ' + (p.first_name || ''), p.last_name || '', p.email || '',
+          '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',
+          'reason=' + ts.reason + ' raw=' + JSON.stringify(ts.raw),
+          ''
+        ]);
+      } catch (logErr) { /* swallow -- diagnostics must never break the real flow */ }
       return respond({ ok: false, error: 'verification_failed' });
     }
 
@@ -75,8 +100,28 @@ function doPost(e) {
       'City / State', 'LinkedIn', 'Position', 'Experience', 'Availability',
       'Hours/Week', 'Work Auth', 'Start Date', 'Desired Pay', 'Schedule',
       'Felony', 'Involuntary Term', 'Software', 'Certifications',
-      'Cover Letter', 'Resume', 'Referral', 'Certification'
+      'Cover Letter', 'Resume', 'Referral', 'Certification',
+      'Notify Error', 'Forward Error'
     ]);
+
+    // Notification and gdc-app forwarding are each best-effort and isolated
+    // from each other -- a failure in one (e.g. Gmail quota) must not also
+    // block the other. Errors are written into the row itself (temporary,
+    // for diagnosing the current issue) instead of only the Executions log,
+    // which isn't easy to read without a linked Cloud project.
+    var notifyError = '';
+    try {
+      sendNotification(p, resumeLink, !!p.resume_base64 && !resumeLink);
+    } catch (notifyErr) {
+      notifyError = notifyErr.toString();
+    }
+
+    var forwardError = '';
+    try {
+      forwardToGdcApp(p, resumeLink);
+    } catch (fwdErr) {
+      forwardError = fwdErr.toString();
+    }
 
     sheet.appendRow([
       now(),
@@ -101,15 +146,10 @@ function doPost(e) {
       p.cover      || '',
       resumeLink,
       p.referral   || '',
-      p.certification || ''
+      p.certification || '',
+      notifyError,
+      forwardError
     ]);
-
-    sendNotification(p, resumeLink, !!p.resume_base64 && !resumeLink);
-
-    // Best-effort -- the Sheet row and email above are already the durable
-    // record, so a gdc-app outage or a missing script property here should
-    // never fail the applicant's submission.
-    try { forwardToGdcApp(p, resumeLink); } catch (fwdErr) { /* swallow */ }
 
     return respond({ ok: true });
   } catch(err) {

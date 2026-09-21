@@ -482,11 +482,36 @@
 
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzZAo16zE73qd5G35dAwF67rxJB68vvop5LZUzDduSWkGqUuWLIGel5WZRmxqvqdbJLjQ/exec';
 
+    // Turnstile resolves invisibly in the background after the widget
+    // renders; someone who fills the form quickly can click Submit before
+    // it's produced a token, which silently fails verification server-side
+    // with no feedback (the fetch below is fire-and-forget). Give it a
+    // moment to finish rather than submitting an empty token.
+    function waitForTurnstileToken(timeoutMs) {
+      const deadline = Date.now() + timeoutMs;
+      return new Promise(function poll(resolve) {
+        const val = form.querySelector('[name="cf-turnstile-response"]');
+        if (val && val.value) return resolve(val.value);
+        if (Date.now() >= deadline) return resolve('');
+        setTimeout(function() { poll(resolve); }, 200);
+      });
+    }
+
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
       const btn = form.querySelector('.btn--apply');
-      btn.textContent = 'Submitting…';
+      btn.textContent = 'Verifying…';
       btn.disabled = true;
+
+      const turnstileToken = await waitForTurnstileToken(8000);
+      if (!turnstileToken) {
+        btn.textContent = 'Submit Application';
+        btn.disabled = false;
+        alert("We couldn't verify you're human yet -- please wait a moment and click Submit again.");
+        return;
+      }
+
+      btn.textContent = 'Submitting…';
 
       try {
         const data = new FormData(form);
