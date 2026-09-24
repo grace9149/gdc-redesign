@@ -176,7 +176,7 @@ function saveResume(base64, filename, firstName, lastName) {
 // ── Email notification ────────────────────────────────────────────────────────
 function sendNotification(p, resumeLink, resumeFailed) {
   var name = (p.first_name || '') + ' ' + (p.last_name || '');
-  var subject = 'New Application: ' + name.trim() + ' — ' + (p.position || 'Unknown Role');
+  var subject = 'New Application: ' + name.trim() + ' - ' + (p.position || 'Unknown Role');
   var body = [
     'A new job application was submitted on gracedouganconsulting.com.',
     '',
