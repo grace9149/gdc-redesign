@@ -115,8 +115,16 @@
     .roles-list li::before {
       content: '—'; position: absolute; left: 0; color: var(--gold);
     }
-    .roles-list li a { text-decoration: none; color: inherit; border-bottom: 1px solid var(--line); }
-    .roles-list li a:hover { color: var(--gold); border-bottom-color: var(--gold); }
+    .roles-list li a {
+      color: var(--gold); font-weight: 600; text-decoration: underline;
+      text-underline-offset: 3px; text-decoration-thickness: 1.5px;
+    }
+    .roles-list li a:hover { color: var(--ink); }
+    .roles-list li a .role-cta {
+      display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 999px;
+      background: var(--gold-pale); color: var(--gold); font-size: 11px; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase; text-decoration: none;
+    }
     .roles-note {
       margin-top: 24px; font-size: 13px; color: var(--faint);
     }
@@ -248,7 +256,7 @@
       <p class="section__label">Roles We Hire For</p>
       <p>We hire on a rolling basis as client needs grow. Apply even if the exact title isn't listed below.</p>
       <ul class="roles-list">
-        <li><a href="/account-manager.html">Account Manager</a></li>
+        <li><a href="/account-manager.html">Account Manager<span class="role-cta">View job &rarr;</span></a></li>
         <li>Bookkeeper</li>
         <li>Senior Bookkeeper</li>
         <li>Accounting Associate</li>
