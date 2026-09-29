@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/img/gdc-logo-512.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account Manager — Careers — Grace Dougan Consulting</title>
+  <meta name="description" content="Grace Dougan Consulting is hiring an Account Manager to oversee bookkeepers, manage project/grant accounting for nonprofit and consulting clients, and own accrual-based financial reporting." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #111111;
+      --muted: #444444;
+      --faint: #888888;
+      --line: #E2DDD6;
+      --paper: #FAF8F4;
+      --gold: #B8975A;
+      --gold-light: #D4AF72;
+    }
+
+    html { font-size: 16px; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+
+    /* ── NAV ── */
+    .nav { border-bottom: 1px solid var(--line); }
+    .nav__inner {
+      max-width: 760px; margin: 0 auto; padding: 0 24px;
+      height: 68px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav__logo {
+      font-size: 14px; font-weight: 500; letter-spacing: 0.02em;
+      color: var(--ink); text-decoration: none;
+    }
+    .nav__right { display: flex; align-items: center; gap: 28px; }
+    .nav__home {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+    }
+    .nav__home:hover { color: var(--ink); }
+    .nav__apply {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink); text-decoration: none;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 2px;
+    }
+    .nav__apply:hover { color: var(--gold); }
+
+    /* ── LAYOUT ── */
+    .page { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── INTRO ── */
+    .intro { padding: 72px 0 40px; }
+    .intro__back {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--faint); text-decoration: none; display: inline-block; margin-bottom: 24px;
+    }
+    .intro__back:hover { color: var(--ink); }
+    .intro__eyebrow {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 18px;
+    }
+    .intro__title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(32px, 5vw, 44px); font-weight: 500; line-height: 1.2;
+      color: var(--ink); margin-bottom: 16px;
+    }
+    .intro__meta {
+      display: flex; flex-wrap: wrap; gap: 8px 20px;
+      font-size: 13px; color: var(--muted);
+    }
+    .intro__meta span::before { content: '—'; color: var(--gold); margin-right: 6px; }
+
+    /* ── SECTIONS ── */
+    .section { padding: 36px 0; border-top: 1px solid var(--line); }
+    .section__label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--faint); margin-bottom: 18px;
+    }
+    .section p { color: var(--muted); margin-bottom: 14px; }
+    .section p:last-child { margin-bottom: 0; }
+
+    .bullets { list-style: none; }
+    .bullets li {
+      color: var(--muted); font-size: 14.5px; line-height: 1.7;
+      padding-left: 18px; position: relative; margin-bottom: 10px;
+    }
+    .bullets li:last-child { margin-bottom: 0; }
+    .bullets li::before {
+      content: '—'; position: absolute; left: 0; color: var(--gold);
+    }
+
+    .note {
+      margin-top: 20px; font-size: 13px; color: var(--faint); font-style: italic;
+    }
+
+    /* ── CTA ── */
+    .cta { padding: 48px 0 88px; border-top: 1px solid var(--line); }
+    .cta__title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 28px; font-weight: 500; margin-bottom: 14px; color: var(--ink);
+    }
+    .cta p { color: var(--muted); margin-bottom: 28px; max-width: 480px; }
+    .btn-apply {
+      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #fff; background: var(--ink);
+      padding: 15px 32px; text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-apply:hover { background: var(--gold); }
+
+    /* ── FOOTER ── */
+    .footer { border-top: 1px solid var(--line); padding: 28px 24px; }
+    .footer__inner {
+      max-width: 680px; margin: 0 auto;
+      display: flex; flex-wrap: wrap; gap: 12px 28px;
+      align-items: center; justify-content: space-between;
+      font-size: 12px; color: var(--faint);
+    }
+    .footer__links { display: flex; gap: 24px; }
+    .footer__links a { text-decoration: none; color: var(--faint); }
+    .footer__links a:hover { color: var(--ink); }
+
+    @media (max-width: 560px) {
+      .intro { padding: 48px 0 32px; }
+      .nav__inner { padding: 0 20px; }
+      .page { padding: 0 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo">Grace Dougan Consulting</a>
+      <div class="nav__right">
+        <a href="/" class="nav__home">Home</a>
+        <a href="/application-form.html" class="nav__apply">Apply Now</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="page">
+
+    <!-- INTRO -->
+    <div class="intro">
+      <a href="/careers.html" class="intro__back">← Back to Careers</a>
+      <p class="intro__eyebrow">Open Role</p>
+      <h1 class="intro__title">Account Manager</h1>
+      <div class="intro__meta">
+        <span>Remote</span>
+        <span>Contract</span>
+        <span>Schedule by agreement</span>
+      </div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div class="section">
+      <p class="section__label">Overview</p>
+      <p>We are a consulting firm that focuses primarily on bookkeeping and remote office management. Our client portfolio spans a variety of industries. The ideal candidate will have experience in inventory, non-profit, financial auditing, regulatory reporting, and possess strong financial acumen.</p>
+      <p>We are looking for someone who is flexible and willing to complete different tasks at different levels, as well as to work with clients in various industries. Because we tailor our services to each client, this role will entail learning new things on a regular basis to accommodate client requests. This is not a bookkeeping role with routine tasks. Rather, work at our firm is very dynamic and adapts to the needs of our clients.</p>
+      <p>If you are adaptable, enjoy problem solving, detail-oriented, have expertise in debits and credits, and are proficient in QuickBooks and navigating software programs, we encourage you to apply.</p>
+    </div>
+
+    <!-- RESPONSIBILITIES -->
+    <div class="section">
+      <p class="section__label">Responsibilities</p>
+      <ul class="bullets">
+        <li>Oversee bookkeepers' work on various clients and assist with management of multiple projects simultaneously</li>
+        <li>Track and manage a company's inventory to ensure it's accurate, properly accounted for, and costs are minimized</li>
+        <li>Prepare financials review of cash flow and budgeting</li>
+        <li>Prepare financial statements and reports for analysis</li>
+        <li>Conduct forecasting and budgeting activities</li>
+        <li>Cash flow analysis and reporting</li>
+        <li>Implement accrual accounting principles</li>
+        <li>Assist with regulatory reporting requirements</li>
+        <li>Review work completed by bookkeepers for accuracy</li>
+        <li>Prepare monthly account schedules and reconciliations, including but not limited to prepaid expenses, other assets, accrued liabilities, and other liabilities</li>
+        <li>Perform and assist with month-end close, including recording month-end accruals</li>
+        <li>Manage complicated accrual financial reporting</li>
+      </ul>
+    </div>
+
+    <!-- WHAT SETS THIS ROLE APART -->
+    <div class="section">
+      <p class="section__label">What Sets This Role Apart</p>
+      <ul class="bullets">
+        <li>Project/grant accounting background — consulting, research org, or grant-funded nonprofit — not general bookkeeping</li>
+        <li>Contract scrutiny, analysis, and judgment — you catch a mismatched payment term, rate, or policy issue before it's a problem, not just data entry</li>
+        <li>Detail-oriented enough to chase a sub for a corrected invoice rather than wave it through</li>
+        <li>Comfortable managing a high volume of communication channels and precise about who's actually in which one, able to maintain confidentiality</li>
+        <li>Sharp, concise written communicator</li>
+        <li>Proficient or higher with Harvest, Airtable, Google Sheets, Slack, ERP platforms, and similar tools</li>
+        <li>Independent enough to really own this role rather than work off a checklist</li>
+      </ul>
+    </div>
+
+    <!-- EXPERIENCE -->
+    <div class="section">
+      <p class="section__label">Experience</p>
+      <ul class="bullets">
+        <li>Bachelor's degree in Accounting or Finance</li>
+        <li>Proficiency in debits and credits</li>
+        <li>Expert in QuickBooks</li>
+        <li>Expert in Excel</li>
+        <li>Strong analytical skills for financial auditing</li>
+        <li>Knowledge of regulatory reporting standards</li>
+        <li>Ability to perform accrual accounting tasks</li>
+        <li>Reliable, detail-oriented, and a self-starter, able to work independently</li>
+        <li>Able to build and foster teamwork and communication</li>
+        <li>Experience as a CPA/Enrolled Agent preferred</li>
+      </ul>
+      <p class="note">Please note we are not a CPA firm and we do not file tax returns. This role is remote, with hours based on an agreed-upon schedule.</p>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta">
+      <h2 class="cta__title">Ready to apply?</h2>
+      <p>Select "Account Manager" as your role of interest on the application. We review every application and reply within 5–7 business days.</p>
+      <a href="/application-form.html" class="btn-apply">Start Your Application</a>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <span>© 2026 Grace Dougan Consulting</span>
+      <div class="footer__links">
+        <a href="tel:4158279648">415-827-9648</a>
+        <a href="mailto:hr@gracedouganconsulting.com">hr@gracedouganconsulting.com</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
