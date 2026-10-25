@@ -47,6 +47,7 @@ if (form) {
 // Look picker (design previews). Remove this block and the .look-picker CSS once a look is chosen.
 (() => {
   const looks = [
+    ['shopsmall', 'Shop Small', 'linear-gradient(135deg,#d14a0c 50%,#141414 50%)'],
     ['clay', 'Clay & Cream', '#d4623a'],
     ['ocean', 'Ocean', '#0e8f9c'],
     ['plum', 'Plum & Blush', '#c2307a'],
@@ -58,7 +59,8 @@ if (form) {
   let cur = new URLSearchParams(location.search).get('look');
   try { cur = cur || localStorage.getItem('look'); } catch (e) {}
   const apply = (name) => {
-    if (name === 'clay' || !looks.some((l) => l[0] === name)) root.removeAttribute('data-look');
+    if (name === 'clay') root.removeAttribute('data-look');
+    else if (!looks.some((l) => l[0] === name)) root.setAttribute('data-look', 'shopsmall');
     else root.setAttribute('data-look', name);
     try { localStorage.setItem('look', name); } catch (e) {}
     box.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.look === (root.dataset.look || 'clay')));
@@ -69,5 +71,5 @@ if (form) {
     `<button data-look="${k}" title="${label}" aria-label="${label}" style="background:${c}"></button>`).join('');
   box.addEventListener('click', (e) => { if (e.target.dataset.look) apply(e.target.dataset.look); });
   document.body.appendChild(box);
-  apply(cur || 'clay');
+  apply(cur || 'shopsmall');
 })();
