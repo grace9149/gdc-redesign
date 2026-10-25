@@ -8,6 +8,7 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '
 const json = (body, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
 
 export async function onRequestPost({ request, env }) {
+  if (!new URL(request.url).hostname.endsWith('.pages.dev')) return json({ error: 'Not found' }, 404);
   let d;
   try { d = await request.json(); } catch { return json({ error: 'Invalid request' }, 400); }
 
