@@ -28,7 +28,7 @@ if (form) {
     const btn = form.querySelector('button[type=submit]');
     btn.disabled = true; btn.textContent = 'Sending…';
     try {
-      const res = await fetch('/api/studio-contact', {
+      const res = await fetch('/api/charlotte-contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(Object.fromEntries(new FormData(form))),

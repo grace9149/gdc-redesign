@@ -1,4 +1,4 @@
-// Cloudflare Pages Function: POST /api/studio-contact (contact form for /studio)
+// Cloudflare Pages Function: POST /api/charlotte-contact (contact form for /charlotte)
 // Env vars (set in the Cloudflare dashboard, never in git):
 //   RESEND_API_KEY  - Resend API key
 //   CONTACT_TO      - inbox that receives inquiries
