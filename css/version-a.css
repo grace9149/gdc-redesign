@@ -832,6 +832,30 @@ a { color: inherit; text-decoration: none; }
   transition: color var(--transition);
 }
 .footer__nav a:hover { color: var(--text-dark); }
+/* Link bar: sits at the bottom of the contact section */
+.linkbar {
+  background: var(--cream-dark);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 22px 0;
+}
+.linkbar__inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px 36px;
+}
+.linkbar a {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--text-mid);
+  transition: color var(--transition);
+}
+.linkbar a:hover { color: var(--gold); }
+
 .footer__contact {
   display: flex;
   gap: 32px;
