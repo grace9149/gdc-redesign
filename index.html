@@ -5,9 +5,19 @@
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" href="/img/gdc-logo-512.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Remote Bookkeeping &amp; Back-Office Services for Small Businesses | Grace Dougan Consulting</title>
-  <meta name="description" content="Remote bookkeeping, QuickBooks setup, and back-office support for small businesses nationwide — based in Novato, CA and serving clients in 13 states. Book a free consultation with Grace Dougan Consulting." />
+  <title>Bookkeeping &amp; Back-Office Support, Novato CA | Grace Dougan</title>
+  <meta name="description" content="Remote bookkeeping, QuickBooks migrations and fractional CFO support for small businesses. Based in Novato, CA, serving Marin and clients nationwide." />
   <link rel="canonical" href="https://www.gracedouganconsulting.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Grace Dougan Consulting" />
+  <meta property="og:title" content="Bookkeeping &amp; Back-Office Support, Novato CA | Grace Dougan" />
+  <meta property="og:description" content="Remote bookkeeping, QuickBooks migrations and fractional CFO support for small businesses. Based in Novato, CA, serving Marin and clients nationwide." />
+  <meta property="og:url" content="https://www.gracedouganconsulting.com/" />
+  <meta property="og:image" content="https://www.gracedouganconsulting.com/img/hero-consulting.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Bookkeeping &amp; Back-Office Support, Novato CA | Grace Dougan" />
+  <meta name="twitter:description" content="Remote bookkeeping, QuickBooks migrations and fractional CFO support for small businesses. Based in Novato, CA, serving Marin and clients nationwide." />
+  <meta name="twitter:image" content="https://www.gracedouganconsulting.com/img/hero-consulting.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -17,35 +27,82 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "name": "Grace Dougan Consulting",
-    "url": "https://www.gracedouganconsulting.com/",
-    "logo": "https://www.gracedouganconsulting.com/img/gdc-logo-512.png",
-    "description": "Remote bookkeeping, QuickBooks setup, and back-office support for small businesses nationwide — based in Novato, CA and serving clients in 13 states.",
-    "telephone": "+1-415-827-9648",
-    "email": "contact@gracedouganconsulting.com",
-    "founder": {
-      "@type": "Person",
-      "name": "Grace Dougan"
-    },
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Novato",
-      "addressRegion": "CA",
-      "addressCountry": "US"
-    },
-    "areaServed": [
-      { "@type": "City", "name": "Novato" },
-      { "@type": "AdministrativeArea", "name": "Marin County" },
-      { "@type": "State", "name": "California" },
-      { "@type": "Country", "name": "United States" }
-    ],
-    "serviceType": [
-      "Remote Bookkeeping",
-      "QuickBooks Setup and Migration",
-      "Fractional CFO Services",
-      "Back-Office Support",
-      "Business Consulting"
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.gracedouganconsulting.com/#org",
+        "name": "Grace Dougan Consulting",
+        "url": "https://www.gracedouganconsulting.com/",
+        "logo": "https://www.gracedouganconsulting.com/img/gdc-logo-512.png",
+        "telephone": "+1-415-827-9648",
+        "email": "contact@gracedouganconsulting.com",
+        "foundingDate": "2010",
+        "founder": {
+          "@id": "https://www.gracedouganconsulting.com/#grace"
+        }
+      },
+      {
+        "@type": [
+          "AccountingService",
+          "ProfessionalService"
+        ],
+        "@id": "https://www.gracedouganconsulting.com/#business",
+        "name": "Grace Dougan Consulting",
+        "url": "https://www.gracedouganconsulting.com/",
+        "image": "https://www.gracedouganconsulting.com/img/hero-consulting.jpg",
+        "logo": "https://www.gracedouganconsulting.com/img/gdc-logo-512.png",
+        "description": "Remote bookkeeping, QuickBooks migrations, fractional CFO services and back-office support for small businesses. Based in Novato, California, serving Marin County and clients nationwide.",
+        "telephone": "+1-415-827-9648",
+        "email": "contact@gracedouganconsulting.com",
+        "parentOrganization": {
+          "@id": "https://www.gracedouganconsulting.com/#org"
+        },
+        "founder": {
+          "@id": "https://www.gracedouganconsulting.com/#grace"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Novato",
+          "addressRegion": "CA",
+          "addressCountry": "US"
+        },
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Novato"
+          },
+          {
+            "@type": "AdministrativeArea",
+            "name": "Marin County"
+          },
+          {
+            "@type": "AdministrativeArea",
+            "name": "San Francisco Bay Area"
+          },
+          {
+            "@type": "Country",
+            "name": "United States"
+          }
+        ],
+        "serviceType": [
+          "Remote Bookkeeping",
+          "QuickBooks Setup and Migration",
+          "Fractional CFO Services",
+          "Remote Office Management",
+          "Business Strategy",
+          "Business Systems Review"
+        ]
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.gracedouganconsulting.com/#grace",
+        "name": "Grace Dougan",
+        "jobTitle": "Founder",
+        "worksFor": {
+          "@id": "https://www.gracedouganconsulting.com/#org"
+        },
+        "url": "https://www.gracedouganconsulting.com/"
+      }
     ]
   }
   </script>
@@ -65,8 +122,8 @@
         <li><a href="#services">Services</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#team">Team</a></li>
-        <li><a href="/custom-apps.html">Custom Apps</a></li>
-        <li><a href="/careers.html">Careers</a></li>
+        <li><a href="/custom-apps">Custom Apps</a></li>
+        <li><a href="/careers">Careers</a></li>
         <li><a href="#contact" class="nav__cta">Get in Touch</a></li>
       </ul>
     </div>
@@ -77,7 +134,7 @@
     <div class="hero__content fade-in">
       <p class="hero__eyebrow">Bay Area · Remote · Dedicated</p>
       <h1 class="hero__headline">Run your business.<br /><em>We'll handle<br />the rest.</em></h1>
-      <p class="hero__sub">Remote bookkeeping, back-office support, and strategic guidance for small businesses in the Bay Area and nationwide — so you can focus on what you do best.</p>
+      <p class="hero__sub">Remote bookkeeping, QuickBooks migrations, fractional CFO and back-office support for small businesses in Novato, Marin County and across the U.S. — so you can focus on what you do best.</p>
       <div class="hero__actions">
         <a href="#contact" class="btn btn--dark">Let's Talk</a>
         <a href="#services" class="hero__scroll-link">See Our Services ↓</a>
@@ -113,7 +170,7 @@
     <p class="tools-ticker__label">Tools we work in every day</p>
     <div class="tools-ticker__wrap">
       <div class="tools-ticker__track">
-        <a class="tools-ticker__item" href="https://ramp.com/partners/grace-dougan-consulting" target="_blank" rel="noopener"><span>Ramp</span></a>
+        <a class="tools-ticker__item" href="https://ramp.com/partners/grace-dougan-consulting" target="_blank" rel="sponsored noopener"><span>Ramp</span></a>
         <a class="tools-ticker__item" href="https://quickbooks.intuit.com/" target="_blank" rel="noopener"><span>QuickBooks</span></a>
         <a class="tools-ticker__item" href="https://www.blackbaud.com/" target="_blank" rel="noopener"><span>Blackbaud</span></a>
         <a class="tools-ticker__item" href="https://www.xero.com" target="_blank" rel="noopener"><span>Xero</span></a>
@@ -123,7 +180,7 @@
         <a class="tools-ticker__item" href="https://www.adp.com/" target="_blank" rel="noopener"><span>ADP</span></a>
         <a class="tools-ticker__item" href="https://www.justworks.com/" target="_blank" rel="noopener"><span>Justworks</span></a>
         <a class="tools-ticker__item" href="https://www.google.com/" target="_blank" rel="noopener"><span>Google</span></a>
-        <a class="tools-ticker__item" href="https://gusto.com/r/grace515" target="_blank" rel="noopener"><span>Gusto</span></a>
+        <a class="tools-ticker__item" href="https://gusto.com/r/grace515" target="_blank" rel="sponsored noopener"><span>Gusto</span></a>
         <a class="tools-ticker__item" href="https://clickup.com/" target="_blank" rel="noopener"><span>ClickUp</span></a>
         <a class="tools-ticker__item" href="https://www.avalara.com/" target="_blank" rel="noopener"><span>Avalara</span></a>
         <a class="tools-ticker__item" href="https://www.paychex.com/" target="_blank" rel="noopener"><span>Paychex</span></a>
@@ -131,7 +188,7 @@
         <a class="tools-ticker__item" href="https://slack.com/" target="_blank" rel="noopener"><span>Slack</span></a>
         <a class="tools-ticker__item" href="https://www.bill.com/" target="_blank" rel="noopener"><span>Bill.com</span></a>
         <!-- Duplicate for seamless loop -->
-        <a class="tools-ticker__item" href="https://ramp.com/partners/grace-dougan-consulting" target="_blank" rel="noopener"><span>Ramp</span></a>
+        <a class="tools-ticker__item" href="https://ramp.com/partners/grace-dougan-consulting" target="_blank" rel="sponsored noopener"><span>Ramp</span></a>
         <a class="tools-ticker__item" href="https://quickbooks.intuit.com/" target="_blank" rel="noopener"><span>QuickBooks</span></a>
         <a class="tools-ticker__item" href="https://www.blackbaud.com/" target="_blank" rel="noopener"><span>Blackbaud</span></a>
         <a class="tools-ticker__item" href="https://www.xero.com" target="_blank" rel="noopener"><span>Xero</span></a>
@@ -141,7 +198,7 @@
         <a class="tools-ticker__item" href="https://www.adp.com/" target="_blank" rel="noopener"><span>ADP</span></a>
         <a class="tools-ticker__item" href="https://www.justworks.com/" target="_blank" rel="noopener"><span>Justworks</span></a>
         <a class="tools-ticker__item" href="https://www.google.com/" target="_blank" rel="noopener"><span>Google</span></a>
-        <a class="tools-ticker__item" href="https://gusto.com/r/grace515" target="_blank" rel="noopener"><span>Gusto</span></a>
+        <a class="tools-ticker__item" href="https://gusto.com/r/grace515" target="_blank" rel="sponsored noopener"><span>Gusto</span></a>
         <a class="tools-ticker__item" href="https://clickup.com/" target="_blank" rel="noopener"><span>ClickUp</span></a>
         <a class="tools-ticker__item" href="https://www.avalara.com/" target="_blank" rel="noopener"><span>Avalara</span></a>
         <a class="tools-ticker__item" href="https://www.paychex.com/" target="_blank" rel="noopener"><span>Paychex</span></a>
@@ -610,7 +667,7 @@
         <div id="contactSuccess" style="display:none;margin-top:16px;padding:16px;background:#fdf9f3;border:1px solid #D4AF72;font-size:13px;color:#444;text-align:center;">
           Thank you! We'll be in touch within one business day.
         </div>
-        <p style="margin-top:18px;font-size:11px;color:#aaa;letter-spacing:0.04em;">Interested in joining our team? <a href="/careers.html" style="color:#B8975A;text-decoration:none;border-bottom:1px solid #D4AF72;">See open roles &rarr;</a></p>
+        <p style="margin-top:18px;font-size:11px;color:#aaa;letter-spacing:0.04em;">Interested in joining our team? <a href="/careers" style="color:#B8975A;text-decoration:none;border-bottom:1px solid #D4AF72;">See open roles &rarr;</a></p>
       </form>
       <script>
         async function submitContact(e) {
@@ -665,8 +722,9 @@
         <a href="#services">Services</a>
         <a href="#about">About</a>
         <a href="#team">Team</a>
-        <a href="/custom-apps.html">Custom Apps</a>
-        <a href="/careers.html">Careers</a>
+        <a href="/custom-apps">Custom Apps</a>
+        <a href="/careers">Careers</a>
+        <a href="/start-a-project">Start a Project</a>
         <a href="#contact">Contact</a>
       </nav>
       <div class="footer__contact">
