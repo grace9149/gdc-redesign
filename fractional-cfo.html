@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/img/gdc-logo-512.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fractional CFO for Small Business | GDC</title>
+  <meta name="description" content="Fractional CFO services for small businesses and nonprofits: forecasting, board reporting, internal controls and planning without a full-time hire." />
+  <link rel="canonical" href="https://www.gracedouganconsulting.com/fractional-cfo" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Grace Dougan Consulting" />
+  <meta property="og:title" content="Fractional CFO for Small Business | GDC" />
+  <meta property="og:description" content="Fractional CFO services for small businesses and nonprofits: forecasting, board reporting, internal controls and planning without a full-time hire." />
+  <meta property="og:url" content="https://www.gracedouganconsulting.com/fractional-cfo" />
+  <meta property="og:image" content="https://www.gracedouganconsulting.com/img/hero-consulting.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Fractional CFO for Small Business | GDC" />
+  <meta name="twitter:description" content="Fractional CFO services for small businesses and nonprofits: forecasting, board reporting, internal controls and planning without a full-time hire." />
+  <meta name="twitter:image" content="https://www.gracedouganconsulting.com/img/hero-consulting.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #111111;
+      --muted: #444444;
+      --faint: #888888;
+      --line: #E2DDD6;
+      --paper: #FAF8F4;
+      --gold: #B8975A;
+      --gold-light: #D4AF72;
+    }
+
+    html { font-size: 16px; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 15px;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+
+    /* ── NAV ── */
+    .nav {
+      border-bottom: 1px solid var(--line);
+    }
+    .nav__inner {
+      max-width: 760px; margin: 0 auto; padding: 0 24px;
+      height: 68px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav__logo {
+      font-size: 14px; font-weight: 500; letter-spacing: 0.02em;
+      color: var(--ink); text-decoration: none;
+    }
+    .nav__right {
+      display: flex; align-items: center; gap: 28px;
+    }
+    .nav__home {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+    }
+    .nav__home:hover { color: var(--ink); }
+    .nav__apply {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink); text-decoration: none;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 2px;
+    }
+    .nav__apply:hover { color: var(--gold); }
+
+    /* ── LAYOUT ── */
+    .page { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── INTRO ── */
+    .intro { padding: 88px 0 48px; text-align: center; }
+    .intro__eyebrow {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 18px;
+    }
+    .intro__title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(32px, 5vw, 44px); font-weight: 500; line-height: 1.2;
+      color: var(--ink); margin-bottom: 20px;
+    }
+    .intro__title em { font-style: italic; font-weight: 400; }
+    .intro__sub {
+      font-size: 16px; line-height: 1.8; color: var(--muted); max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* ── SECTIONS ── */
+    .section { padding: 44px 0; border-top: 1px solid var(--line); }
+    .section__label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--faint); margin-bottom: 20px;
+    }
+    .section p { color: var(--muted); margin-bottom: 14px; max-width: 560px; }
+    .section p:last-child { margin-bottom: 0; }
+
+    /* Process */
+    .steps { list-style: none; counter-reset: step; }
+    .steps li {
+      counter-increment: step;
+      display: flex; gap: 20px;
+      padding: 18px 0; border-top: 1px solid var(--line);
+    }
+    .steps li:first-child { border-top: none; padding-top: 0; }
+    .steps li::before {
+      content: counter(step);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 22px; color: var(--gold); flex-shrink: 0; width: 24px;
+    }
+    .steps strong { display: block; color: var(--ink); font-size: 14.5px; font-weight: 600; margin-bottom: 4px; }
+    .steps span { color: var(--muted); font-size: 14px; }
+
+    /* Work / case studies */
+    .work-list { list-style: none; }
+    .work-item {
+      padding: 24px 0; border-top: 1px solid var(--line);
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .work-item:first-child { border-top: none; padding-top: 0; }
+    .work-item__name {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 22px; font-weight: 500; color: var(--ink);
+    }
+    .work-item__desc { color: var(--muted); font-size: 14px; max-width: 560px; }
+    .work-item__link {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold-light);
+      padding-bottom: 2px; align-self: flex-start;
+    }
+    .work-item__link:hover { color: var(--ink); border-color: var(--ink); }
+
+    /* Good fit / not a fit */
+    .fit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .fit-grid h3 {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink); margin-bottom: 12px;
+    }
+    .fit-grid ul { list-style: none; }
+    .fit-grid li {
+      font-size: 14px; color: var(--muted); padding-left: 16px; position: relative;
+      margin-bottom: 8px; line-height: 1.6;
+    }
+    .fit-grid li::before {
+      content: '—'; position: absolute; left: 0; color: var(--gold);
+    }
+
+    /* CTA */
+    .cta { padding: 56px 0 88px; border-top: 1px solid var(--line); }
+    .cta__title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 30px; font-weight: 500; margin-bottom: 14px; color: var(--ink);
+    }
+    .cta p { color: var(--muted); margin-bottom: 28px; max-width: 480px; }
+    .btn-apply {
+      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #fff; background: var(--ink);
+      padding: 15px 32px; text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-apply:hover { background: var(--gold); }
+
+    /* ── FOOTER ── */
+    .footer {
+      border-top: 1px solid var(--line);
+      padding: 28px 24px;
+    }
+    .footer__inner {
+      max-width: 680px; margin: 0 auto;
+      display: flex; flex-wrap: wrap; gap: 12px 28px;
+      align-items: center; justify-content: space-between;
+      font-size: 12px; color: var(--faint);
+    }
+    .footer__links { display: flex; gap: 24px; }
+    .footer__links a { text-decoration: none; color: var(--faint); }
+    .footer__links a:hover { color: var(--ink); }
+
+    @media (max-width: 560px) {
+      .intro { padding: 56px 0 40px; }
+      .nav__inner { padding: 0 20px; }
+      .page { padding: 0 20px; }
+      .fit-grid { grid-template-columns: 1fr; gap: 24px; }
+    }
+  
+    .faq dt { color: var(--ink); font-weight: 600; font-size: 14.5px; margin-top: 18px; }
+    .faq dd { color: var(--muted); font-size: 14px; max-width: 560px; margin-top: 4px; }
+    .section ul.list { margin: 0 0 14px 18px; color: var(--muted); max-width: 560px; }
+    .section ul.list li { margin-bottom: 6px; }
+    .related a { margin-right: 18px; }
+  </style>
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "name": "Fractional CFO",
+      "serviceType": "Fractional CFO",
+      "description": "Fractional CFO services for small businesses and nonprofits: forecasting, board reporting, internal controls and planning without a full-time hire.",
+      "url": "https://www.gracedouganconsulting.com/fractional-cfo",
+      "provider": {
+        "@id": "https://www.gracedouganconsulting.com/#business"
+      },
+      "areaServed": [
+        {
+          "@type": "AdministrativeArea",
+          "name": "Marin County"
+        },
+        {
+          "@type": "Country",
+          "name": "United States"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a fractional CFO?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A part-time CFO who provides strategic financial leadership such as forecasting, reporting and planning, without the cost of a full-time executive."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is a fractional CFO different from a bookkeeper or an accountant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A bookkeeper keeps the records current and an accountant handles tax and compliance. A CFO uses those numbers to plan, forecast and guide decisions."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need clean books first?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Reliable books make CFO work far more useful. If yours need attention, we can pair this with our bookkeeping service."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you work with nonprofits?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Board reporting and grant-aware financial planning are part of the work."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.gracedouganconsulting.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Fractional CFO",
+          "item": "https://www.gracedouganconsulting.com/fractional-cfo"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo">Grace Dougan Consulting</a>
+      <div class="nav__right">
+        <a href="/#services" class="nav__home">All Services</a>
+        <a href="/#contact" class="nav__apply">Get in Touch</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="page">
+
+    <div class="intro">
+      <p class="intro__eyebrow">Fractional CFO</p>
+      <h1 class="intro__title">Strategic financial leadership,<br /><em>without the full-time hire.</em></h1>
+      <p class="intro__sub">A fractional CFO gives your business senior financial leadership on a part-time basis. Grace Dougan Consulting provides forecasting, board reporting, internal controls and long-term planning for small businesses and nonprofits that need CFO-level guidance but are not ready for a full-time executive.</p>
+    </div>
+
+    <div class="section">
+      <p class="section__label">Who It's For</p>
+      <ul class="list"><li>Growing businesses whose finances have outgrown the bookkeeper-and-accountant setup</li><li>Nonprofits and organizations that report regularly to a board</li><li>Owners making hiring, pricing or investment decisions who want a financial partner</li></ul>
+    </div>
+
+    <div class="section">
+      <p class="section__label">What's Included</p>
+      <ul class="list"><li>Cash flow and financial forecasting</li><li>Board and leadership reporting</li><li>Internal controls and financial processes</li><li>Long-term financial planning</li></ul>
+    </div>
+
+    <div class="section">
+      <p class="section__label">How It Works</p>
+      <ol class="steps"><li><div><strong>Understand</strong><span>We learn your goals, your numbers and how decisions get made today.</span></div></li><li><div><strong>Build the picture</strong><span>We set up forecasts and reporting that show where the business is heading.</span></div></li><li><div><strong>Advise</strong><span>We meet regularly to review results and talk through decisions.</span></div></li><li><div><strong>Refine</strong><span>We update the plan as your business changes.</span></div></li></ol>
+    </div>
+
+    <div class="section">
+      <p class="section__label">Common Questions</p>
+      <dl class="faq"><dt>What is a fractional CFO?</dt><dd>A part-time CFO who provides strategic financial leadership such as forecasting, reporting and planning, without the cost of a full-time executive.</dd><dt>How is a fractional CFO different from a bookkeeper or an accountant?</dt><dd>A bookkeeper keeps the records current and an accountant handles tax and compliance. A CFO uses those numbers to plan, forecast and guide decisions.</dd><dt>Do I need clean books first?</dt><dd>Reliable books make CFO work far more useful. If yours need attention, we can pair this with our bookkeeping service.</dd><dt>Do you work with nonprofits?</dt><dd>Yes. Board reporting and grant-aware financial planning are part of the work.</dd></dl>
+    </div>
+
+    <div class="section related">
+      <p class="section__label">Related Services</p>
+      <p><a href="/bookkeeping">Remote Bookkeeping</a><a href="/business-strategy">Business Strategy</a><a href="/systems-review">Systems Review</a></p>
+    </div>
+
+    <div class="cta">
+      <h2 class="cta__title">Let's talk about your business.</h2>
+      <p>Tell us what you need and we'll let you know honestly how we can help. We're based in Novato, CA and work with clients remotely across the country.</p>
+      <a href="/#contact" class="btn-apply">Get in Touch</a>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <span>© 2026 Grace Dougan Consulting · Novato, CA</span>
+      <div class="footer__links">
+        <a href="tel:4158279648">415-827-9648</a>
+        <a href="mailto:contact@gracedouganconsulting.com">contact@gracedouganconsulting.com</a>
+        <a href="https://www.linkedin.com/in/grace-dougan-20762210/" target="_blank" rel="noopener me">LinkedIn</a>
+        <a href="https://www.instagram.com/gracedouganconsulting_ca/" target="_blank" rel="noopener me">Instagram</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
